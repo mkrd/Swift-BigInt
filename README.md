@@ -20,6 +20,7 @@ Simply drag the BInt and BDouble.swift file into your project!
 #### Examples:
 * let i = BInt(12)
 * let i = BInt(-9234)
+* let i = BInt("-2343241765837645983267582365876326491813491053680428560284652986203287826526")
 * let d = BDouble(221)
 * let d = BDouble(1.192)
 * let d = BDouble(3, over: 4)
