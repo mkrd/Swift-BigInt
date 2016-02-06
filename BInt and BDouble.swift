@@ -1,13 +1,10 @@
 //
-//  BInt and BDouble
+//  BInt
 //  MathGround
 //
 //  Created by Marcel Kröker on 03.04.15.
 //  Copyright (c) 2015 Blubyte. All rights reserved.
 //
-
-//import Foundation
-//import Cocoa
 
 public struct BInt: CustomStringConvertible
 {
@@ -81,7 +78,7 @@ public struct BInt: CustomStringConvertible
 			{
 				return self.sign ?
 					-Int(self.bytes[0]) :
-					 Int(self.bytes[0])
+					Int(self.bytes[0])
 			}
 			else if self.bytes[0] == UInt64(Int.max) + 1 // Int.min
 			{
@@ -94,8 +91,8 @@ public struct BInt: CustomStringConvertible
 	}
 
 	public var description: String
-	{
-		return (self.sign ? "-" : "") + bytesToString(self.bytes)
+		{
+			return (self.sign ? "-" : "") + bytesToString(self.bytes)
 	}
 
 	public func rawData() -> (sign: Bool, bytes: [UInt64])
@@ -125,19 +122,20 @@ public struct BInt: CustomStringConvertible
 
 private func bytesToString(bytes: [UInt64]) -> String
 {
-	var res = "0"
-	var base = "1"
+	var res: [UInt8] = [0]
+	var base: [UInt8] = [1]
 
 	for i in 0..<bytes.count
 	{
-		var toAdd = String(bytes[i])
-		toAdd = mulStr(toAdd, base)
-		res = addStr(res, toAdd)
-		
-		base = mulStr(base, "18446744073709551616") // 2^64
+		var toAdd: [UInt8] = String(bytes[i]).characters.map{ UInt8(String($0))! }.reverse()
+
+		toAdd = mulStrPos(toAdd, base)
+		res = addStrPos(res, toAdd)
+
+		base = mulStrPos(base, [6,1,6,1,5,5,9,0,7,3,7,0,4,4,7,6,4,4,8,1]) // 2^64
 	}
 
-	return res
+	return String(res.map{ Character(String($0)) }.reverse())
 }
 
 private func stringToBInt(var str: String) -> BInt
@@ -173,22 +171,22 @@ private func stringToBInt(var str: String) -> BInt
 private extension String
 {
 	subscript (i: Int) -> String
-	{
-		return String(self[self.startIndex.advancedBy(i)])
+		{
+			return String(self[self.startIndex.advancedBy(i)])
 	}
 
 	subscript (r: Range<Int>) -> String
-	{
-		return substringWithRange(Range(start: startIndex.advancedBy(r.startIndex), end: startIndex.advancedBy(r.endIndex)))
+		{
+			return substringWithRange(Range(start: startIndex.advancedBy(r.startIndex), end: startIndex.advancedBy(r.endIndex)))
 	}
 
 	subscript(char: Character) -> Int?
-	{
-		if let idx = self.characters.indexOf(char)
 		{
-			return self.startIndex.distanceTo(idx)
-		}
-		return nil
+			if let idx = self.characters.indexOf(char)
+			{
+				return self.startIndex.distanceTo(idx)
+			}
+			return nil
 	}
 
 	func reverse() -> String
@@ -238,15 +236,6 @@ func addStrPos(lhs: [UInt8], _ rhs: [UInt8]) -> [UInt8]
 	return res
 }
 
-private func addStr(str1: String, _ str2: String) -> String
-{
-	let decArr1: [UInt8] = str1.characters.map { UInt8(String($0))! }.reverse()
-	let decArr2: [UInt8] = str2.characters.map { UInt8(String($0))! }.reverse()
-
-	let resCharArr = addStrPos(decArr1, decArr2).map { Character(String($0)) }.reverse()
-	return String(resCharArr)
-}
-
 private func mulStrPos(lhs: [UInt8], _ rhs: [UInt8]) -> [UInt8]
 {
 	var addBuffer: [UInt8] = [0]
@@ -276,26 +265,6 @@ private func mulStrPos(lhs: [UInt8], _ rhs: [UInt8]) -> [UInt8]
 		}
 	}
 	return addBuffer
-}
-
-private func mulStr(str1: String, _ str2: String) -> String
-{
-	let decArr1: [UInt8] = str1.characters.map { UInt8(String($0))! }.reverse()
-	let decArr2: [UInt8] = str2.characters.map { UInt8(String($0))! }.reverse()
-
-	let resCharArr = mulStrPos(decArr1, decArr2).map { Character(String($0)) }.reverse()
-	return String(resCharArr)
-}
-
-private func powerStrings(str: String, _ exp: Int) -> String
-{
-	var res = "1"
-
-	for _ in 0..<exp
-	{
-		res = mulStr(res, str)
-	}
-	return res
 }
 
 
@@ -357,20 +326,9 @@ public func >>(lhs: BInt, rhs: Int) -> BInt
 
 
 
-
-
-extension Array {
-	subscript (safe index: Int) -> Element? {
-		return indices ~= index ? self[index] : nil
-	}
-}
-
-
-
-
 infix operator +=°  {}
 func +=°(inout lhs: [UInt64], rhs: [UInt64])
-{
+{ 
 	var overflow: UInt64 = 0
 	var newbyte: UInt64 = 0
 	var rbyte: UInt64 = 0
@@ -389,7 +347,15 @@ func +=°(inout lhs: [UInt64], rhs: [UInt64])
 		rbyte = (i < rhc) ? rhs[i] : 0
 
 		newbyte = (lbyte &+ rbyte) &+ overflow
-		overflow = (newbyte < lbyte || newbyte < rbyte) ? 1 : 0
+
+		if newbyte < lbyte || newbyte < rbyte || (lbyte == UInt64.max && rbyte == UInt64.max)
+		{
+			overflow = 1
+		}
+		else
+		{
+			overflow = 0
+		}
 
 		if i < lhs.count
 		{
@@ -561,7 +527,6 @@ public func -=(inout lhs: BInt, rhs: Int) { lhs -= BInt(rhs) }
 
 
 
-
 // multiply positive
 infix operator *° {}
 func *°(lhs: [UInt64], rhs: [UInt64]) -> [UInt64]
@@ -701,16 +666,27 @@ public func *=(inout lhs: BInt, rhs: Int) { lhs = lhs * BInt(rhs) }
 
 
 
+private func powRec(inout n: [UInt64], _ left: Int, _ right: Int) -> [UInt64]
+{
+	if left < right - 1
+	{
+		let mid = (left + right) / 2
+
+		return powRec(&n, left, mid) *° powRec(&n, mid, right)
+	}
+	else
+	{
+		return n
+	}
+}
+
 infix operator ^° {}
-private func ^°(lhs: [UInt64], rhs: Int) -> [UInt64]
+private func ^°(var lhs: [UInt64], rhs: Int) -> [UInt64]
 {
 	if rhs < 1 { return [1] }
-	var res = lhs
-	for _ in 1..<rhs
-	{
-		res = res *° lhs
-	}
-	return res
+	if rhs == 2 { return lhs *° lhs }
+	return powRec(&lhs, 0, rhs)
+
 }
 
 public func ^(lhs: BInt, rhs: Int) -> BInt
@@ -718,96 +694,6 @@ public func ^(lhs: BInt, rhs: Int) -> BInt
 	return BInt(sign: lhs.sign && ((rhs % 2) == 1), bytes: lhs.bytes ^° rhs)
 }
 
-
-
-
-
-
-
-infix operator ==° {}
-private func ==°(lhs: [UInt64], rhs: [UInt64]) -> Bool
-{
-	if lhs.count != rhs.count { return false }
-
-	for i in 0..<lhs.count
-	{
-		if lhs[i] != rhs[i] { return false }
-	}
-	return true
-}
-
-public func ==(lhs: BInt, rhs: BInt) -> Bool
-{
-	if lhs.sign != rhs.sign { return false }
-	return lhs.bytes ==° rhs.bytes
-}
-
-public func !==(lhs: BInt, rhs: BInt) -> Bool {
-	return !(lhs == rhs)
-}
-
-
-
-
-
-
-
-
-
-/*
-Important:
-a < b <==> b > a
-a <= b <==> b >= a
-but:
-a < b <==> !(a >= b)
-a <= b <==> !(a > b)
-*/
-
-infix operator <° {}
-private func <°(lhs: [UInt64], rhs: [UInt64]) -> Bool
-{
-	if lhs.count != rhs.count
-	{
-		return lhs.count < rhs.count
-	}
-
-	if lhs.count == 1
-	{
-		return lhs[0] < rhs[0]
-	}
-
-	for var i = lhs.count - 1; i >= 0; i -= 1
-	{
-		if lhs[i] != rhs[i] {
-			return lhs[i] < rhs[i]
-		}
-	}
-
-	return false // case equal
-}
-
-public func <(lhs: BInt, rhs: BInt) -> Bool
-{
-	if lhs.sign != rhs.sign { return lhs.sign && !rhs.sign }
-
-	let res = lhs.bytes <° rhs.bytes
-
-	return lhs.sign ? !(res || !(rhs.bytes <° lhs.bytes)) : res
-	/*res == equals(lhs, rhs)*/
-}
-
-
-public func >(lhs: BInt, rhs: BInt) -> Bool {
-	return rhs < lhs
-}
-
-public func <=(lhs: BInt, rhs: BInt) -> Bool {
-	return !(rhs < lhs)
-}
-
-public func >=(lhs: BInt, rhs: BInt) -> Bool {
-	return !(lhs < rhs)
-}
 
 
 
@@ -948,22 +834,126 @@ public func /=(inout lhs: BInt, rhs: BInt) { lhs = lhs / rhs }
 
 
 
+
+
+
+
+
+infix operator ==° {}
+private func ==°(lhs: [UInt64], rhs: [UInt64]) -> Bool
+{
+	if lhs.count != rhs.count { return false }
+
+	for i in 0..<lhs.count
+	{
+		if lhs[i] != rhs[i] { return false }
+	}
+	return true
+}
+
+public func ==(lhs: BInt, rhs: BInt) -> Bool
+{
+	if lhs.sign != rhs.sign { return false }
+	return lhs.bytes ==° rhs.bytes
+}
+
+public func !=(lhs: BInt, rhs: BInt) -> Bool {
+	return !(lhs == rhs)
+}
+
+
+
+
+
+
+
+
+
+/*
+Important:
+a < b <==> b > a
+a <= b <==> b >= a
+but:
+a < b <==> !(a >= b)
+a <= b <==> !(a > b)
+*/
+
+infix operator <° {}
+private func <°(lhs: [UInt64], rhs: [UInt64]) -> Bool
+{
+	if lhs.count != rhs.count
+	{
+		return lhs.count < rhs.count
+	}
+
+	if lhs.count == 1
+	{
+		return lhs[0] < rhs[0]
+	}
+
+	for var i = lhs.count - 1; i >= 0; i -= 1
+	{
+		if lhs[i] != rhs[i] {
+			return lhs[i] < rhs[i]
+		}
+	}
+
+	return false // case equal
+}
+
+public func <(lhs: BInt, rhs: BInt) -> Bool
+{
+	if lhs.sign != rhs.sign { return lhs.sign && !rhs.sign }
+
+	let res = lhs.bytes <° rhs.bytes
+
+	return lhs.sign ? !(res || !(rhs.bytes <° lhs.bytes)) : res
+	/*res == equals(lhs, rhs)*/
+}
+
+
+public func >(lhs: BInt, rhs: BInt) -> Bool {
+	return rhs < lhs
+}
+
+public func <=(lhs: BInt, rhs: BInt) -> Bool {
+	return !(rhs < lhs)
+}
+
+public func >=(lhs: BInt, rhs: BInt) -> Bool {
+	return !(lhs < rhs)
+}
+
+
+
+
+
+
+
+
+
+
 // Math functions
 
 
 
-public func fkt(n: Int) -> BInt
+public func fact(n: Int) -> BInt
 {
-	var res: [UInt64] = [1]
+	return BInt(bytes: factRec(1, n))
+}
 
-	for i in 2...n
+func factRec(left: Int, _ right: Int) -> [UInt64]
+{
+	if left < right - 1
 	{
-		res = res *° [UInt64(i)]
-	}
+		let mid = (left + right) / 2
 
-	return BInt(
-		bytes: res
-	)
+		return factRec(left, mid) *° factRec(mid, right)
+	}
+	else
+	{
+		return [UInt64(right)]
+	}
 }
 
 
@@ -1048,7 +1038,7 @@ func fib(n:Int) -> BInt
 		a = b
 		b = c
 	}
-	
+
 	return BInt(
 		bytes: b
 	)
@@ -1065,7 +1055,7 @@ func permutations(n: Int, _ k: Int) -> BInt {
 }
 
 func combinations(n: Int, _ k: Int) -> BInt {
-	return permutations(n, k) / fkt(k)
+	return permutations(n, k) / fact(k)
 }
 
 
@@ -1210,11 +1200,11 @@ public struct BDouble: CustomStringConvertible
 	}
 
 	public var description: String
-	{
-		let numStr = bytesToString(self.numerator)
-		let denStr = bytesToString(self.denominator)
+		{
+			let numStr = bytesToString(self.numerator)
+			let denStr = bytesToString(self.denominator)
 
-		return (self.sign ? "-" : "") + numStr + "/" + denStr
+			return (self.sign ? "-" : "") + numStr + "/" + denStr
 	}
 
 	public func rawData() -> (sign: Bool, numerator: [UInt64], denominator: [UInt64])
