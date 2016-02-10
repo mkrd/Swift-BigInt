@@ -11,24 +11,6 @@ typealias Limb   =  uint_fast64_t
 typealias Digits = [uint_fast64_t]
 typealias Digit  =  uint_fast64_t
 
-public struct AInt
-{
-	var sign: Bool = false
-	var limbs: [vU512] = []
-
-	init(_ sign: Bool, _ limbs: [vU512])
-	{
-		self.sign = sign
-		self.limbs = limbs
-	}
-
-	func add(z: AInt)
-	{
-
-	}
-
-}
-
 //MARK: - BInt
 public struct BInt: CustomStringConvertible
 {
@@ -51,6 +33,8 @@ public struct BInt: CustomStringConvertible
 			- Addtiton and subtraction omit trailing zeros, algorithms need
 			less operations now
 			- Implemented exponentiation by squaring
+			- New storage (BStorage) for often used results
+			- Uses uint_fast64_t instead of UInt64 for Limbs and Digits
 
 
 	n := element of natural numbers
