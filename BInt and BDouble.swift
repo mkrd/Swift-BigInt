@@ -51,6 +51,7 @@ public struct BInt:
 	v1.3:	- Huge Perfomance increase by skipping padding zeros and new multiplication
 	algotithms
 	- Printing is now about 10x faster, now on par with GMP (print 1! to 10000!)
+	- Some operations now use multiple cores
 
 
 	n := element of natural numbers
