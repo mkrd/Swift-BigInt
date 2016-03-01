@@ -125,5 +125,155 @@ func testBInt()
 		}
 	}
 
+
+
+	for _ in 0..<100_0
+	{
+		let a = random(-10...10)
+		let b = random(-10...10)
+
+		let p1 = BInt(a) + BInt(b)
+		let p2 = -BInt(a) + BInt(b)
+		let p3 = BInt(a) + -BInt(b)
+		let p4 = -BInt(a) + -BInt(b)
+		assert(p1.description == String(a + b))
+		assert(p2.description == String(-a + b))
+		assert(p3.description == String(a + -b))
+		assert(p4.description == String(-a + -b))
+
+		let s1 = BInt(a) - BInt(b)
+		let s2 = -BInt(a) - BInt(b)
+		let s3 = BInt(a) - -BInt(b)
+		let s4 = -BInt(a) - -BInt(b)
+		assert(s1.description == String(a - b))
+		assert(s2.description == String(-a - b))
+		assert(s3.description == String(a - -b))
+		assert(s4.description == String(-a - -b))
+
+		let m1 = BInt(a) * BInt(b)
+		let m2 = -BInt(a) * BInt(b)
+		let m3 = BInt(a) * -BInt(b)
+		let m4 = -BInt(a) * -BInt(b)
+		assert(m1.description == String(a * b))
+		assert(m2.description == String(-a * b))
+		assert(m3.description == String(a * -b))
+		assert(m4.description == String(-a * -b))
+
+		if b != 0
+		{
+			let d1 = BInt(a) / BInt(b)
+			let d2 = -BInt(a) / BInt(b)
+			let d3 = BInt(a) / -BInt(b)
+			let d4 = -BInt(a) / -BInt(b)
+			assert(d1.description == String(a / b))
+			assert(d2.description == String(-a / b))
+			assert(d3.description == String(a / -b))
+			assert(d4.description == String(-a / -b))
+		}
+
+		if b != 0
+		{
+			let o1 = BInt(a) % BInt(b)
+			let o2 = -BInt(a) % BInt(b)
+			let o3 = BInt(a) % -BInt(b)
+			let o4 = -BInt(a) % -BInt(b)
+			assert(o1.description == String(a % b))
+			assert(o2.description == String(-a % b))
+			assert(o3.description == String(a % -b))
+			assert(o4.description == String(-a % -b))
+		}
+
+		let l1 = BInt(a) < BInt(b)
+		let l2 = -BInt(a) < BInt(b)
+		let l3 = BInt(a) < -BInt(b)
+		let l4 = -BInt(a) < -BInt(b)
+		assert(l1 == (a < b))
+		assert(l2 == (-a < b))
+		assert(l3 == (a < -b))
+		assert(l4 == (-a < -b))
+		// <=, >, >=, are based on <, == and != are correct by default
+	}
+
+
+
+	for _ in 0..<100_0
+	{
+		let a = random(-10...10)
+		let b = random(-10...10)
+		let c = random(-10...10)
+		let d = random(-10...10)
+
+
+		if b != 0 && d != 0
+		{
+			let a1 = BDouble(a, over: b) + BDouble(c, over: d)
+			var a1Int = (a * d) + (b * c)
+			var under = b * d
+
+			let sign = (a1Int < 0) == (under < 0)
+
+			if sign
+			{
+				a1Int = abs(a1Int)
+				under = abs(under)
+			}
+			else
+			{
+				a1Int = -abs(a1Int)
+			}
+
+			a1Int = a1Int / gcd(abs(a1Int), abs(b * d))
+			assert(BInt(sign:  a1.sign, limbs: a1.numerator).description == String(a1Int))
+		}
+
+		if b != 0 && d != 0
+		{
+			let a1 = BDouble(a, over: b) - BDouble(c, over: d)
+			var a1Int = (a * d) - (b * c)
+			var under = b * d
+
+			let sign = (a1Int < 0) == (under < 0)
+
+			if sign
+			{
+				a1Int = abs(a1Int)
+				under = abs(under)
+			}
+			else
+			{
+				a1Int = -abs(a1Int)
+			}
+
+			a1Int = a1Int / gcd(abs(a1Int), abs(b * d))
+
+			assert(BInt(sign:  a1.sign, limbs: a1.numerator).description == String(a1Int))
+		}
+
+		if b != 0 && d != 0
+		{
+			let a1 = BDouble(a, over: b) * BDouble(c, over: d)
+			var a1Int = a * c
+			var under = b * d
+
+			let sign = (a1Int < 0) == (under < 0)
+
+			if sign
+			{
+				a1Int = abs(a1Int)
+				under = abs(under)
+			}
+			else
+			{
+				a1Int = -abs(a1Int)
+			}
+
+			a1Int = a1Int / gcd(abs(a1Int), abs(b * d))
+
+			assert(BInt(sign:  a1.sign, limbs: a1.numerator).description == String(a1Int))
+		}
+	}
+
+
+
 	print("All tests passed")
 }
