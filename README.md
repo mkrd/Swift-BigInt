@@ -33,7 +33,7 @@ let i = BInt("-23432417658376459832675823658763264918134910536804285602846529862
 
 #### BInt offers 7 struct methods:
 ```swift
-let big = BInt("4586342")
+let big = BInt("-143141341")
 
 big.description // Returns "-143141341"
 => print(big) // prints "-143141341"
