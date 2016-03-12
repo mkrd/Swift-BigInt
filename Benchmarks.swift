@@ -1,3 +1,62 @@
+benchmarkPrint(title: "Fkt of 25000")
+	{
+		// Fkt 1000  Debug Mode
+		// 27.01.16: 2548ms
+		// 30.01.16: 1707ms
+		// 01.02.16: 398ms
+
+		// Fkt 2000  Debug Mode
+		// 01.02.16: 2452ms
+		// 04.02.16: 2708ms
+		// 06.02.16: 328ms
+
+		// Fkt 4000  Debug Mode
+		// 06.02.16: 2669ms
+		// 10.02.16: 571ms
+		// 28.02.16: 550ms
+		// 01.03.16: 56ms
+
+		// Fkt 25000  Debug Mode
+		// 01.03.16: 2871ms
+		// 07.03.16: 2221ms
+
+		let a  = fact(25_000)
+}
+
+benchmarkPrint(title: "10^120000")
+	{
+		// 10^14000 Debug Mode
+		// 06.02.16: 2668ms
+		// 10.02.16: 372ms
+		// 20.02.16: 320ms
+		// 28.02.16: 209ms
+		// 01.03.16: 39ms
+
+		// 10^120_000 Debug Mode
+		// 01.03.16: 2417ms
+		// 07.03.16: 1626ms
+
+		let a = BInt(10) ^ 120_000
+}
+
+benchmarkPrint(title: "Fib 100.000")
+	{
+		// Fib 35.000 Debug Mode
+		// 27.01.16: 2488ms
+		// 30.01.16: 1458ms
+		// 01.02.16: 357ms
+
+		// Fib 100.000 Debug Mode
+		// 01.02.16: 2733ms
+		// 04.02.16: 2949ms
+		// 10.02.16: 1919ms
+		// 28.02.16: 1786ms
+		// 07.03.16: 1716ms
+
+		let a = fib(100_000)
+}
+
+
 let fff2 = fact(7500)
 benchmarkPrint(title: "Get 7500! as String")
 {
@@ -20,11 +79,24 @@ benchmarkPrint(title: "Get 7500! as String")
 	// 01.03.16: 343ms
 
 	// Get 7500! (25809 decimal digits) as String Debug Mode
-	// 01.03.16: 2638ms
+	// 01.03.16: 2558ms
+	// 07.03.16: 1604ms
+	// 07.03.16: 1562ms
 
 	let str = fff2.description
-	print(str.characters.count)
 }
+
+benchmarkPrint(title: "again:")
+{
+
+	// Get 7500! (25809 decimal digits) as String Debug Mode
+	// 01.03.16: 463ms
+	// 07.03.16: 440ms
+
+	let str = fff2.description
+	print("7500! digits: \(str.characters.count)")
+}
+
 
 benchmarkPrint(title: "\nMersenne to exp 128")
 {
@@ -38,13 +110,15 @@ benchmarkPrint(title: "\nMersenne to exp 128")
 	// 06.02.16: 2853ms
 	// 10.02.16: 2804ms
 	// 20.02.16: 1838ms
-	// 28.02.16: 1673ms
+	// 28.02.16: 1665ms
+	// 07.03.16: 1643ms
+	// 07.03.16: 1227ms
 
 	var isM = false
 	for i in 1...128
 	{
 		isM = isMersenne(i)
-		if isM { print(i, terminator: ",") }
+		if isM { print(i, terminator: ", ") }
 	}
 }
 
@@ -63,67 +137,14 @@ benchmarkPrint(title: "Mersenne to exp 196 only prime")
 		// 10.02.16: 2427ms
 		// 20.02.16: 1339ms
 		// 28.02.16: 1261ms
+		// 07.03.16: 1229ms
+		// 07.03.16: 890ms
 
 		let a = getMersennes(196)
 		print(a)
 }
 
-var fkt2000 = BInt(0)
-benchmarkPrint(title: "Fkt of 25000")
-{
-	// Fkt 1000  Debug Mode
-	// 27.01.16: 2548ms
-	// 30.01.16: 1707ms
-	// 01.02.16: 398ms
 
-	// Fkt 2000  Debug Mode
-	// 01.02.16: 2452ms
-	// 04.02.16: 2708ms
-	// 06.02.16: 328ms
-
-	// Fkt 4000  Debug Mode
-	// 06.02.16: 2669ms
-	// 10.02.16: 571ms
-	// 28.02.16: 550ms
-	// 01.03.16: 56ms
-
-
-	// Fkt 25000  Debug Mode
-	// 01.03.16: 2871ms
-
-	fkt2000 = fact(25_000)
-}
-
-benchmarkPrint(title: "10^120000")
-{
-	// 10^14000 Debug Mode
-	// 06.02.16: 2668ms
-	// 10.02.16: 372ms
-	// 20.02.16: 320ms
-	// 28.02.16: 209ms
-	// 01.03.16: 39ms
-
-	// 10^120_000 Debug Mode
-	// 01.03.16: 2632ms
-
-	let a = BInt(10) ^ 120_000
-}
-
-benchmarkPrint(title: "Fib 100.000")
-	{
-		// Fib 35.000 Debug Mode
-		// 27.01.16: 2488ms
-		// 30.01.16: 1458ms
-		// 01.02.16: 357ms
-
-		// Fib 100.000 Debug Mode
-		// 01.02.16: 2733ms
-		// 04.02.16: 2949ms
-		// 10.02.16: 1919ms
-		// 28.02.16: 1786ms
-
-		let a = fib(100_000)
-}
 
 
 
@@ -138,7 +159,8 @@ benchmarkPrint(title: "Perm and Comb")
 		// 01.03.16: 138ms
 
 		// Perm and Comb (8000, 4000) Debug Mode
-		// 01.03.16: 2348ms
+		// 07.03.16: 905ms
+		// 07.03.16: 483ms
 
 		let a = permutations(8000, 4000)
 		let b = combinations(8000, 4000)
@@ -175,6 +197,9 @@ benchmarkPrint(title: "BInt from String, 3026 digits (1151!)")
 
 	// BInt from String, 9131 digits (3000!) Debug Mode
 	// 01.03.16: 3469ms
+	// 07.03.16: 2305ms
+	// 07.03.16: 1972ms
+
 
 	fromStr = BInt(asStr)
 }
