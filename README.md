@@ -163,7 +163,7 @@ a <= b <==> !(a > b)
 
 
 ## About performance
-BInt about as fast as mini-gmp, as of now (not counting the normal gmp, because it needs to be installed and is not portable). For example, GMP can calculate multiplications about 1.5 times faster than BInt. However, GMP is significantly harder to use, especially in combination with Swift, while BInt offers an intuitive interface. When given the task of calculating and printing factorials successively, BInt performs significantly better than GMP
+BInt about twice as fast as mini-gmp, as of now (not counting the normal gmp, because it needs to be installed and is not portable). For example, BInt can add numbers about 2 times faster than GMP (272ms vs 530ms for fib(100,000)), and multiply more than 2 times faster. When given the task of calculating and printing factorials successively, BInt performs significantly better than GMP. In addition, GMP is significantly harder to use, especially in combination with Swift, while BInt offers an intuitive interface.
 I'm considering a new method of storing limbs in base 10^18 instead of 2^64. This adds memory overhead and weaker raw calculation performance, but makes printing several orders of magnitude faster than GMP. For example, my test-implementation with base 10^18 can calculate and print 1! to 20000! in about 5 minutes. GMP can only reach 5680! in the same timeframe.
 
 
