@@ -32,7 +32,7 @@ struct BitField
 			return byte
 		}
 		return nil
-	}
+	} 
 
 	func get(i: Int) -> Bool
 	{
