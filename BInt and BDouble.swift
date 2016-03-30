@@ -1,10 +1,119 @@
-//
-//  BInt
-//  MathGround
-//
-//  Created by Marcel Kröker on 03.04.15.
-//  Copyright (c) 2015 Blubyte. All rights reserved.
-//
+/*
+	————————————————————————————————————————————————————————————
+	BInt and BDouble
+	————————————————————————————————————————————————————————————
+	Created by Marcel Kröker on 03.04.15.
+	Copyright (c) 2015 Blubyte. All rights reserved.
+
+	———— v1.0 ——————————————————————————————————————————————————
+	- Initial Release
+
+	———— v1.1 ——————————————————————————————————————————————————
+	- Improved String conversion, now about 45x faster, uses 
+	base 10^9 instead of base 10
+	- bytes renamed to limbs
+	- Uses typealias for limbs and digits
+
+	———— v1.2 ——————————————————————————————————————————————————
+	- Improved String conversion, now about 10x faster, switched
+	from base 10^9 to 10^18 (biggest possible decimal base)
+	- Implemented karatsuba multiplication algorithm, about 5x 
+	faster than previous algorithm
+	- Addition is 1.3x faster
+	- Addtiton and subtraction omit trailing zeros, algorithms
+	need less operations now
+	- Implemented exponentiation by squaring
+	- New storage (BStorage) for often used results
+	- Uses uint_fast64_t instead of UInt64 for Limbs and Digits
+
+	———— v1.3 ——————————————————————————————————————————————————
+	- Huge Perfomance increase by skipping padding zeros and new
+	multiplication algotithms
+	- Printing is now about 10x faster, now on par with GMP
+	- Some operations now use multiple cores
+
+	———— v1.4 ——————————————————————————————————————————————————
+	- Reduced copying by using more pointers
+	- Multiplication is about 50% faster
+	- String to BInt conversion is 2x faster
+	- BInt to String also performs 50% better
+
+
+
+	———— Evolution —————————————————————————————————————————————
+	Planned features of BInt v2.0:
+	- Switch between base for calculation
+		- Base 2^64 for fast calculations
+		- Base 10^18 for extremely fast printing
+	- Implement efficient modulo arithmetric
+	- Implement Karatsuba on a higher level for even faster 
+	multiplications
+	- Implement some basic cryptography functions
+	- General code cleanup, better documentation and more 
+	extensive tests
+
+
+
+	————————————————————————————————————————————————————————————
+	Basic Project syntax conventions
+	————————————————————————————————————————————————————————————
+
+	———— Naming conventions ————————————————————————————————————
+	Parameters, variables, constants, functions and methods:
+	lowerCamelCase
+
+	Classes and structs: UpperCamelCase
+
+	———— Formatting ————————————————————————————————————————————
+	Indentation: Tabs
+
+	Allman style:
+	func foo(...)
+	{
+		...
+	}
+
+	Single line if-statement:
+	if ... { ... }
+
+	Maximum comment line length: 64 spaces
+	Recommended maximum code line length: 96 spaces
+
+	———— Documentation comments ————————————————————————————————
+	/**
+		Description
+
+		- Parameter x: Description
+		...
+
+		- Returns: Description
+	*/
+
+	———— Marks —————————————————————————————————————————————————
+	Marks for rough code structuring:
+	/*\
+	/**\
+	/***\
+	/****\
+	/*****\
+	/******\
+	/*******\
+	/********\
+	/*********\
+	/**********\
+	//MARK:    - Description
+	\**********/
+	\*********/
+	\********/
+	\*******/
+	\******/
+	\*****/
+	\****/
+	\***/
+	\**/
+	\*/
+
+*/
 
 import Foundation
 
@@ -14,7 +123,7 @@ typealias Digits = [UInt64]
 typealias Digit  =  UInt64
 
 
-// FILE DEPENDENCIES:
+//MARK: - FILE DEPENDENCIES:
 // - Exceptions and Errors.swift
 
 //MARK: - BInt
@@ -27,39 +136,6 @@ public struct BInt:
 	Hashable
 {
 	/*
-	BInt v1.1
-
-	v1.0:	- Initial Release
-
-	v1.1:	- Improved String conversion, now about 45x faster,
-	uses base 10^9 instead of base 10
-	- bytes renamed to limbs
-	- Uses typealias for limbs and digits
-
-	v1.2:	- Improved String conversion, now about 10x faster,
-	switched from base 10^9 to 10^18
-	(highest possible base without overflows)
-	- Implemented kabasutra multiplication algorithm, about 5x faster
-	than previous algorithm
-	- Addition is 1.3x faster
-	- Addtiton and subtraction omit trailing zeros, algorithms need
-	less operations now
-	- Implemented exponentiation by squaring
-	- New storage (BStorage) for often used results
-	- Uses uint_fast64_t instead of UInt64 for Limbs and Digits
-
-	v1.3:	- Huge Perfomance increase by skipping padding zeros and new multiplication
-	algotithms
-	- Printing is now about 10x faster, now on par with GMP (print 1! to 10000!)
-	- Some operations now use multiple cores
-
-	v1.4:	- Reduced copying by using more pointers
-	- Multiplication is about 50% faster
-	- String to BInt conversion is 2x faster
-	- BInt to String also performs 50% better
-
-
-
 	n := element of natural numbers
 	no := element of natural numbers including zero
 	z := whole numbers
@@ -79,13 +155,12 @@ public struct BInt:
 
 	*/
 
-	// private data storage. sign == true <==> Number is negative
+	// private data storage. sign == true implies that Number is smaller than Zero
 	private var sign = Bool()
+
 	private var limbs = Limbs()
 
-	// Initializers
-
-
+	//MARK: Initializers
 
 	/// init manually without sign (positive by default)
 	init(limbs: Limbs)
@@ -242,26 +317,29 @@ public struct BInt:
 
 extension String
 {
-	subscript (i: Int) -> String
-		{
-			return String(self[self.startIndex.advancedBy(i)])
+	subscript(i: Int) -> String
+	{
+		return String(self[self.startIndex.advancedBy(i)])
 	}
 
-	subscript (r: Range<Int>) -> String
-		{
-			let start = startIndex.advancedBy(r.startIndex)
-			let end   = start.advancedBy(r.endIndex - r.startIndex)
+	subscript(r: Range<Int>) -> String
+	{
+		let length = r.endIndex - r.startIndex
+		if length == 0 { return "" }
 
-			return self[Range(start: start, end: end)]
+		let start = startIndex.advancedBy(r.startIndex)
+		let end   = start.advancedBy(length)
+
+		return self[start..<end]
 	}
 
 	subscript(char: Character) -> Int?
+	{
+		if let idx = self.characters.indexOf(char)
 		{
-			if let idx = self.characters.indexOf(char)
-			{
-				return self.startIndex.distanceTo(idx)
-			}
-			return nil
+			return self.startIndex.distanceTo(idx)
+		}
+		return nil
 	}
 }
 
@@ -334,8 +412,9 @@ private func digitsToString(digits: Digits) -> String
 	return res
 }
 
-private func stringToBInt(var str: String) -> BInt
+private func stringToBInt(str: String) -> BInt
 {
+	var str = str
 	var resSign = false
 	var resLimbs: Limbs = [0]
 	resLimbs.reserveCapacity(Int(Double(str.characters.count) / 19.2))
@@ -626,18 +705,22 @@ private func >>=°(inout lhs: Limbs, rhs: Int)
 			oldCarry = newCarry
 		}
 	}
+
+	//if lhs.last! == 0 && lhs.count != 1 {print("lhs: \(lhs)\n shift: \(rhs)"); lhs.removeLast() }
 }
 
 infix operator <<° {}
-private func <<°(var lhs: Limbs, rhs: Int) -> Limbs
+private func <<°(lhs: Limbs, rhs: Int) -> Limbs
 {
+	var lhs = lhs
 	lhs <<=° rhs
 	return lhs
 }
 
 infix operator >>° {}
-private func >>°(var lhs: Limbs, rhs: Int) -> Limbs
+private func >>°(lhs: Limbs, rhs: Int) -> Limbs
 {
+	var lhs = lhs
 	lhs >>=° rhs
 	return lhs
 }
@@ -774,8 +857,9 @@ private func addLimbs(inout lhs: Digits, _ rhs: Digits, rhsPaddingZeroLimbs pz: 
 
 infix operator +° {}
 /// Adding Limbs and returning result
-private func +°(var lhs: Limbs, rhs: Limbs) -> Limbs
+private func +°(lhs: Limbs, rhs: Limbs) -> Limbs
 {
+	var lhs = lhs
 	lhs +=° rhs
 	return lhs
 }
@@ -798,8 +882,9 @@ private func +°(var lhs: Limbs, rhs: Limbs) -> Limbs
 
 infix operator -=° {}
 /// Calculates difference between Limbs in left limb
-private func -=°(inout lhs: Limbs, var rhs: Limbs)
+private func -=°(inout lhs: Limbs, rhs: Limbs)
 {
+	var rhs = rhs
 	// swap to get difference
 	if lhs <° rhs { swap(&lhs, &rhs) }
 
@@ -850,8 +935,9 @@ private func -=°(inout lhs: Limbs, var rhs: Limbs)
 
 /// Calculating difference between Limbs with returning result
 infix operator -° {}
-private func -°(var lhs: Limbs, rhs: Limbs) -> Limbs
+private func -°(lhs: Limbs, rhs: Limbs) -> Limbs
 {
+	var lhs = lhs
 	lhs -=° rhs
 	return lhs
 }
@@ -888,8 +974,9 @@ public func +=(inout lhs: BInt, rhs: BInt)
 	if lhs.isZero() { lhs.sign = false }
 }
 
-public func +(var lhs: BInt, rhs: BInt) -> BInt
+public func +(lhs: BInt, rhs: BInt) -> BInt
 {
+	var lhs = lhs
 	lhs += rhs
 	return lhs
 }
@@ -916,8 +1003,9 @@ public func +=(inout lhs: BInt, rhs: Int) { lhs +=  BInt(rhs)                }
 \**/
 \*/
 
-public prefix func -(var n:BInt) -> BInt
+public prefix func -(n: BInt) -> BInt
 {
+	var n = n
 	n.negate()
 	return n
 }
@@ -1208,8 +1296,9 @@ public func ^(lhs: BInt, rhs: Int) -> BInt
 \*/
 
 infix operator %° {}
-private func %°(var lhs: Limbs, rhs: Limbs) -> Limbs
+private func %°(lhs: Limbs, rhs: Limbs) -> Limbs
 {
+	var lhs = lhs
 	if rhs == [0] { forceException("Modulo by zero not allowed") }
 	if lhs <° rhs { return lhs }
 	if rhs == [1] { return [0] }
@@ -1238,6 +1327,33 @@ private func %°(var lhs: Limbs, rhs: Limbs) -> Limbs
 	}
 
 	return lhs
+
+//	var acc = rhs
+//	var t = 0
+//
+//	while acc <° lhs
+//	{
+//		acc <<=° 3
+//		t += 1
+//	}
+//
+//	if lhs <° acc { acc >>=° 3 }
+//
+//	for _ in 0..<t
+//	{
+//		var times = 0
+//		while !(lhs <° acc)
+//		{
+//			lhs -=° acc
+//			times += 1
+//		}
+//
+//
+//		acc >>=° 3
+//	}
+//
+//	return lhs
+
 }
 
 private func modLimbs(inout lhs: Limbs, _ rhs: Limbs)
@@ -1322,43 +1438,81 @@ public func %=(inout lhs: BInt, rhs: BInt)
 
 infix operator /° {}
 /// Division with limbs, result is floored to nearest whole number
-private func /°(var lhs: Limbs, rhs: Limbs) -> Limbs
+private func /°(lhs: Limbs, rhs: Limbs) -> Limbs
 {
+	var lhs = lhs
 	// cover base cases
 	invariant(rhs != [0], "Division by zero")
 	if lhs <° rhs { return [0] }
 	if rhs == [1] { return lhs }
+	if lhs == rhs { return [1] }
 
 	if lhs.count == 1 && rhs.count == 1 // for small numbers
 	{
 		return [lhs[0] / rhs[0]]
 	}
 
-	var acc = rhs
-	var t = 0
+	var accList = [rhs]
+	var divList: [Limbs] = [[Limb(1)]]
 
-	while acc <° lhs
+	// get maximum required exponent size
+	while  accList.last! <° lhs
 	{
-		acc <<=° 3
-		t += 1
+		accList.append(accList.last! <<° 3)
+		divList.append(divList.last! <<° 3)
+		// 3 because seems to be fastest
 	}
 
 	var div = [Limb(0)]
 
-	for i in t.stride(through: 0, by: -1)
+	// iterate through exponents and subract if needed
+	for i in (accList.count - 1).stride(through: 0, by: -1) // -1 because last > lhs
 	{
 		var times = 0
-		while !(lhs <° acc)
+		while !(lhs <° accList[i]) // accList[i] <= lhs
 		{
-			lhs -=° acc
+			lhs -=° accList[i]
 			times += 1
+			//div +=° divList[i]
 		}
-
-		div +=° ([Limb(times)] <<° (3 * i))
-		acc >>=° 3
+		div +=° (divList[i] *° [Limb(times)])
 	}
 
 	return div
+
+//	var acc = rhs
+//	var divAdd = [Limb(1)]
+//	var t = 0
+//
+//	while acc <° lhs
+//	{
+//		acc <<=° 3
+//		divAdd <<=° 3
+//		t += 1
+//	}
+//
+//	if lhs <° acc { acc >>=° 3; divAdd >>=° 3 }
+//
+//	var div = [Limb(0)]
+//
+//	for _ in 0..<t
+//	{
+//		var times = 0
+//		while !(lhs <° acc)
+//		{
+//			lhs -=° acc
+//			times += 1
+//		}
+//
+//		if times != 0
+//		{
+//			div +=° ([Limb(times)] *° divAdd)
+//		}
+//
+//		divAdd >>=° 3
+//		acc >>=° 3
+//	}
+//	return div
 }
 
 /*\
@@ -1569,8 +1723,10 @@ private func gcdFactors(lhs: Limbs, rhs: Limbs) -> (ax: Limbs, bx: Limbs)
 	return (lhs /° gcd, rhs /° gcd)
 }
 
-private func euclid(var a: Limbs, var _ b: Limbs) -> Limbs
+private func euclid(a: Limbs, _ b: Limbs) -> Limbs
 {
+	var a = a
+	var b = b
 	while b != [0]
 	{
 		(a, b) = (b, a %° b)
@@ -1985,8 +2141,9 @@ public func +(lhs: BDouble, rhs: BDouble) -> BDouble
 }
 
 
-public prefix func -(var n: BDouble) -> BDouble
+public prefix func -(n: BDouble) -> BDouble
 {
+	var n = n
 	n.negate()
 	return n
 }
