@@ -8,6 +8,10 @@ Some benchmarks are located in Benchmarks.swift, note that these are more than 1
 ## Installation
 Simply drag the BInt and BDouble.swift file into your project!
 
+BInt and BDouble.swift depends on:
+- Errors.swift
+- BitField.swift
+- BasicMath.swift
 
 
 
