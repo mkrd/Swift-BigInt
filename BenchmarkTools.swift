@@ -1,6 +1,29 @@
 import Foundation
 import Cocoa
 
+
+/*\
+/**\
+/***\
+/****\
+/*****\
+/******\
+/*******\
+/********\
+/*********\
+/**********\
+//MARK:    - Benchmark tools
+\**********/
+\*********/
+\********/
+\*******/
+\******/
+\*****/
+\****/
+\***/
+\**/
+\*/
+
 private func performanceInNs(call: () -> ()) -> Int
 {
 	var start = UInt64()
@@ -46,47 +69,41 @@ func benchmark(precision: String = "ms", _ call: () -> ()) -> Int
 	return adjustPrecision(elapsedCorrected, toPrecision: precision)
 }
 
-func benchmark(precision: String = "ms", title: String, _ call: () -> ()) -> String
-{
-	return title + ": \(benchmark(precision, call))" + precision
-}
-
 func benchmarkPrint(precision: String = "ms", title: String, _ call: () -> ())
 {
-	print(benchmark(precision, title: title, call))
+	print(title + ": \(benchmark(precision, call))" + precision)
 }
 
 func benchmarkAvg(precision: String = "ms",
 	title: String = "",
 	times: Int = 100,
-	_ call: () -> ()) -> Int
+	_ call: () -> ()) -> (min: Int, avg: Int, max: Int)
 {
-	let emptyCallsNano = performanceInNs({
+	let emptyCallsNano = performanceInNs(
+	{
 		for _ in 0..<times {}
 	})
 
+	var min = Int.max
+	var max = 0
+
 	var elapsedNanoCombined = 0
 
-	for _ in 0..<times {
-		elapsedNanoCombined += performanceInNs(call)
+	for _ in 0..<times
+	{
+		let duration = performanceInNs(call)
+
+		if duration < min { min = duration }
+		if duration > max { max = duration }
+
+
+		elapsedNanoCombined += duration
 	}
 
 	let elapsedCorrected = elapsedNanoCombined < emptyCallsNano ? 0 : elapsedNanoCombined - emptyCallsNano
 
-	return adjustPrecision(elapsedCorrected, toPrecision: precision)
-}
-
-func benchmarkMinPrint(precision: String = "ms",
-	title: String = "",
-	times: Int = 10,
-	_ call: () -> ())
-{
-	var elapsedMin = benchmark(precision, call)
-
-	for _ in 1..<times {
-		let newElapsed = benchmark(precision, call)
-		if newElapsed > elapsedMin { elapsedMin = newElapsed }
-	}
-
-	print(title + ": \(elapsedMin)" + precision)
+	return (adjustPrecision(min, toPrecision: precision),
+		    adjustPrecision(elapsedCorrected / times, toPrecision: precision),
+			adjustPrecision(max, toPrecision: precision)
+	)
 }
