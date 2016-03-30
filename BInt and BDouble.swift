@@ -81,7 +81,7 @@
 
 	———— Documentation comments ————————————————————————————————
 	/**
-		Description
+		Description 
 
 		- Parameter x: Description
 		...
