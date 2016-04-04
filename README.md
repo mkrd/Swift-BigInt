@@ -92,9 +92,9 @@ BInt       >= BInt
 
 #### Implemented BInt math functions:
 ```swift
-fact(Int): Returns factorial as BInt
+fact(Int) // Returns factorial as BInt
 
-gcd(BInt, BInt): Returns greatest common divisor as BInt
+gcd(BInt, BInt) // Returns greatest common divisor as BInt
 
 lcm(BInt, BInt) // Returns lowest common multiple as BInt
 
