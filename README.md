@@ -6,7 +6,7 @@ Some benchmarks are located in Benchmarks.swift, note that these are more than 1
 
 
 ## Installation
-Simply drag all .swift file into your project!
+Simply drag all .swift files into your project!
 
 That's it ;)
 
