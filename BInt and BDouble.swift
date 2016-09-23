@@ -1,448 +1,442 @@
 /*
-	————————————————————————————————————————————————————————————
-	BInt and BDouble
-	————————————————————————————————————————————————————————————
-	Created by Marcel Kröker on 03.04.15.
-	Copyright (c) 2015 Blubyte. All rights reserved.
+————————————————————————————————————————————————————————————————————————————
+BInt and BDouble.swift
+————————————————————————————————————————————————————————————————————————————
+Created by Marcel Kröker on 03.04.15.
+Copyright (c) 2015 Blubyte. All rights reserved.
 
-	———— v1.0 ——————————————————————————————————————————————————
-	- Initial Release
+———— v1.0 ——————————————————————————————————————————————————————————————————
+- Initial Release.
 
-	———— v1.1 ——————————————————————————————————————————————————
-	- Improved String conversion, now about 45x faster, uses 
-	base 10^9 instead of base 10
-	- bytes renamed to limbs
-	- Uses typealias for limbs and digits
+———— v1.1 ——————————————————————————————————————————————————————————————————
+- Improved String conversion, now about 45x faster, uses base 10^9 instead
+of base 10.
+- bytes renamed to limbs.
+- Uses typealias for limbs and digits.
 
-	———— v1.2 ——————————————————————————————————————————————————
-	- Improved String conversion, now about 10x faster, switched
-	from base 10^9 to 10^18 (biggest possible decimal base)
-	- Implemented karatsuba multiplication algorithm, about 5x 
-	faster than previous algorithm
-	- Addition is 1.3x faster
-	- Addtiton and subtraction omit trailing zeros, algorithms
-	need less operations now
-	- Implemented exponentiation by squaring
-	- New storage (BStorage) for often used results
-	- Uses uint_fast64_t instead of UInt64 for Limbs and Digits
+———— v1.2 ——————————————————————————————————————————————————————————————————
+- Improved String conversion, now about 10x faster, switched from base 10^9
+to 10^18 (biggest possible decimal base).
+- Implemented karatsuba multiplication algorithm, about 5x faster than the
+previous algorithm.
+- Addition is 1.3x faster.
+- Addtiton and subtraction omit trailing zeros, algorithms need less
+operations now.
+- Implemented exponentiation by squaring.
+- New storage (BStorage) for often used results.
+- Uses uint_fast64_t instead of UInt64 for Limbs and Digits.
 
-	———— v1.3 ——————————————————————————————————————————————————
-	- Huge Perfomance increase by skipping padding zeros and new
-	multiplication algotithms
-	- Printing is now about 10x faster, now on par with GMP
-	- Some operations now use multiple cores
+———— v1.3 ——————————————————————————————————————————————————————————————————
+- Huge Perfomance increase by skipping padding zeros and new multiplication
+algotithms.
+- Printing is now about 10x faster, now on par with GMP.
+- Some operations now use multiple cores.
 
-	———— v1.4 ——————————————————————————————————————————————————
-	- Reduced copying by using more pointers
-	- Multiplication is about 50% faster
-	- String to BInt conversion is 2x faster
-	- BInt to String also performs 50% better
+———— v1.4 ——————————————————————————————————————————————————————————————————
+- Reduced copying by using more pointers.
+- Multiplication is about 50% faster.
+- String to BInt conversion is 2x faster.
+- BInt to String also performs 50% better.
 
-
-
-	———— Evolution —————————————————————————————————————————————
-	Planned features of BInt v2.0:
-	- Switch between base for calculation
-		- Base 2^64 for fast calculations
-		- Base 10^18 for extremely fast printing
-	- Implement efficient modulo arithmetric
-	- Implement Karatsuba on a higher level for even faster 
-	multiplications
-	- Implement some basic cryptography functions
-	- General code cleanup, better documentation and more 
-	extensive tests
+———— v1.5 ——————————————————————————————————————————————————————————————————
+- Updated for full Swift 3 compatibility.
+- Various optimizations:
+- Multiplication is about 2x faster.
+- BInt to String conversion is more than 3x faster.
+- String to BInt conversion is more than 2x faster.
 
 
 
-	————————————————————————————————————————————————————————————
-	Basic Project syntax conventions
-	————————————————————————————————————————————————————————————
+———— Evolution —————————————————————————————————————————————————————————————
+Planned features of BInt v2.0:
+- Switch between base for calculations:
+- Base 2^64 for fast calculations,
+- Base 10^18 for fast printing.
+- Implement efficient modulo arithmetric.
+- Implement Karatsuba on a higher level for even faster multiplications.
+- Implement some basic cryptography functions.
+- General code cleanup, better documentation.
+- More extensive tests.
 
-	———— Naming conventions ————————————————————————————————————
-	Parameters, variables, constants, functions and methods:
-	lowerCamelCase
 
-	Classes and structs: UpperCamelCase
 
-	———— Formatting ————————————————————————————————————————————
-	Indentation: Tabs
+————————————————————————————————————————————————————————————————————————————
+Basic Project syntax conventions
+————————————————————————————————————————————————————————————————————————————
 
-	Allman style:
-	func foo(...)
-	{
-		...
-	}
+———— Naming conventions ————————————————————————————————————————————————————
+Parameters, variables, constants, functions, methods: lowerCamelCase
+Classes, structs                                    : UpperCamelCase
 
-	Single line if-statement:
-	if ... { ... }
+———— Formatting ————————————————————————————————————————————————————————————
+Indentation: Tabs
+Align: Spaces
 
-	Maximum comment line length: 64 spaces
-	Recommended maximum code line length: 96 spaces
+Style: allman
+func foo(...)
+{
+...
+}
 
-	———— Documentation comments ————————————————————————————————
-	/**
-		Description 
+Single line if-statement:
+if condition { code }
 
-		- Parameter x: Description
-		...
+Maximum comment line length: 80 spaces
+Recommended maximum code line length: 96 spaces
 
-		- Returns: Description
-	*/
+———— Documentation comments ————————————————————————————————————————————————
+/**
+Description
 
-	———— Marks —————————————————————————————————————————————————
-	Marks for rough code structuring:
-	/*\
-	/**\
-	/***\
-	/****\
-	/*****\
-	/******\
-	/*******\
-	/********\
-	/*********\
-	/**********\
-	//MARK:    - Description
-	\**********/
-	\*********/
-	\********/
-	\*******/
-	\******/
-	\*****/
-	\****/
-	\***/
-	\**/
-	\*/
+- Parameters:
+- x: Description
 
+
+- Returns: Description
 */
+
+———— Marks —————————————————————————————————————————————————————————————————
+Marks for rough code structuring:
+
+//
+////
+//////
+//MARK: - Description
+//////
+////
+//
+*/
+
+
+
+//
+////
+//////
+//MARK: - Imports
+//////
+////
+//
 
 import Foundation
 
+//
+////
+//////
+//MARK: - Typealiases
+//////
+////
+//
+
+/*
+Limbs are basically single Digits in base 2^64. Each slot in an Limbs array
+stores one Digit of the number. The least significant digit is stored at
+index 0, the most significant digit is stored at the last index.
+*/
 typealias Limbs  = [UInt64]
 typealias Limb   =  UInt64
+/*
+A digit is a number in base 10^18. This is the biggest possible base that
+fits into an unsigned 64 bit number. Digits are required for printing BInt
+numbers. Limbs are converted into Digits first, and then printed.
+*/
 typealias Digits = [UInt64]
 typealias Digit  =  UInt64
 
-
-//MARK: - FILE DEPENDENCIES:
-// - Exceptions and Errors.swift
-
+//
+////
+//////
 //MARK: - BInt
+//////
+////
+//
+
+/// A multiple precision integer value type.
 public struct BInt:
-	IntegerLiteralConvertible,
-	FloatLiteralConvertible,
+	ExpressibleByIntegerLiteral,
+	ExpressibleByFloatLiteral,
 	CustomStringConvertible,
 	Comparable,
 	Equatable,
 	Hashable
 {
 	/*
-	n := element of natural numbers
-	no := element of natural numbers including zero
-	z := whole numbers
-
-	Data storage: UInt64 array
+	sign == true implies that Number is smaller than Zero. When no sign is
+	provided, the number defaults to positive.
+	*/
+	internal var sign = false
+	/*
 	[] := undefined (error)
 	[0] := 0, defined as positive
 	[n] := n
-
 	[k, l, ..., m] :=
 	(k * 2^(0*64))
 	+ (l * 2^(1*64))
 	+ ...
-	+ (m * 2^(i*64)),
-	where i equals index of m
-	=> base 2^64 notation
-
+	+ (m * 2^(i*64))
 	*/
-
-	// private data storage. sign == true implies that Number is smaller than Zero
-	private var sign = Bool()
-
-	private var limbs = Limbs()
+	internal var limbs = Limbs()
 
 	//MARK: Initializers
 
-	/// init manually without sign (positive by default)
-	init(limbs: Limbs)
+	/**
+	Root initializer for all other initializers. Because no sign is
+	provided, the new instance is positive by definition.
+	*/
+	internal init(limbs: Limbs)
 	{
-		if limbs == []
-		{
-			forceException("BInt can't be initialized with limbs == []")
-		}
+		precondition(limbs != [], "BInt can't be initialized with limbs == []")
 
-		self.sign = false
 		self.limbs = limbs
 	}
 
-	init(sign: Bool, limbs: Limbs)
+	/// Create an instance initialized with a sign and a limbs array.
+	internal init(sign: Bool, limbs: Limbs)
 	{
 		self.init(limbs: limbs)
 		self.sign = sign
 	}
 
-	init(_ z: Int)
+	/// Create an instance initialized to an integer value.
+	public init(_ z: Int)
 	{
+		/*
+		Since abs(Int.min) > Int.max, it is necessary to handle z == Int.min
+		as a special case.
+		*/
 		if z == Int.min
 		{
-			self.init(
-				sign: true,
-				limbs: [Limb(Int.max) + 1]
-			)
-			return
+			/*
+			Because z is not directly convertible, it needs to be
+			initialized with Int.max + 1 == abs(Int.min).
+			*/
+			self.init(sign: true, limbs: [Limb(Int.max) + 1])
 		}
-
-		self.init(
-			sign: z < 0,
-			limbs: [Limb(abs(z))]
-		)
+		else
+		{
+			/*
+			The standard case, with limbs == abs(z) and a positive sign
+			exactly when z is smaller than 0.
+			*/
+			self.init(sign: z < 0, limbs: [Limb(abs(z))])
+		}
 	}
 
-	init(_ n: UInt)
+	/// Create an instance initialized to an unsigned integer value.
+	public init(_ n: UInt)
 	{
 		self.init(limbs: [Limb(n)])
 	}
 
-	init(_ s: String)
+	/// Use a string to create a new BInt number.
+	public init(_ str: String)
 	{
-		self = stringToBInt(s)
+		var str = str
+		var sign = false
+		var base: Limbs = [1]
+		var limbs: Limbs = [0]
+		limbs.reserveCapacity(Int(Double(str.characters.count) / 19.2))
+
+		if str.hasPrefix("-")
+		{
+			str.remove(at: str.startIndex)
+			sign = str != "0"
+		}
+
+		for ele in str.characters.reversed()
+		{
+			if let num = Limb(String(ele))
+			{
+				mul(res: &limbs, limbs: base, limb: num)
+
+				/*
+				x * 10 equals x * 0b1010, therefore x * 10 equals
+				(x * 8) + (x * 2) == (x << 3) + (x << 1).
+				This makes the conversion a lot faster.
+				*/
+
+				base = (base <<° 3) +° (base <<° 1)
+			}
+			else
+			{
+				fatalError("Error: String must only consist of Digits (0-9)")
+			}
+		}
+
+		self.init(sign: sign, limbs: limbs)
 	}
 
+	// Requierd to conform to FloatLiteralConvertible.
 	public init(floatLiteral value: Double)
 	{
-		self.init(Int(value))
+		self.init(
+			sign: value < 0,
+			limbs: [Limb(value)]
+		)
 	}
 
+	// Required to conform to IntegerLiteralConvertible.
 	public init(integerLiteral value: Int)
 	{
 		self.init(value)
 	}
 
-	// Struct functions
-
-	public func toInt() -> Int
+	// Required to conform to CustomStringConvertible.
+	public var description: String
 	{
+		return (self.sign ? "-" : "") + limbsToString(self.limbs)
+	}
+
+	//
+	////
+	//////
+	//MARK: - Struct functions
+	//////
+	////
+	//
+
+	/// Returns BInt value as an integer, if possible.
+	public func toInt() -> Int?
+	{
+		/*
+		Conversion only works when self has only one limb thats smaller or
+		equal to abs(Int.min)
+		*/
 		if self.limbs.count == 1
 		{
-			if self.limbs[0] <= Limb(Int.max)
+			let number = self.limbs[0]
+
+			// Self is within the range of Int
+			if number <= Limb(Int.max)
 			{
-				return self.sign ?
-					-Int(self.limbs[0]) :
-					Int(self.limbs[0])
+				return self.sign ? -Int(number) : Int(number)
 			}
 
-			if self.limbs[0] == Limb(Int.max) + 1 && self.sign // Int.min
+			// Special case: self == Int.min
+			if number == (Limb(Int.max) + 1) && self.sign
 			{
 				return Int.min
 			}
 		}
 
-		forceException("Error: BInt too big for conversion to Int")
-		return -1 // never reached
+		return nil
 	}
 
-	public var description: String
-		{
-			return (self.sign ? "-" : "") + limbsToString(self.limbs)
-	}
 
-	public func str(radix: Int) -> String
+	/**
+	Returns BInt value as a string with the base of the radix. Radix must be
+	2, 4, 8, 16 or 32, otherwise this function will stop the code execution.
+	*/
+	public func str(_ radix: Int) -> String
 	{
-		if !(2...36 ~= radix)
+		precondition(
+			[2, 4, 8, 16, 32].contains(radix),
+			"Radix must be a power of 2, and <= 32"
+		)
+
+		var res = String(self.limbs.last!, radix: radix)
+
+
+		var i = self.limbs.count - 2
+		while i >= 0
 		{
-			forceException("Radix must be a power of 2, and <= 32")
+			let new = String(self.limbs[i], radix: radix)
+
+			let paddingCount = Int(ceil(log(Double(UInt64.max)) / log(Double(radix))))
+
+			var newWithPadding = String(
+				repeating: "0",
+				count: paddingCount - new.characters.count
+			)
+
+			newWithPadding.append(new)
+			res.append(newWithPadding)
+
+			i -= 1
 		}
 
-		var str = ""
-
-		for i in (self.limbs.count - 1).stride(through: 0, by: -1)
-		{
-			var new = String(self.limbs[i], radix: radix)
-
-			let z = Int(ceil(log(Double(UInt64.max)) / log(Double(radix))))
-
-			if i != self.limbs.count - 1
-			{
-				new = String(count: z - new.characters.count, repeatedValue: Character("0")) + new
-			}
-
-			str += new
-		}
-		return str
+		return res
 	}
 
-	public func rawData() -> (sign: Bool, limbs: [UInt64])
+
+	public var rawValue: (sign: Bool, limbs: [UInt64])
 	{
 		return (self.sign, self.limbs)
 	}
 
 	public var hashValue: Int
-		{
-			return "\(self.sign)\(self.limbs)".hashValue
+	{
+		return "\(self.sign)\(self.limbs)".hashValue
 	}
 
-	public func isPositive() -> Bool { return !self.sign        }
-	public func isNegative() -> Bool { return  self.sign        }
-	public func isZero()     -> Bool { return self.limbs == [0] }
+	public func isPositive() -> Bool { return !self.sign             }
+	public func isNegative() -> Bool { return self.sign              }
+	public func isZero()     -> Bool { return self.limbs == [0]      }
+	public func isOdd()      -> Bool { return self.limbs[0] & 1 == 1 }
+	public func isEven()     -> Bool { return self.limbs[0] & 1 == 0 }
 
-	mutating func negate()
+	public mutating func negate()
 	{
-		if self.limbs != [0]
-		{
-			self.sign = !self.sign
-		}
+		if self.limbs != [0] { self.sign = !self.sign }
 	}
 }
 
-/*\
-/**\
-/***\
-/****\
-/*****\
-/******\
-/*******\
-/********\
-/*********\
-/**********\
-//MARK:    - Helpful extensions and functions for easier code
-\**********/
-\*********/
-\********/
-\*******/
-\******/
-\*****/
-\****/
-\***/
-\**/
-\*/
-
-extension String
-{
-	subscript(i: Int) -> String
-	{
-		return String(self[self.startIndex.advancedBy(i)])
-	}
-
-	subscript(r: Range<Int>) -> String
-	{
-		let length = r.endIndex - r.startIndex
-		if length == 0 { return "" }
-
-		let start = startIndex.advancedBy(r.startIndex)
-		let end   = start.advancedBy(length)
-
-		return self[start..<end]
-	}
-
-	subscript(char: Character) -> Int?
-	{
-		if let idx = self.characters.indexOf(char)
-		{
-			return self.startIndex.distanceTo(idx)
-		}
-		return nil
-	}
-}
-
-/*\
-/**\
-/***\
-/****\
-/*****\
-/******\
-/*******\
-/********\
-/*********\
-/**********\
-//MARK:    - Conversion helper functions
-\**********/
-\*********/
-\********/
-\*******/
-\******/
-\*****/
-\****/
-\***/
-\**/
-\*/
+//
+////
+//////
+//MARK: - String conversion helper functions
+//////
+////
+//
 
 let DigitBase:     Digit = 1_000_000_000_000_000_000
 let DigitHalfBase: Digit =             1_000_000_000
 let DigitZeros           =                        18
 
-private func limbsToString(limbs: Limbs) -> String
+/// Take a limb array and convert it into a string in base 10 representation.
+private func limbsToString(_ limbs: Limbs) -> String
 {
-	return digitsToString(limbsToDigits(limbs))
-}
+	// First, convert limbs to digits
 
-private func limbsToDigits(limbs: Limbs) -> Digits
-{
-	var res: Digits = [0]
-	res.reserveCapacity(limbs.count)
+	var digits: Digits = [0]
+	var power: Digits = [1]
 
-	for i in 0..<limbs.count
+	for limb in limbs
 	{
-		let digit = (limbs[i] < DigitBase)
-			? [limbs[i]]
-			: [limbs[i] % DigitBase, limbs[i] / DigitBase]
+		let digit = (limb >= DigitBase)
+			? [limb % DigitBase, limb / DigitBase]
+			: [limb]
 
-		mulDigits(addInto: &res, digit, BStorage.x_2_64_Digits(i))
+		mulDigits(addInto: &digits, digit, power)
+		power = mulDigits(power, [446_744_073_709_551_616, 18])
 	}
 
-	return res
+	// Then, convert digits to string
+	return digitsToString(digits)
 }
 
-private func digitsToString(digits: Digits) -> String
+private func digitsToString(_ digits: Digits) -> String
 {
 	var res = String(digits.last!)
 
 	if digits.count == 1 { return res }
 
-	for i in (digits.count - 2).stride(through: 0, by: -1)
+	var i = digits.count - 2
+	while i >= 0
 	{
-		let str = String(digits[i])
+		var str = String(digits[i])
 
-		let paddingZeros = String(
-			count: DigitZeros - str.characters.count,
-			repeatedValue: Character("0")
+		var paddingZeros = String(
+			repeating: "0",
+			count: DigitZeros - str.characters.count
 		)
 
-		res += (paddingZeros + str)
+		paddingZeros.append(str)
+		res.append(paddingZeros)
+
+		i -= 1
 	}
 
 	return res
-}
-
-private func stringToBInt(str: String) -> BInt
-{
-	var str = str
-	var resSign = false
-	var resLimbs: Limbs = [0]
-	resLimbs.reserveCapacity(Int(Double(str.characters.count) / 19.2))
-	var base: Limbs = [1]
-
-	if str[0] == "-"
-	{
-		str = str[1..<str.characters.count]
-		resSign = str != "0"
-	}
-
-	for ele in str.characters.reverse()
-	{
-		guard let b = Limb(String(ele)) else
-		{
-			forceException("Error: String must only consist of Digits (0-9)")
-			return BInt(limbs: [])
-		}
-
-		mulLimbs(addInto: &resLimbs, base, [b])
-
-		base = base *° [10]
-	}
-
-	return BInt(
-		sign: resSign,
-		limbs: resLimbs
-	)
 }
 
 /*\
@@ -467,147 +461,292 @@ private func stringToBInt(str: String) -> BInt
 \**/
 \*/
 
-private func addDigits(inout lhs: Digits, _ rhs: Digits, rhsPaddingZeros pz: Int)
+
+/**
+Performs addition operation on two parameters of type Digits. The sum is
+saved in the left inout parameter. The right parameter padded by
+'withPaddingZeroDigits' on its beginning. This is very useful for additions
+within multiplications.
+The whole operation is equal to lhs += rhs * (pz * 10^18).
+
+- Parameters:
+- lhs: Sum is stored here. Can have any initial value.
+- rhs: Get multiplied by (pz * 10^18) and then added to lhs.
+*/
+//private func addDigits(sum lhs: inout Digits, addend rhs: Digits, withPaddingZeroDigits pz: Int)
+//{
+//	let lhc = lhs.count
+//
+//	if pz >= lhc
+//	{
+//		lhs += [Digit](repeating: 0, count: pz &- lhc) + rhs
+//		return
+//	}
+//
+//	let rhc = rhs.count &+ pz
+//
+//	var newDigit = Digit(0)
+//	var ovfl = false
+//
+//	var i = pz
+//	let min = lhc < rhc ? lhc : rhc
+//
+//	while i < min
+//	{
+//		newDigit = lhs[i] &+ rhs[i &- pz]
+//
+//		if ovfl { newDigit += 1         }
+//		ovfl =    newDigit >= DigitBase
+//		if ovfl { newDigit -= DigitBase }
+//
+//		lhs[i] = newDigit
+//		i += 1
+//	}
+//
+//
+//	if ovfl
+//	{
+//		if lhc == rhc
+//		{
+//			// lhc = rhc, just append 1 to lhs and return
+//			lhs.append(1)
+//			return
+//		}
+//
+//		while ovfl
+//		{
+//			if i < lhc
+//			{
+//				// lhs: LLLLLLL
+//				// rhs: LLLO
+//				//   i:    3
+//
+//				// This means that i = min = rhs, and i >= rhs
+//				// Direct access to lhs is still possible, rhs[i] does not exist.
+//
+//				lhs[i] += 1
+//
+//				ovfl = lhs[i] == DigitBase
+//
+//				if ovfl { lhs[i] = 0 }
+//				else    { return     }
+//			}
+//			else
+//			{
+//				// lhs: LLLO
+//				// rhs: LLLLLLL
+//				//   i:    3
+//
+//				// i >= lhc implies that i = min = lhc, and i <= rhs
+//				// New limbs must be appended to lhs
+//
+//				newDigit = rhs[i &- pz] &+ 1
+//
+//				ovfl = newDigit == DigitBase
+//				if ovfl { newDigit = 0 }
+//
+//				lhs.append(newDigit)
+//
+//			}
+//
+//			i += 1
+//		}
+//	}
+//
+//	// If there is no overflow left and rhs is still longer than lhs, append the
+//	// remaining contents of rhs to lhs
+//	if lhs.count < rhc
+//	{
+//		lhs.append(contentsOf: rhs.suffix(from: i &- pz))
+//	}
+//}
+
+private func addOneDigitToDigits(_ lhs: inout Digits, _ rhs: Digit, rhsPaddingZeroLimbs pz: Int)
 {
 	let lhc = lhs.count
-	if pz - lhc == 0 { lhs += rhs; return }
-	if pz > lhc { lhs += (BStorage.zeros(pz - lhc) + rhs); return }
-	let rhc = rhs.count + pz
-
-	var (newDigit, ovfl) = (Digit(0), false)
-
-	var i = pz
-	let min = lhc < rhc ? lhc : rhc
-
-	while i < min
+	if pz >= lhc
 	{
-		if ovfl
+		if pz != lhc
 		{
-			newDigit = lhs[i] &+ rhs[i &- pz] &+ 1
+			lhs.append(contentsOf: Digits(repeating: 0, count: pz &- lhc))
+		}
+		lhs.append(rhs)
+		return
+	}
+
+	// i < lhc
+	var i = pz
+
+	var newDigit = lhs[i] &+ rhs
+	let ovfl = newDigit >= DigitBase
+	if ovfl { newDigit -= DigitBase }
+
+	lhs[i] = newDigit
+
+	while ovfl
+	{
+		i += 1
+
+		if i < lhc
+		{
+			lhs[i] += 1
+			if lhs[i] != DigitBase { return }
+			lhs[i] = 0
+
 		}
 		else
 		{
-			newDigit = lhs[i] &+ rhs[i &- pz]
+			lhs.append(1)
+			return
+		}
+	}
+}
+
+private func addTwoDigitsToDigits(_ lhs: inout Digits, _ rhsLo: Digit, _ rhsHi: Digit, rhsPaddingZeroLimbs pz: Int)
+{
+	let lhc = lhs.count
+	if pz >= lhc
+	{
+		if pz != lhc
+		{
+			lhs.append(contentsOf: Digits(repeating: 0, count: pz &- lhc))
+		}
+		lhs.append(contentsOf: [rhsLo, rhsHi])
+		return
+	}
+
+	// i < lhc
+	var i = pz
+
+	var newDigit = lhs[i] &+ rhsLo
+	var ovfl = newDigit >= DigitBase
+	if ovfl { newDigit -= DigitBase }
+
+	lhs[i] = newDigit
+
+	i += 1
+
+	if i < lhc
+	{
+		if ovfl
+		{
+			newDigit = lhs[i] &+ rhsHi &+ 1
+			ovfl = newDigit >= DigitBase
+			if ovfl { newDigit -= DigitBase }
+		}
+		else
+		{
+			newDigit = lhs[i] &+ rhsHi
+			ovfl = newDigit >= DigitBase
+			if ovfl { newDigit -= DigitBase }
 		}
 
-		ovfl = newDigit >= DigitBase
-		if ovfl { newDigit = newDigit &- DigitBase }
-
 		lhs[i] = newDigit
-		i += 1
+	}
+	else
+	{
+		if ovfl
+		{
+			newDigit = rhsHi &+ 1
+			if newDigit == DigitBase { newDigit = 0 }
+
+			lhs.append(newDigit)
+
+			if newDigit == 0 { lhs.append(1) }
+		}
+		else
+		{
+			lhs.append(rhsHi)
+		}
+
+		return
 	}
 
 	while ovfl
 	{
+		i += 1
+
 		if i < lhc
 		{
-			newDigit = lhs[i] &+ ((i < rhc) ? rhs[i &- pz] : 0) &+ 1
-			ovfl = newDigit >= DigitBase
-			if ovfl { newDigit = newDigit &- DigitBase }
+			lhs[i] += 1
+			if lhs[i] != DigitBase { return }
+			lhs[i] = 0
 
-			lhs[i] = newDigit
 		}
 		else
 		{
-			newDigit = ((i < rhc) ? rhs[i &- pz] : 0) &+ 1
-			ovfl = newDigit >= DigitBase
-			if ovfl { newDigit = newDigit &- DigitBase }
-
-			lhs.append(newDigit)
+			lhs.append(1)
+			return
 		}
-
-		i += 1
 	}
-
-	if lhs.count < rhc { lhs += rhs[(i &- pz)..<(rhc &- pz)] }
 }
 
-private func mulDigits(lhs: Digits, _ rhs: Digits) -> Digits
+private func mulDigits(addInto res: inout Digits, _ lhs: Digits, _ rhs: Digits)
 {
-	var res: Digits = [0]
-	var singleMul: Digits = [0, 0]
 	res.reserveCapacity(lhs.count + rhs.count)
 
-	outer: for l in 0..<lhs.count
+	var overflow: Bool
+	var mulLo, aLo, aHi, bLo, bHi,
+	rLo, rHi, K, l, r: Digit
+
+	for i in 0..<lhs.count
 	{
-		if lhs[l] == 0 { continue outer }
+		l = lhs[i]
+		if l == 0 { continue }
 
-		inner: for r in 0..<rhs.count
+		for j in 0..<rhs.count
 		{
-			if rhs[r] == 0 { continue inner }
+			r = rhs[j]
+			if r == 0 { continue }
 
-			mulDigit(&singleMul, lhs[l], rhs[r])
+			(mulLo, overflow) = Digit.multiplyWithOverflow(l, r)
 
-			addDigits(&res, singleMul, rhsPaddingZeros: l + r)
+			if overflow
+			{
+				/*
+				From here, lhs * rhs >= 2^64, so res.count must be equal
+				to 2
+				*/
+
+				aLo = l % DigitHalfBase
+				aHi = l / DigitHalfBase
+				bLo = r % DigitHalfBase
+				bHi = r / DigitHalfBase
+
+				K = (aHi &* bLo) &+ (bHi &* aLo)
+
+				rLo = (aLo &* bLo) &+ ((K % DigitHalfBase) &* DigitHalfBase)
+				rHi = (aHi &* bHi) &+ (K / DigitHalfBase)
+
+				if rLo >= DigitBase
+				{
+					rLo -= DigitBase
+					rHi += 1
+				}
+
+				addTwoDigitsToDigits(&res, rLo, rHi, rhsPaddingZeroLimbs: i &+ j)
+			}
+			else
+			{
+				if mulLo < DigitBase
+				{
+					addOneDigitToDigits(&res, mulLo, rhsPaddingZeroLimbs: i &+ j)
+				}
+				else
+				{
+					addTwoDigitsToDigits(&res, mulLo % DigitBase, mulLo / DigitBase, rhsPaddingZeroLimbs: i &+ j)
+				}
+			}
 		}
 	}
+}
 
+private func mulDigits(_ lhs: Digits, _ rhs: Digits) -> Digits
+{
+	var res: Digits = [0]
+	mulDigits(addInto: &res, lhs, rhs)
 	return res
 }
-
-private func mulDigits(inout addInto res: Digits, _ lhs: Digits, _ rhs: Digits)
-{
-	var singleMul: Digits = [0, 0]
-
-	outer: for l in 0..<lhs.count
-	{
-		if lhs[l] == 0 { continue outer }
-
-		inner: for r in 0..<rhs.count
-		{
-			if rhs[r] == 0 { continue inner }
-
-			mulDigit(&singleMul, lhs[l], rhs[r])
-			addDigits(&res, singleMul, rhsPaddingZeros: l + r)
-		}
-	}
-}
-
-
-private func mulDigit(inout res: Digits, _ lhs: Digit, _ rhs: Digit)// -> Digits
-{
-	let (mulLo, overflow) = Digit.multiplyWithOverflow(lhs, rhs)
-
-	if !overflow
-	{
-		if mulLo < DigitBase
-		{
-			res[0] = mulLo
-			if res.count == 2 { res.removeLast() }
-		}
-		else
-		{
-			res[0] = mulLo % DigitBase
-			res.count == 2 ? res[1] = mulLo / DigitBase : res.append(mulLo / DigitBase)
-		}
-
-		return
-	}
-	// From here, lhs * rhs >= 2^64 => res.count == 2
-
-	let aLo = lhs % DigitHalfBase
-	let aHi = lhs / DigitHalfBase
-	let bLo = rhs % DigitHalfBase
-	let bHi = rhs / DigitHalfBase
-
-	let K = (aHi &* bLo) &+ (bHi &* aLo)
-
-	let rLo = (aLo &* bLo) &+ ((K % DigitHalfBase) &* DigitHalfBase)
-	let rHi = (aHi &* bHi) &+ (K / DigitHalfBase)
-
-	if rLo < DigitBase
-	{
-		res[0] = rLo
-		res.count == 2 ? res[1] = rHi : res.append(rHi)
-
-		return
-	}
-
-	res[0] = rLo &- DigitBase
-	res.count == 2 ? res[1] = rHi &+ 1 : res.append(rHi &+ 1)
-}
-
-
 
 /*\
 /**\
@@ -647,41 +786,45 @@ private func mulDigit(inout res: Digits, _ lhs: Digit, _ rhs: Digit)// -> Digits
 \**/
 \*/
 
-infix operator <<=° {}
-private func <<=°(inout lhs: Limbs, rhs: Int)
+infix operator <<=°
+private func <<=°(lhs: inout Limbs, rhs: Int)
 {
-	if rhs == 0 { return }
+	// No shifting is required in this case
+	if rhs == 0 || lhs == [0] { return }
 
 	let limbShifts =  rhs >> 6
-	let singleShifts = rhs & 0x3f
+	let bitShifts = Limb(rhs) & 0x3f
 
-	if singleShifts != 0
+	if bitShifts != 0
 	{
 		var oldCarry = Limb(0)
-		var newCarry = Limb(0)
+		var carry = Limb(0)
 
 		for i in 0..<lhs.count
 		{
-			newCarry = lhs[i] >> UInt64(64 - singleShifts)
+			carry = lhs[i] >> (64 &- bitShifts)
 
-			lhs[i] <<= UInt64(singleShifts)
-			lhs[i] += oldCarry // carry from last step
-			oldCarry = newCarry
+			lhs[i] <<= bitShifts
+			lhs[i] |= oldCarry // carry from last step
+			oldCarry = carry
 		}
 
 		if oldCarry != 0 { lhs.append(oldCarry) }
 	}
 
-	if limbShifts != 0 { lhs = BStorage.zeros(limbShifts) + lhs }
+	if limbShifts != 0
+	{
+		lhs.insert(contentsOf: Limbs(repeating: 0, count: limbShifts), at: 0)
+	}
 }
 
-infix operator >>=° {}
-private func >>=°(inout lhs: Limbs, rhs: Int)
+infix operator >>=°
+private func >>=°(lhs: inout Limbs, rhs: Int)
 {
-	if rhs == 0 { return }
+	if rhs == 0 || lhs == [0] { return }
 
 	let limbShifts =  rhs >> 6
-	let singleShifts = rhs & 0x3f
+	let bitShifts = Limb(rhs) & 0x3f
 
 	if limbShifts >= lhs.count
 	{
@@ -689,27 +832,29 @@ private func >>=°(inout lhs: Limbs, rhs: Int)
 		return
 	}
 
-	lhs = Array(lhs[limbShifts..<lhs.count])
+	lhs.removeSubrange(0..<limbShifts)
 
-	if singleShifts != 0
+	if bitShifts != 0
 	{
-		var oldCarry = Limb(0)
-		var newCarry = Limb(0)
+		var previousCarry = Limb(0)
+		var carry = Limb(0)
 
-		for i in (lhs.count - 1).stride(through: 0, by: -1)
+		var i = lhs.count - 1; while i >= 0
 		{
-			newCarry = lhs[i] << UInt64(64 - singleShifts)
+			carry = lhs[i] << (64 &- bitShifts)
 
-			lhs[i] >>= UInt64(singleShifts)
-			lhs[i] += oldCarry
-			oldCarry = newCarry
+			lhs[i] >>= bitShifts
+			lhs[i] |= previousCarry
+			previousCarry = carry
+
+			i -= 1
 		}
 	}
 
-	//if lhs.last! == 0 && lhs.count != 1 {print("lhs: \(lhs)\n shift: \(rhs)"); lhs.removeLast() }
+	if lhs.last! == 0 && lhs.count != 1 { lhs.removeLast() }
 }
 
-infix operator <<° {}
+infix operator <<°
 private func <<°(lhs: Limbs, rhs: Int) -> Limbs
 {
 	var lhs = lhs
@@ -717,7 +862,7 @@ private func <<°(lhs: Limbs, rhs: Int) -> Limbs
 	return lhs
 }
 
-infix operator >>° {}
+infix operator >>°
 private func >>°(lhs: Limbs, rhs: Int) -> Limbs
 {
 	var lhs = lhs
@@ -743,16 +888,31 @@ private func >>°(lhs: Limbs, rhs: Int) -> Limbs
 
 public func <<(lhs: BInt, rhs: Int) -> BInt
 {
+	if rhs < 0 { return lhs >> rhs }
+
+	let limbRes = lhs.limbs <<° rhs
+
 	return BInt(
-		limbs: lhs.limbs <<° rhs
+		sign: lhs.isNegative() && limbRes != [0],
+		limbs: limbRes
 	)
 }
 
 public func >>(lhs: BInt, rhs: Int) -> BInt
 {
-	return BInt(
-		limbs: lhs.limbs >>° rhs
-	)
+	if rhs < 0 { return lhs << rhs }
+
+	return BInt(sign: lhs.sign, limbs: lhs.limbs >>° rhs)
+}
+
+public func <<=( lhs: inout BInt, rhs: Int)
+{
+	lhs.limbs <<=° rhs
+}
+
+public func >>=( lhs: inout BInt, rhs: Int)
+{
+	lhs.limbs >>=° rhs
 }
 
 /*\
@@ -771,7 +931,7 @@ public func >>(lhs: BInt, rhs: Int) -> BInt
 \**/
 \*/
 
-public func abs(lhs: BInt) -> BInt
+public func abs(_ lhs: BInt) -> BInt
 {
 	return BInt(
 		sign: false,
@@ -779,18 +939,18 @@ public func abs(lhs: BInt) -> BInt
 	)
 }
 
-infix operator +=°  {}
-/// Add limbs and wirte result in left Limbs
-private func +=°(inout lhs: Limbs, rhs: Limbs)
-{
-	addLimbs(&lhs, rhs, rhsPaddingZeroLimbs: 0)
-}
-
-private func addLimbs(inout lhs: Digits, _ rhs: Digits, rhsPaddingZeroLimbs pz: Int)
+private func addLimbs(_ lhs: inout Limbs, _ rhs: Limbs, rhsPaddingZeroLimbs pz: Int)
 {
 	let lhc = lhs.count
-	if pz == lhc { lhs += rhs; return }
-	if pz > lhc { lhs += (BStorage.zeros(pz &- lhc) + rhs); return }
+	if pz >= lhc
+	{
+		if pz != lhc
+		{
+			lhs.append(contentsOf: Limbs(repeating: 0, count: pz &- lhc))
+		}
+		lhs.append(contentsOf: rhs)
+		return
+	}
 	let rhc = rhs.count &+ pz
 
 	var (newLimb, ovfl) = (Limb(0), false)
@@ -850,12 +1010,189 @@ private func addLimbs(inout lhs: Digits, _ rhs: Digits, rhsPaddingZeroLimbs pz: 
 		i += 1
 	}
 
-	if lhs.count < rhc { lhs += rhs[(i &- pz)..<(rhc &- pz)] }
+	if lhs.count < rhc
+	{
+		lhs.append(contentsOf: rhs.suffix(from: i &- pz))
+	}
 }
 
+private func addOneLimbToLimbs(_ lhs: inout Limbs, _ rhs: Limb, rhsPaddingZeroLimbs pz: Int)
+{
+	let lhc = lhs.count
+	if pz >= lhc
+	{
+		if pz != lhc
+		{
+			lhs.append(contentsOf: Limbs(repeating: 0, count: pz &- lhc))
+		}
+		lhs.append(rhs)
+		return
+	}
 
+	// i < lhc
+	var i = pz
 
-infix operator +° {}
+	let (newLimb, ovfl) = Limb.addWithOverflow(lhs[i], rhs)
+	lhs[i] = newLimb
+
+	while ovfl
+	{
+		i += 1
+
+		if i < lhc
+		{
+			lhs[i] += 1
+			if lhs[i] != 0 { return }
+		}
+		else
+		{
+			lhs.append(1)
+			return
+		}
+	}
+}
+
+private func addTwoLimbsToLimbs(_ lhs: inout Limbs, _ rhsLo: Limb, _ rhsHi: Limb, rhsPaddingZeroLimbs pz: Int)
+{
+	let lhc = lhs.count
+	if pz >= lhc
+	{
+		if pz != lhc
+		{
+			lhs.append(contentsOf: Limbs(repeating: 0, count: pz &- lhc))
+		}
+		lhs.append(contentsOf: [rhsLo, rhsHi])
+		return
+	}
+
+	// i < lhc
+	var i = pz
+
+	var (newLimb, ovfl) = Limb.addWithOverflow(lhs[i], rhsLo)
+	lhs[i] = newLimb
+
+	i += 1
+
+	if i < lhc
+	{
+		if ovfl
+		{
+			(newLimb, ovfl) = Limb.addWithOverflow(lhs[i], rhsHi)
+			newLimb = newLimb &+ 1
+			ovfl = ovfl || newLimb == 0
+		}
+		else
+		{
+			(newLimb, ovfl) = Limb.addWithOverflow(lhs[i], rhsHi)
+		}
+
+		lhs[i] = newLimb
+	}
+	else
+	{
+		if ovfl
+		{
+			newLimb = rhsHi &+ 1
+			lhs.append(newLimb)
+
+			if newLimb == 0 { lhs.append(1) }
+		}
+		else
+		{
+			lhs.append(rhsHi)
+		}
+
+		return
+	}
+
+	while ovfl
+	{
+		i += 1
+
+		if i < lhc
+		{
+			lhs[i] = lhs[i] &+ 1
+			if lhs[i] != 0 { return }
+		}
+		else
+		{
+			lhs.append(1)
+			return
+		}
+	}
+}
+
+infix operator +=°
+/// Add limbs and wirte result in left Limbs
+private func +=°(lhs: inout Limbs, rhs: Limbs)
+{
+	let lhc = lhs.count
+	let rhc = rhs.count
+
+	var (newLimb, ovfl) = (Limb(0), false)
+
+	let min = lhc < rhc ? lhc : rhc
+
+	var i = 0
+	while i < min
+	{
+		if ovfl
+		{
+			(newLimb, ovfl) = Limb.addWithOverflow(lhs[i], rhs[i])
+			newLimb = newLimb &+ 1
+
+			ovfl = ovfl || newLimb == 0
+		}
+		else
+		{
+			(newLimb, ovfl) = Limb.addWithOverflow(lhs[i], rhs[i])
+		}
+
+		lhs[i] = newLimb
+		i += 1
+	}
+
+	while ovfl
+	{
+		if i < lhc
+		{
+			if i < rhc
+			{
+				(newLimb, ovfl) = Limb.addWithOverflow(lhs[i], rhs[i])
+				newLimb = newLimb &+ 1
+				ovfl = ovfl || newLimb == 0
+			}
+			else
+			{
+				(newLimb, ovfl) = Limb.addWithOverflow(lhs[i], 1)
+			}
+
+			lhs[i] = newLimb
+		}
+		else
+		{
+			if i < rhc
+			{
+				(newLimb, ovfl) = Limb.addWithOverflow(rhs[i], 1)
+				lhs.append(newLimb)
+			}
+			else
+			{
+				lhs.append(1)
+				return
+			}
+		}
+
+		i += 1
+	}
+
+	if lhs.count < rhc
+	{
+		lhs.append(contentsOf: rhs.suffix(from: i))
+	}
+}
+
+infix operator +°
 /// Adding Limbs and returning result
 private func +°(lhs: Limbs, rhs: Limbs) -> Limbs
 {
@@ -880,9 +1217,9 @@ private func +°(lhs: Limbs, rhs: Limbs) -> Limbs
 \**/
 \*/
 
-infix operator -=° {}
+infix operator -=°
 /// Calculates difference between Limbs in left limb
-private func -=°(inout lhs: Limbs, rhs: Limbs)
+private func -=°(lhs: inout Limbs, rhs: Limbs)
 {
 	var rhs = rhs
 	// swap to get difference
@@ -914,6 +1251,12 @@ private func -=°(inout lhs: Limbs, rhs: Limbs)
 
 	while ovfl
 	{
+		if i >= lhs.count
+		{
+			lhs.append(UInt64.max)
+			break
+		}
+
 		(lhs[i], ovfl) = Limb.subtractWithOverflow(lhs[i], 1)
 
 		i += 1
@@ -921,20 +1264,15 @@ private func -=°(inout lhs: Limbs, rhs: Limbs)
 
 	if lhs.count > 1 && lhs.last! == 0 // cut excess zeros if required
 	{
-		for i in (lhs.count - 2).stride(through: 1, by: -1)
-		{
-			if lhs[i] != 0
-			{
-				lhs = Limbs(lhs[0...i])
-				return
-			}
-		}
-		lhs = [lhs[0]]
+		var i = lhs.count - 2
+		while i >= 1 && lhs[i] == 0 { i -= 1 }
+
+		lhs.removeSubrange((i + 1)..<lhs.count)
 	}
 }
 
 /// Calculating difference between Limbs with returning result
-infix operator -° {}
+infix operator -°
 private func -°(lhs: Limbs, rhs: Limbs) -> Limbs
 {
 	var lhs = lhs
@@ -958,7 +1296,7 @@ private func -°(lhs: Limbs, rhs: Limbs) -> Limbs
 \**/
 \*/
 
-public func +=(inout lhs: BInt, rhs: BInt)
+public func +=(lhs: inout BInt, rhs: BInt)
 {
 	if lhs.sign == rhs.sign
 	{
@@ -984,8 +1322,8 @@ public func +(lhs: BInt, rhs: BInt) -> BInt
 public func +(lhs: Int, rhs: BInt) -> BInt { return BInt(lhs) + rhs }
 public func +(lhs: BInt, rhs: Int) -> BInt { return lhs + BInt(rhs) }
 
-public func +=(inout lhs: Int, rhs: BInt) { lhs += (BInt(lhs) + rhs).toInt() }
-public func +=(inout lhs: BInt, rhs: Int) { lhs +=  BInt(rhs)                }
+public func +=(lhs: inout Int, rhs: BInt) { lhs += (BInt(lhs) + rhs).toInt()! }
+public func +=(lhs: inout BInt, rhs: Int) { lhs +=  BInt(rhs)                 }
 
 /*\
 /**\
@@ -1018,9 +1356,9 @@ public func -(lhs: BInt, rhs: BInt) -> BInt
 public func -(lhs: Int, rhs: BInt) -> BInt { return BInt(lhs) - rhs }
 public func -(lhs: BInt, rhs: Int) -> BInt { return lhs - BInt(rhs) }
 
-public func -=(inout lhs: BInt, rhs: BInt) { lhs +=             -rhs          }
-public func -=(inout lhs: Int, rhs: BInt)  { lhs  = (BInt(lhs) - rhs).toInt() }
-public func -=(inout lhs: BInt, rhs: Int)  { lhs -=         BInt(rhs)         }
+public func -=(lhs: inout BInt, rhs: BInt) { lhs +=             -rhs           }
+public func -=(lhs: inout Int, rhs: BInt)  { lhs  = (BInt(lhs) - rhs).toInt()! }
+public func -=(lhs: inout BInt, rhs: Int)  { lhs -=         BInt(rhs)          }
 
 /*\
 /**\
@@ -1038,147 +1376,148 @@ public func -=(inout lhs: BInt, rhs: Int)  { lhs -=         BInt(rhs)         }
 \**/
 \*/
 
-private func multiplyLimb(inout res: Limbs, _ lhs: Limb, _ rhs: Limb)
+private func mul(res: inout Limbs, limbs lhs: Limbs, limbs rhs: Limbs)
 {
-	let (mulLo, overflow) = Limb.multiplyWithOverflow(lhs, rhs)
+	res.reserveCapacity(lhs.count + rhs.count)
 
-	if !overflow
+	var overflow: Bool
+	var axbLo, axbMi, bxaMi, axbHi,
+	mulLo, mulHi, carry,
+	l, r: Limb
+
+	for i in 0..<lhs.count
 	{
-		res[0] = mulLo
-		if res.count == 2 { res.removeLast() }
+		l = lhs[i]
+		if l == 0 { continue }
+
+		for j in 0..<rhs.count
+		{
+			r = rhs[j]
+			if r == 0 { continue }
+
+			(mulLo, overflow) = Limb.multiplyWithOverflow(l, r)
+
+			if overflow
+			{
+				axbHi = (l >> 32) &* (r >> 32)
+				axbMi = (l & 0xffff_ffff) &* (r >> 32)
+				bxaMi = (r & 0xffff_ffff) &* (l >> 32)
+				axbLo = (l & 0xffff_ffff) &* (r & 0xffff_ffff)
+
+				carry =  (axbMi & 0xffff_ffff) &+ (bxaMi & 0xffff_ffff) &+ (axbLo >> 32)
+				mulHi = axbHi &+ (axbMi >> 32) &+ (bxaMi >> 32)         &+ (carry >> 32)
+
+				addTwoLimbsToLimbs(&res, mulLo, mulHi, rhsPaddingZeroLimbs: i &+ j)
+			}
+			else
+			{
+				addOneLimbToLimbs(&res, mulLo, rhsPaddingZeroLimbs: i &+ j)
+			}
+		}
+	}
+}
+
+private func mul(res: inout Limbs, limbs lhs: Limbs, limb r: Limb)
+{
+	if r < 2
+	{
+		if r == 1 { res +=° lhs }
 		return
 	}
 
-	let axbHi = (lhs >> 32) &* (rhs >> 32)
-	let axbMi = (lhs & 0xffff_ffff) &* (rhs >> 32)
-	let bxaMi = (rhs & 0xffff_ffff) &* (lhs >> 32)
-	let axbLo = (lhs & 0xffff_ffff) &* (rhs & 0xffff_ffff)
+	var overflow: Bool
+	var axbLo, axbMi, bxaMi, axbHi,
+	mulLo, mulHi, carry,
+	l: Limb
 
-	let carry =  (axbMi & 0xffff_ffff) &+ (bxaMi & 0xffff_ffff) &+ (axbLo >> 32)
-	let mulHi = axbHi &+ (axbMi >> 32) &+ (bxaMi >> 32)         &+ (carry >> 32)
-
-	res[0] = mulLo
-	(res.count == 2) ? res[1] = mulHi : res.append(mulHi)
-
-}
-
-private func squareLimb(inout res: Limbs, _ lhs: Limb)
-{
-	let (mulLo, overflow) = Limb.multiplyWithOverflow(lhs, lhs)
-
-	if !overflow
+	for i in 0..<lhs.count
 	{
-		res[0] = mulLo
-		if res.count == 2 { res.removeLast() }
-		return
+		l = lhs[i]
+		if l == 0 { continue }
+
+		(mulLo, overflow) = Limb.multiplyWithOverflow(l, r)
+
+		if overflow
+		{
+			axbHi = (l >> 32) &* (r >> 32)
+			axbMi = (l & 0xffff_ffff) &* (r >> 32)
+			bxaMi = (r & 0xffff_ffff) &* (l >> 32)
+			axbLo = (l & 0xffff_ffff) &* (r & 0xffff_ffff)
+
+			carry =  (axbMi & 0xffff_ffff) &+ (bxaMi & 0xffff_ffff) &+ (axbLo >> 32)
+			mulHi = axbHi &+ (axbMi >> 32) &+ (bxaMi >> 32)         &+ (carry >> 32)
+
+			addTwoLimbsToLimbs(&res, mulLo, mulHi, rhsPaddingZeroLimbs: i)
+		}
+		else
+		{
+			addOneLimbToLimbs(&res, mulLo, rhsPaddingZeroLimbs: i)
+		}
 	}
-
-	let aLo = lhs & 0xffff_ffff
-	let aHi = lhs >> 32
-	let axaMi = aLo &* aHi
-
-	let carry = (2 &* (axaMi & 0xffff_ffff)) &+ ((aLo &* aLo) >> 32)
-	let mulHi = (aHi &* aHi) + (2 &* (axaMi >> 32)) + (carry >> 32)
-
-	res[0] = mulLo
-	(res.count == 2) ? res[1] = mulHi : res.append(mulHi)
 }
 
-infix operator *° {}
+
+
+infix operator *°
 private func *°(lhs: Limbs, rhs: Limbs) -> Limbs
 {
 	var res: Limbs = [0]
-	var singleMul: Limbs = [0, 0]
-	res.reserveCapacity(lhs.count + rhs.count)
 
-	outer: for l in 0..<lhs.count
-	{
-		if lhs[l] == 0 { continue outer }
-
-		inner: for r in 0..<rhs.count
-		{
-			if rhs[r] == 0 { continue inner }
-
-			multiplyLimb(&singleMul, lhs[l], rhs[r])
-
-			addLimbs(&res, singleMul, rhsPaddingZeroLimbs: l + r)
-		}
-	}
-
+	mul(res: &res, limbs: lhs, limbs: rhs)
 	return res
 }
 
-
-private func mulModLimbs(lhs: Limbs, _ rhs: Limbs, mod: Limbs) -> Limbs
+func square(res: inout Limbs, limbs lhs: Limbs)
 {
-	var res: Limbs = [0]
-	var singleMul: Limbs = [0, 0]
-	res.reserveCapacity(lhs.count + rhs.count)
+	res.reserveCapacity(2 * lhs.count)
 
-	outer: for l in 0..<lhs.count
+	var overflow: Bool
+	var axbLo, axbMi, bxaMi, axbHi,
+	mulLo, mulHi, carry,
+	l, r: Limb
+
+	for i in 0..<lhs.count
 	{
-		if lhs[l] == 0 { continue outer }
+		l = lhs[i]
+		if l == 0 { continue }
 
-		inner: for r in 0..<rhs.count
+		for j in 0...i
 		{
-			if rhs[r] == 0 { continue inner }
+			r = lhs[j]
+			if r == 0 { continue }
 
-			multiplyLimb(&singleMul, lhs[l], rhs[r])
+			(mulLo, overflow) = Limb.multiplyWithOverflow(l, r)
 
-			addLimbs(&res, singleMul, rhsPaddingZeroLimbs: l + r)
+			if overflow
+			{
+				axbHi = (l >> 32) &* (r >> 32)
+				axbMi = (l & 0xffff_ffff) &* (r >> 32)
+				bxaMi = (r & 0xffff_ffff) &* (l >> 32)
+				axbLo = (l & 0xffff_ffff) &* (r & 0xffff_ffff)
+
+				carry =  (axbMi & 0xffff_ffff) &+ (bxaMi & 0xffff_ffff) &+ (axbLo >> 32)
+				mulHi = axbHi &+ (axbMi >> 32) &+ (bxaMi >> 32)         &+ (carry >> 32)
+
+				if i != j { addTwoLimbsToLimbs(&res, mulLo, mulHi, rhsPaddingZeroLimbs: i &+ j) }
+				addTwoLimbsToLimbs(&res, mulLo, mulHi, rhsPaddingZeroLimbs: i &+ j)
+			}
+			else
+			{
+				if i != j { addOneLimbToLimbs(&res, mulLo, rhsPaddingZeroLimbs: i &+ j) }
+				addOneLimbToLimbs(&res, mulLo, rhsPaddingZeroLimbs: i &+ j)
+			}
 		}
 	}
-
-	return res
 }
 
-
-private func mulLimbs(inout addInto res: Limbs, _ lhs: Limbs, _ rhs: Limbs)
-{
-	var singleMul: Limbs = [0, 0]
-
-	outer: for l in 0..<lhs.count
-	{
-		if lhs[l] == 0 { continue outer }
-
-		inner: for r in 0..<rhs.count
-		{
-			if rhs[r] == 0 { continue inner }
-
-			multiplyLimb(&singleMul, lhs[l], rhs[r])
-
-			addLimbs(&res, singleMul, rhsPaddingZeroLimbs: l + r)
-		}
-	}
-}
-
-// unusually bad performance
-// make factorial use this too
 // square
-postfix operator ^^ {}
+postfix operator ^^
 private postfix func ^^(lhs: Limbs) -> Limbs
 {
 	var res: Limbs = [0]
-	var singleMul: Limbs = [0, 0]
 	res.reserveCapacity(2 * lhs.count)
 
-	outer: for l in 0..<lhs.count
-	{
-		if lhs[l] == 0 { continue outer }
-
-		inner: for r in 0..<l
-		{
-			if lhs[r] == 0 { continue inner }
-
-			multiplyLimb(&singleMul, lhs[l], lhs[r])
-
-			addLimbs(&res, singleMul +° singleMul, rhsPaddingZeroLimbs: l + r)
-		}
-
-		squareLimb(&singleMul, lhs[l])
-
-		addLimbs(&res, singleMul, rhsPaddingZeroLimbs: 2 * l) // l == r
-	}
+	square(res: &res, limbs: lhs)
 
 	return res
 }
@@ -1208,9 +1547,9 @@ public func *(lhs: BInt, rhs: BInt) -> BInt
 public func *(lhs: Int, rhs: BInt) -> BInt { return BInt(lhs) * rhs }
 public func *(lhs: BInt, rhs: Int) -> BInt { return lhs * BInt(rhs) }
 
-public func *=(inout lhs: BInt, rhs:BInt) { lhs =       lhs  * rhs          }
-public func *=(inout lhs: Int, rhs: BInt) { lhs = (BInt(lhs) * rhs).toInt() }
-public func *=(inout lhs: BInt, rhs: Int) { lhs =       lhs  * BInt(rhs)    }
+public func *=(lhs: inout BInt, rhs:BInt) { lhs =       lhs  * rhs          }
+public func *=(lhs: inout Int, rhs: BInt) { lhs = (BInt(lhs) * rhs).toInt()! }
+public func *=(lhs: inout BInt, rhs: Int) { lhs =       lhs  * BInt(rhs)    }
 
 /*\
 /**\
@@ -1229,7 +1568,7 @@ public func *=(inout lhs: BInt, rhs: Int) { lhs =       lhs  * BInt(rhs)    }
 \*/
 
 // Exponentiation by squaring
-infix operator ^° {}
+infix operator ^°
 private func ^°(lhs: Limbs, rhs: Int) -> Limbs
 {
 	if rhs == 0 { return [1] }
@@ -1271,12 +1610,9 @@ private func ^°(lhs: Limbs, rhs: Int) -> Limbs
 
 public func ^(lhs: BInt, rhs: Int) -> BInt
 {
-	if rhs < 0
-	{
-		forceException("BInts can't be exponentiated with exponents < 0");
-	}
+	precondition(rhs >= 0, "BInts can't be exponentiated with exponents < 0")
 
-	return BInt(sign: lhs.sign && ((rhs % 2) == 1), limbs: lhs.limbs ^° rhs)
+	return BInt(sign: lhs.sign && ((rhs & 1) == 1), limbs: lhs.limbs ^° rhs)
 }
 
 /*\
@@ -1295,11 +1631,12 @@ public func ^(lhs: BInt, rhs: Int) -> BInt
 \**/
 \*/
 
-infix operator %° {}
+infix operator %°
 private func %°(lhs: Limbs, rhs: Limbs) -> Limbs
 {
+	precondition(rhs != [0], "Modulo by zero not allowed")
+
 	var lhs = lhs
-	if rhs == [0] { forceException("Modulo by zero not allowed") }
 	if lhs <° rhs { return lhs }
 	if rhs == [1] { return [0] }
 
@@ -1318,53 +1655,58 @@ private func %°(lhs: Limbs, rhs: Limbs) -> Limbs
 	}
 
 	// iterate through exponents and subract if needed
-	for i in (accList.count - 1).stride(through: 0, by: -1) // -1 because last > lhs
+
+	var i = accList.count - 1 // -1 because last > lhs
+	while i >= 0
 	{
 		while !(lhs <° accList[i]) // accList[i] <= lhs
 		{
 			lhs -=° accList[i]
 		}
+
+		i -= 1
 	}
 
 	return lhs
 
-//	var acc = rhs
-//	var t = 0
-//
-//	while acc <° lhs
-//	{
-//		acc <<=° 3
-//		t += 1
-//	}
-//
-//	if lhs <° acc { acc >>=° 3 }
-//
-//	for _ in 0..<t
-//	{
-//		var times = 0
-//		while !(lhs <° acc)
-//		{
-//			lhs -=° acc
-//			times += 1
-//		}
-//
-//
-//		acc >>=° 3
-//	}
-//
-//	return lhs
+	//	var acc = rhs
+	//	var t = 0
+	//
+	//	while acc <° lhs
+	//	{
+	//		acc <<=° 3
+	//		t += 1
+	//	}
+	//
+	//	if lhs <° acc { acc >>=° 3 }
+	//
+	//	for _ in 0..<t
+	//	{
+	//		var times = 0
+	//		while !(lhs <° acc)
+	//		{
+	//			lhs -=° acc
+	//			times += 1
+	//		}
+	//
+	//
+	//		acc >>=° 3
+	//	}
+	//
+	//	return lhs
 
 }
 
-private func modLimbs(inout lhs: Limbs, _ rhs: Limbs)
+private func modLimbs(_ lhs: inout Limbs, _ rhs: Limbs)
 {
-	if rhs == [0] { forceException("Modulo by zero not allowed") }
+	precondition(rhs != [0], "Modulo by zero not allowed")
 	if lhs <° rhs { return }
 	if rhs == [1] { lhs = [0]; return }
 
 	if lhs.count == 1 && rhs.count == 1
 	{
-		lhs[0] %= rhs[0]
+		lhs[0] = lhs[0] % rhs[0]
+		//lhs[0] %= rhs[0]
 		return
 	}
 
@@ -1378,12 +1720,15 @@ private func modLimbs(inout lhs: Limbs, _ rhs: Limbs)
 	}
 
 	// iterate through exponents and subract if needed
-	for i in (accList.count - 1).stride(through: 0, by: -1) // -1 because last > lhs
+	var i = accList.count - 1 // -1 because last > lhs
+	while i >= 0
 	{
 		while !(lhs <° accList[i]) // accList[i] <= lhs
 		{
 			lhs -=° accList[i]
 		}
+
+		i -= 1
 	}
 }
 
@@ -1414,7 +1759,7 @@ public func %(lhs: BInt, rhs: BInt) -> BInt
 public func %(lhs: Int, rhs: BInt) -> BInt { return BInt(lhs) % rhs }
 public func %(lhs: BInt, rhs: Int) -> BInt { return lhs % BInt(rhs) }
 
-public func %=(inout lhs: BInt, rhs: BInt)
+public func %=(lhs: inout BInt, rhs: BInt)
 {
 	modLimbs(&lhs.limbs, rhs.limbs)
 	lhs.sign = lhs.sign && lhs.limbs != [0]
@@ -1436,13 +1781,13 @@ public func %=(inout lhs: BInt, rhs: BInt)
 \**/
 \*/
 
-infix operator /° {}
+infix operator /°
 /// Division with limbs, result is floored to nearest whole number
 private func /°(lhs: Limbs, rhs: Limbs) -> Limbs
 {
 	var lhs = lhs
 	// cover base cases
-	invariant(rhs != [0], "Division by zero")
+	precondition(rhs != [0], "Division by zero")
 	if lhs <° rhs { return [0] }
 	if rhs == [1] { return lhs }
 	if lhs == rhs { return [1] }
@@ -1466,7 +1811,8 @@ private func /°(lhs: Limbs, rhs: Limbs) -> Limbs
 	var div = [Limb(0)]
 
 	// iterate through exponents and subract if needed
-	for i in (accList.count - 1).stride(through: 0, by: -1) // -1 because last > lhs
+	var i = accList.count - 1 // -1 because last > lhs
+	while i >= 0
 	{
 		var times = 0
 		while !(lhs <° accList[i]) // accList[i] <= lhs
@@ -1476,43 +1822,45 @@ private func /°(lhs: Limbs, rhs: Limbs) -> Limbs
 			//div +=° divList[i]
 		}
 		div +=° (divList[i] *° [Limb(times)])
+
+		i -= 1
 	}
 
 	return div
 
-//	var acc = rhs
-//	var divAdd = [Limb(1)]
-//	var t = 0
-//
-//	while acc <° lhs
-//	{
-//		acc <<=° 3
-//		divAdd <<=° 3
-//		t += 1
-//	}
-//
-//	if lhs <° acc { acc >>=° 3; divAdd >>=° 3 }
-//
-//	var div = [Limb(0)]
-//
-//	for _ in 0..<t
-//	{
-//		var times = 0
-//		while !(lhs <° acc)
-//		{
-//			lhs -=° acc
-//			times += 1
-//		}
-//
-//		if times != 0
-//		{
-//			div +=° ([Limb(times)] *° divAdd)
-//		}
-//
-//		divAdd >>=° 3
-//		acc >>=° 3
-//	}
-//	return div
+	//	var acc = rhs
+	//	var divAdd = [Limb(1)]
+	//	var t = 0
+	//
+	//	while acc <° lhs
+	//	{
+	//		acc <<=° 3
+	//		divAdd <<=° 3
+	//		t += 1
+	//	}
+	//
+	//	if lhs <° acc { acc >>=° 3; divAdd >>=° 3 }
+	//
+	//	var div = [Limb(0)]
+	//
+	//	for _ in 0..<t
+	//	{
+	//		var times = 0
+	//		while !(lhs <° acc)
+	//		{
+	//			lhs -=° acc
+	//			times += 1
+	//		}
+	//
+	//		if times != 0
+	//		{
+	//			div +=° ([Limb(times)] *° divAdd)
+	//		}
+	//
+	//		divAdd >>=° 3
+	//		acc >>=° 3
+	//	}
+	//	return div
 }
 
 /*\
@@ -1539,7 +1887,7 @@ public func /(lhs: BInt, rhs:BInt) -> BInt
 	return BInt(sign: sign, limbs: limbs)
 }
 
-public func /=(inout lhs: BInt, rhs: BInt) { lhs = lhs / rhs }
+public func /=(lhs: inout BInt, rhs: BInt) { lhs = lhs / rhs }
 
 /*\
 /**\
@@ -1568,7 +1916,7 @@ a < b <==> !(a >= b)
 a <= b <==> !(a > b)
 */
 
-infix operator <° {}
+infix operator <°
 private func <°(lhs: Limbs, rhs: Limbs) -> Bool
 {
 	if lhs.count != rhs.count
@@ -1576,13 +1924,14 @@ private func <°(lhs: Limbs, rhs: Limbs) -> Bool
 		return lhs.count < rhs.count
 	}
 
-	for i in (lhs.count - 1).stride(through: 0, by: -1)
+	var i = lhs.count - 1
+	while i >= 0
 	{
-		if lhs[i] != rhs[i]
-		{
-			return lhs[i] < rhs[i]
-		}
+		if lhs[i] != rhs[i] { return lhs[i] < rhs[i] }
+
+		i -= 1
 	}
+
 
 	return false // case equal
 }
@@ -1609,11 +1958,19 @@ public func ==(lhs: BInt, rhs: BInt) -> Bool
 	return lhs.limbs == rhs.limbs
 }
 
+public func ==(lhs: Int, rhs: BInt) -> Bool { return BInt(lhs) == rhs }
+public func ==(lhs: BInt, rhs: Int) -> Bool { return lhs == BInt(rhs) }
+
+
 public func !=(lhs: BInt, rhs: BInt) -> Bool
 {
 	if lhs.sign != rhs.sign { return true }
 	return lhs.limbs != rhs.limbs
 }
+
+public func !=(lhs: Int, rhs: BInt) -> Bool { return BInt(lhs) != rhs }
+public func !=(lhs: BInt, rhs: Int) -> Bool { return lhs != BInt(rhs) }
+
 
 public func <(lhs: BInt, rhs: BInt) -> Bool
 {
@@ -1623,9 +1980,35 @@ public func <(lhs: BInt, rhs: BInt) -> Bool
 	return lhs.limbs <° rhs.limbs
 }
 
-public func  >(lhs: BInt, rhs: BInt) -> Bool { return rhs < lhs }
-public func <=(lhs: BInt, rhs: BInt) -> Bool { return !(rhs < lhs) }
-public func >=(lhs: BInt, rhs: BInt) -> Bool { return !(lhs < rhs) }
+public func <(lhs: Int, rhs: BInt) -> Bool { return BInt(lhs) < rhs }
+public func <(lhs: BInt, rhs: Int) -> Bool { return lhs < BInt(rhs) }
+
+
+public func >(lhs: BInt, rhs: BInt) -> Bool
+{
+	return rhs < lhs
+}
+
+public func >(lhs: Int, rhs: BInt) -> Bool { return BInt(lhs) > rhs }
+public func >(lhs: BInt, rhs: Int) -> Bool { return lhs > BInt(rhs) }
+
+
+public func <=(lhs: BInt, rhs: BInt) -> Bool
+{
+	return !(rhs < lhs)
+}
+
+public func <=(lhs: Int, rhs: BInt) -> Bool { return BInt(lhs) <= rhs }
+public func <=(lhs: BInt, rhs: Int) -> Bool { return lhs <= BInt(rhs) }
+
+
+public func >=(lhs: BInt, rhs: BInt) -> Bool
+{
+	return !(lhs < rhs)
+}
+
+public func >=(lhs: Int, rhs: BInt) -> Bool { return BInt(lhs) >= rhs }
+public func >=(lhs: BInt, rhs: Int) -> Bool { return lhs >= BInt(rhs) }
 
 /*\
 /**\
@@ -1649,7 +2032,7 @@ public func >=(lhs: BInt, rhs: BInt) -> Bool { return !(lhs < rhs) }
 \**/
 \*/
 
-private func factRec(left: Int, _ right: Int) -> Limbs
+private func factRec(_ left: Int, _ right: Int) -> Limbs
 {
 	if left >= right - 1
 	{
@@ -1659,15 +2042,51 @@ private func factRec(left: Int, _ right: Int) -> Limbs
 	let mid = (left + right) / 2
 
 	return factRec(left, mid) *° factRec(mid, right)
-
 }
 
-public func fact(n: Int) -> BInt
+private func factPrime(_ n: Int) -> Limbs
 {
+	if n < 3 { return [Limb(n)] }
+
+	var primeOccurs = [Int : Int]()
+
+
+	benchmarkPrint(title: "dict ops")
+	{
+		for i in 2...n
+		{
+			let factors = factorize(i)
+
+			for factor in factors
+			{
+				if primeOccurs[factor] != nil
+				{
+					primeOccurs[factor]! += 1
+				}
+				else
+				{
+					primeOccurs[factor] = 1
+				}
+			}
+		}
+	}
+
+	var res: Limbs = [1]
+	for (prime, count) in primeOccurs
+	{
+		res = res *° ([Limb(prime)] ^° count)
+	}
+
+	return res
+}
+
+public func fact(_ n: Int) -> BInt
+{
+	//return BInt(limbs: factPrime(n))
 	return BInt(limbs: factRec(1, n))
 }
 
-private func lucLehMod(n:Int, _ mod: Limbs) -> Limbs
+private func lucLehMod(_ n:Int, _ mod: Limbs) -> Limbs
 {
 	if n == 1 { return [4] %° mod }
 
@@ -1681,7 +2100,7 @@ private func lucLehMod(n:Int, _ mod: Limbs) -> Limbs
 	return res
 }
 
-public func isMersenne(exp: Int) -> Bool
+public func isMersenne(_ exp: Int) -> Bool
 {
 	if exp == 1 { return false }
 
@@ -1691,7 +2110,7 @@ public func isMersenne(exp: Int) -> Bool
 	return luc == [0]
 }
 
-public func getMersennes(toExp: Int) -> [Int]
+public func getMersennes(_ toExp: Int) -> [Int]
 {
 	var expList = [3]
 
@@ -1716,14 +2135,14 @@ public func getMersennes(toExp: Int) -> [Int]
 	return res
 }
 
-private func gcdFactors(lhs: Limbs, rhs: Limbs) -> (ax: Limbs, bx: Limbs)
+private func gcdFactors(_ lhs: Limbs, rhs: Limbs) -> (ax: Limbs, bx: Limbs)
 {
 	let gcd = euclid(lhs, rhs)
 
 	return (lhs /° gcd, rhs /° gcd)
 }
 
-private func euclid(a: Limbs, _ b: Limbs) -> Limbs
+private func euclid(_ a: Limbs, _ b: Limbs) -> Limbs
 {
 	var a = a
 	var b = b
@@ -1735,22 +2154,72 @@ private func euclid(a: Limbs, _ b: Limbs) -> Limbs
 	return a
 }
 
-public func gcd(a:BInt, _ b:BInt) -> BInt
+public func steinGcd(_ a: BInt, _ b: BInt) -> BInt
 {
-	return BInt(limbs: euclid(a.limbs, b.limbs))
+	if a.isZero() { return b }
+
+	var a = a
+	var b = b
+	var k = 0
+
+	while a.isEven() && b.isEven()
+	{
+		a = a >> 1
+		b = b >> 1
+		k += 1
+	}
+
+	var t = BInt(0)
+
+
+	if a.isOdd()
+	{
+		t = -b
+	}
+	else
+	{
+		t = a
+	}
+
+	while !t.isZero()
+	{
+		while t.isEven()
+		{
+			t = t >> 1
+		}
+
+		if  t > 0
+		{
+			a = t
+		}
+		else
+		{
+			b = -t
+		}
+
+		t = a - b
+	}
+
+	return a << k
 }
 
-private func lcmPositive(a: Limbs, _ b: Limbs) -> Limbs
+public func gcd(_ a: BInt, _ b: BInt) -> BInt
+{
+	let limbRes = euclid(a.limbs, b.limbs)
+	return BInt(sign: a.sign && limbRes != [0], limbs: limbRes)
+}
+
+private func lcmPositive(_ a: Limbs, _ b: Limbs) -> Limbs
 {
 	return (a /° euclid(a, b)) *° b
 }
 
-public func lcm(a:BInt, _ b:BInt) -> BInt
+public func lcm(_ a:BInt, _ b:BInt) -> BInt
 {
 	return BInt(limbs: lcmPositive(a.limbs, b.limbs))
 }
 
-public func fib(n:Int) -> BInt
+public func fib(_ n:Int) -> BInt
 {
 	var a: Limbs = [0]
 	var b: Limbs = [1]
@@ -1762,22 +2231,21 @@ public func fib(n:Int) -> BInt
 		a = t
 	}
 
-	print("Fib count: \(b.count)")
 	return BInt(limbs: b)
 }
 
-public func permutations(n: Int, _ k: Int) -> BInt
+public func permutations(_ n: Int, _ k: Int) -> BInt
 {
 	return BInt(limbs: factRec(n - k, n))
 }
 
-public func combinations(n: Int, _ k: Int) -> BInt
+public func combinations(_ n: Int, _ k: Int) -> BInt
 {
 	return BInt(limbs: factRec(n - k, n) /° factRec(1, k))
 }
 
 /// Super fast printing of factorials to n!
-func printFactBase10By18(n: Int)
+func printFactBase10By18(_ n: Int)
 {
 	var f: Digits = [1]
 
@@ -1789,7 +2257,7 @@ func printFactBase10By18(n: Int)
 	}
 }
 
-func printFactBase2By64(n: Int)
+func printFactBase2By64(_ n: Int)
 {
 	var f: Limbs = [1]
 
@@ -1803,7 +2271,7 @@ func printFactBase2By64(n: Int)
 	}
 }
 
-private func factRecbd(left: Int, _ right: Int) -> Digits
+private func factRecbd(_ left: Int, _ right: Int) -> Digits
 {
 	if left < right - 1
 	{
@@ -1817,10 +2285,67 @@ private func factRecbd(left: Int, _ right: Int) -> Digits
 	}
 }
 
-public func factbd(n: Int) -> [UInt64]
+public func factbd(_ n: Int) -> [UInt64]
 {
 	return factRecbd(1, n)
 }
+
+public func randomBInt(bits n: Int) -> BInt
+{
+	let limbs = n >> 6
+	let singleBits = n % 64
+
+	var res = Limbs(repeating: 0, count: Int(limbs))
+
+	for i in 0..<Int(limbs)
+	{
+		res[i] = Limb(arc4random_uniform(UInt32.max)) |
+			(Limb(arc4random_uniform(UInt32.max)) << 32)
+	}
+
+	if singleBits > 0
+	{
+		var last: Limb
+
+		if singleBits < 32
+		{
+			last = Limb(arc4random_uniform(UInt32(2 ** singleBits)))
+
+		}
+		else if singleBits == 32
+		{
+			last = Limb(arc4random_uniform(UInt32.max))
+		}
+		else
+		{
+			last = Limb(arc4random_uniform(UInt32.max)) |
+				(Limb(arc4random_uniform(UInt32(2 ** (singleBits - 32)))) << 32)
+		}
+
+		res.append(last)
+	}
+
+	return BInt(limbs: res)
+}
+
+func isPrime(_ n: BInt) -> Bool
+{
+	if n <= 3 { return n > 1 }
+
+	if ((n % 2) == 0) || ((n % 3) == 0) { return false }
+
+	var i = 5
+	while (i * i) <= n
+	{
+		if ((n % i) == 0) || ((n % (i + 2)) == 0)
+		{
+			return false
+		}
+		i += 6
+	}
+	return true
+}
+
 
 
 
@@ -1875,8 +2400,8 @@ public func factbd(n: Int) -> [UInt64]
 \*/
 
 public struct BDouble:
-	IntegerLiteralConvertible,
-	FloatLiteralConvertible,
+	ExpressibleByIntegerLiteral,
+	ExpressibleByFloatLiteral,
 	CustomStringConvertible,
 	Comparable,
 	Equatable,
@@ -1898,10 +2423,10 @@ public struct BDouble:
 
 	init(sign: Bool, numerator: Limbs, denominator: Limbs)
 	{
-		if denominator == [0] || denominator == [] || numerator == []
-		{
-			forceException("Denominator can't be zero and limbs can't be []")
-		}
+		precondition(
+			denominator != [0] && denominator != [] && numerator != [],
+			"Denominator can't be zero and limbs can't be []"
+		)
 
 		self.sign = sign
 		self.numerator = numerator
@@ -1942,13 +2467,13 @@ public struct BDouble:
 	{
 		let nStr = String(d)
 
-		if let exp = nStr["e"]
+		if let exp = nStr[Character("e")]
 		{
 			let beforeExp = String(nStr[0..<exp].characters.filter{ $0 != "." })
 			var afterExp = nStr[(exp + 1)..<nStr.characters.count]
 			var sign = false
 
-			if let neg = afterExp["-"]
+			if let neg = afterExp[Character("-")]
 			{
 				afterExp = afterExp[(neg + 1)..<afterExp.characters.count]
 				sign = true
@@ -1956,13 +2481,13 @@ public struct BDouble:
 
 			if sign
 			{
-				let den = ["1"] + [Character](count: Int(afterExp)!, repeatedValue: "0")
+				let den = ["1"] + [Character](repeating: "0", count: Int(afterExp)!)
 				self.init(beforeExp, over: String(den))
 				return
 			}
 			else
 			{
-				let num = beforeExp + String([Character](count: Int(afterExp)!, repeatedValue: "0"))
+				let num = beforeExp + String([Character](repeating: "0", count: Int(afterExp)!))
 				self.init(num, over: "1")
 				return
 			}
@@ -1979,7 +2504,7 @@ public struct BDouble:
 		}
 		else
 		{
-			let den = ["1"] + [Character](count: afterPoint.characters.count, repeatedValue: "0")
+			let den = ["1"] + [Character](repeating: "0", count: afterPoint.characters.count)
 			self.init(beforePoint + afterPoint, over: String(den))
 		}
 	}
@@ -1995,16 +2520,16 @@ public struct BDouble:
 	}
 
 	public var description: String
-		{
-			let numStr = limbsToString(self.numerator)
-			let denStr = limbsToString(self.denominator)
+	{
+		let numStr = limbsToString(self.numerator)
+		let denStr = limbsToString(self.denominator)
 
-			return (self.sign ? "-" : "") + numStr + (denStr == "1" ? "" : "/" + denStr)
+		return (self.sign ? "-" : "") + numStr + (denStr == "1" ? "" : "/" + denStr)
 	}
 
 	public var hashValue: Int
-		{
-			return "\(self.sign)\(self.numerator)\(self.denominator)".hashValue
+	{
+		return "\(self.sign)\(self.numerator)\(self.denominator)".hashValue
 	}
 
 	public func rawData() -> (sign: Bool, numerator: [UInt64], denominator: [UInt64])
@@ -2034,7 +2559,7 @@ public struct BDouble:
 
 		let gcd = euclid(self.numerator, self.denominator)
 
-		if [1] <° gcd
+		if gcd[0] > 1 || gcd.count > 1
 		{
 			self.numerator = self.numerator /° gcd
 			self.denominator = self.denominator /° gcd
@@ -2153,97 +2678,11 @@ public func -(lhs: BDouble, rhs: BDouble) -> BDouble
 	return lhs + -rhs
 }
 
-public func abs(lhs: BDouble) -> BDouble
+public func abs(_ lhs: BDouble) -> BDouble
 {
 	return BDouble(
 		sign: false,
 		numerator: lhs.numerator,
 		denominator: lhs.denominator
 	)
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*\
-/**\
-/***\
-/****\
-/*****\
-/******\
-/*******\
-/********\
-/*********\
-/**********\
-//MARK:    - Lookup storage for recurring calculations
-\**********/
-\*********/
-\********/
-\*******/
-\******/
-\*****/
-\****/
-\***/
-\**/
-\*/
-
-private struct BStorage
-{
-	// Powers of 2^64 as Digits
-	private static var x_2_64_Digits_mem: [Digits] = [[1]]
-	private static var zeros_mem = Dictionary<Int, [UInt64]>()
-
-	private static func zeros(i: Int) -> [UInt64]
-	{
-		if zeros_mem[i] == nil
-		{
-			zeros_mem[i] = [UInt64](count: i, repeatedValue: 0)
-		}
-
-		return zeros_mem[i]!
-	}
-
-	private static func x_2_64_Digits(i: Int) -> Digits
-	{
-		if i < BStorage.x_2_64_Digits_mem.count
-		{
-			return BStorage.x_2_64_Digits_mem[i]
-		}
-		
-		var t: Digits = [0]
-		
-		repeat
-		{
-			mulDigits(addInto: &t, BStorage.x_2_64_Digits_mem.last!, [446_744_073_709_551_616, 18])
-			
-			BStorage.x_2_64_Digits_mem.append(t)
-		}
-			while i >= BStorage.x_2_64_Digits_mem.count
-		
-		return BStorage.x_2_64_Digits_mem[i]
-	}
 }
