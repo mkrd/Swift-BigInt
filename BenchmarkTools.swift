@@ -1,30 +1,14 @@
+/*
+	————————————————————————————————————————————————————————————
+	BenchmarkTools.swift
+	————————————————————————————————————————————————————————————
+	Created by Marcel Kröker on 03.04.15.
+	Copyright (c) 2015 Blubyte. All rights reserved.
+*/
+
 import Foundation
-import Cocoa
 
-
-/*\
-/**\
-/***\
-/****\
-/*****\
-/******\
-/*******\
-/********\
-/*********\
-/**********\
-//MARK:    - Benchmark tools
-\**********/
-\*********/
-\********/
-\*******/
-\******/
-\*****/
-\****/
-\***/
-\**/
-\*/
-
-private func performanceInNs(call: () -> ()) -> Int
+private func durationNS(_ call: () -> ()) -> Int
 {
 	var start = UInt64()
 	var end = UInt64()
@@ -43,7 +27,7 @@ private func performanceInNs(call: () -> ()) -> Int
 	return elapsedNano
 }
 
-private func adjustPrecision(ns: Int, toPrecision: String) -> Int
+private func adjustPrecision(_ ns: Int, toPrecision: String) -> Int
 {
 	switch toPrecision
 	{
@@ -58,28 +42,72 @@ private func adjustPrecision(ns: Int, toPrecision: String) -> Int
 	}
 }
 
-func benchmark(precision: String = "ms", _ call: () -> ()) -> Int
+/**
+	Measure execution time of trailing closure.
+
+	- Parameter precision: Precision of measurement. Possible
+	values:
+		- "ns": nanoseconds
+		- "us": microseconds
+		- "ms" or omitted parameter: milliseconds
+		- "s" or invalid input: seconds
+*/
+public func benchmark(_ precision: String = "ms", _ call: () -> ()) -> Int
 {
 	// empty call duration to subtract
-	let emptyCallNano = performanceInNs({})
-	let elapsedNano = performanceInNs(call)
+	let emptyCallNano = durationNS({})
+	let elapsedNano = durationNS(call)
 
 	let elapsedCorrected = elapsedNano < emptyCallNano ? 0 : elapsedNano - emptyCallNano
 
 	return adjustPrecision(elapsedCorrected, toPrecision: precision)
 }
 
-func benchmarkPrint(precision: String = "ms", title: String, _ call: () -> ())
+/**
+	Measure execution time of trailing closure, and print result
+	with description into the console.
+
+	- Parameter precision: Precision of measurement. Possible
+	values:
+		- "ns": nanoseconds
+		- "us": microseconds
+		- "ms" or omitted parameter: milliseconds
+		- "s" or invalid input: seconds
+
+	- Parameter title: Description of benchmark.
+*/
+public func benchmarkPrint(_ precision: String = "ms", title: String, _ call: () -> ())
 {
 	print(title + ": \(benchmark(precision, call))" + precision)
 }
 
-func benchmarkAvg(precision: String = "ms",
+
+/**
+	Measure the average execution time of trailing closure.
+
+	- Parameter precision: Precision of measurement. Possible
+	values:
+		- "ns": nanoseconds
+		- "us": microseconds
+		- "ms" or omitted parameter: milliseconds
+		- "s" or invalid input: seconds
+
+	- Parameter title: Description of benchmark.
+
+	- Parameter times: Amount of executions.
+	Default when parameter is omitted: 100.
+
+	- Returns: Minimum, Average and Maximum execution time of
+	benchmarks as 3-tuple.
+*/
+public func benchmarkAvg(
+	_ precision: String = "ms",
 	title: String = "",
-	times: Int = 100,
-	_ call: () -> ()) -> (min: Int, avg: Int, max: Int)
+	times: Int = 10,
+	_ call: () -> ())
+	-> (min: Int, avg: Int, max: Int)
 {
-	let emptyCallsNano = performanceInNs(
+	let emptyCallsNano = durationNS(
 	{
 		for _ in 0..<times {}
 	})
@@ -91,11 +119,10 @@ func benchmarkAvg(precision: String = "ms",
 
 	for _ in 0..<times
 	{
-		let duration = performanceInNs(call)
+		let duration = durationNS(call)
 
 		if duration < min { min = duration }
 		if duration > max { max = duration }
-
 
 		elapsedNanoCombined += duration
 	}
