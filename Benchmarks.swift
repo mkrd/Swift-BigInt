@@ -8,83 +8,16 @@
 
 func benchmarkBInt()
 {
-	let Matrices      = false,
-	BdoubleConverging = false,
+	let
 	Faculty           = true,
 	Exponentiation    = true,
 	Fibonnacci        = true,
 	BIntAsString1     = true,
-	BIntAsString2     = true,
 	MersenneTo128     = true,
 	MersenneTo196     = true,
 	PermAndComb       = true,
-	BIntFromString    = true
-
-	if Matrices
-	{
-		var A = Matrix<BDouble>(
-			//	[[8, 10000],[50, -60]]
-			[[2,5,-2],
-			 [3,5,6],
-			 [-55,4,3]]
-			//	//[5,4,3]]
-		)
-
-		let G12 = Matrix<BDouble>([
-			[0.8,	-0.6,	0.0],
-			[0.6,	0.8,	0.0],
-			[0.0,	0.0,	1.0]
-			])
-
-
-		let al = Matrix<BDouble>([4, -3, 1])
-
-		print(G12 * al)
-
-		let (L, R, P, D) = LRDecompPivEquil(A)
-
-		print(solveGauss(A, [2.0, -4.0, 15.0]))
-		print(solveLR(A, [2.0, -4.0, 15.0]))
-		print(solveLRPD(A, [2.0, -4.0, 15.0]))
-
-		print("P L R")
-		print(P)
-		print(L)
-		print(R)
-
-		print("LR == PDA")
-		print(L * R)
-		print(P * D * A)
-
-
-		benchmarkPrint(title: "Matix ^ 100")
-		{
-			var R = A
-			for _ in 0...100
-			{
-				R = R * A
-			}
-		}
-	}
-
-	if BdoubleConverging
-	{
-		benchmarkPrint(title: "BDouble converging to 2")
-		{
-			// BDouble converging to 2 Debug Mode
-			// 06.02.16: 3351ms
-
-			var res: BDouble = 0
-			var den: BInt = 1
-
-			for _ in 0..<1000
-			{
-				res = res + BDouble(BInt(1), over: den)
-				den = den * BInt(2)
-
-			}
-		}
-	}
+	BIntFromString    = true,
+	BdoubleConverging = true
 
 	if Faculty
 	{
@@ -112,7 +45,7 @@ func benchmarkBInt()
 			// 16.08.16: 1759ms
 			// 20.08.16: 1367ms
 
-			let a = fact(25_000)
+			_ = fact(25_000)
 		}
 	}
 
@@ -133,7 +66,7 @@ func benchmarkBInt()
 			// 16.08.16: 1154ms
 			// 20.08.16: 922ms
 
-			let a = BInt(10) ^ 120_000
+			_ = BInt(10) ^ 120_000
 		}
 	}
 
@@ -260,8 +193,8 @@ func benchmarkBInt()
 			// 07.03.16: 905ms
 			// 07.03.16: 483ms
 
-			let a = permutations(8000, 4000)
-			let b = combinations(8000, 4000)
+			_ = permutations(8000, 4000)
+			_ = combinations(8000, 4000)
 		}
 	}
 
@@ -298,4 +231,22 @@ func benchmarkBInt()
 		assert(asStr == fromStr.description)
 	}
 
+	if BdoubleConverging
+	{
+		benchmarkPrint(title: "BDouble converging to 2")
+		{
+			// BDouble converging to 2 Debug Mode
+			// 06.02.16: 3351ms
+
+			var res: BDouble = 0
+			var den: BInt = 1
+
+			for _ in 0..<1000
+			{
+				res = res + BDouble(BInt(1), over: den)
+				den = den * BInt(2)
+
+			}
+		}
+	}
 }
