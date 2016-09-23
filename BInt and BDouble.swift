@@ -2686,3 +2686,70 @@ public func abs(_ lhs: BDouble) -> BDouble
 		denominator: lhs.denominator
 	)
 }
+
+/*\
+/**\
+/***\
+/****\
+/*****\
+/******\
+/*******\
+/********\
+/*********\
+/**********\
+//MARK:    - Useful extenstions to the Swift language (required)
+\**********/
+\*********/
+\********/
+\*******/
+\******/
+\*****/
+\****/
+\***/
+\**/
+\*/
+
+public extension String
+{
+	/// Returns character at index i as String.
+	subscript(i: Int) -> String
+	{
+		return String(self[index(startIndex, offsetBy: i)])
+	}
+
+	/// Returns characters in range as string.
+	subscript(r: Range<Int>) -> String
+	{
+		let start = index(startIndex, offsetBy: r.lowerBound)
+		let end = index(start, offsetBy: r.upperBound - r.lowerBound)
+
+		return self[start..<end]
+	}
+
+	/// If possible, returns index of first ocurrence of char.
+	subscript(char: Character) -> Int?
+	{
+		if let idx = self.characters.index(of: char)
+		{
+			return self.characters.distance(from: self.startIndex, to: idx)
+		}
+		return nil
+	}
+}
+
+infix operator **
+public extension Int
+{
+	static func **(lhs: Int, rhs: Int) -> Int
+	{
+		if rhs == 0 { return 1 }
+		var res = lhs
+
+		for _ in 0..<(rhs - 1)
+		{
+			res *= lhs
+		}
+
+		return res
+	}
+}
