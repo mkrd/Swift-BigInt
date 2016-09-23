@@ -1,5 +1,5 @@
 # BInt and BDouble
-This is a lightweight, and easy-to-use, multiple precision arithmetric library for Swift. It supports whole Numbers (BInt) and Fractions (BDouble) with most of the common math operators like addition, subtraction, multiplication, exponentiation, modulus and division. Some optimized math functions like factorial or gcd are also implemented. So more details, continue reading.
+BInt and BDouble is a lightweight, and easy-to-use, arbitrary precision arithmetric library for Swift 3. It supports whole Numbers (BInt) and Fractions (BDouble) with most of the common math operators like addition, subtraction, multiplication, exponentiation, modulus and division. Some optimized math functions like factorial or gcd are also implemented. So more details, please continue reading.
 
 Some benchmarks are located in Benchmarks.swift, note that these are more than 10 times faster in release mode.
 
@@ -7,6 +7,7 @@ Some benchmarks are located in Benchmarks.swift, note that these are more than 1
 
 ## Installation
 Simply drag all .swift file into your project!
+
 That's it ;)
 
 
@@ -165,7 +166,6 @@ a <= b <==> !(a > b)
 
 ## About performance
 BInt about twice as fast as mini-gmp, as of now (not counting the normal gmp, because it needs to be installed and is not portable). For example, BInt can add numbers about 2 times faster than GMP (272ms vs 530ms for fib(100,000)), and multiply more than 2 times faster. When given the task of calculating and printing factorials successively, BInt performs significantly better than GMP. In addition, GMP is significantly harder to use, especially in combination with Swift, while BInt offers an intuitive interface.
-I'm considering a new method of storing limbs in base 10^18 instead of 2^64. This adds memory overhead and weaker raw calculation performance, but makes printing several orders of magnitude faster than GMP. For example, my test-implementation with base 10^18 can calculate and print 1! to 20000! in about 5 minutes. GMP can only reach 5680! in the same timeframe.
 
 
 
