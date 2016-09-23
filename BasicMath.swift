@@ -1,29 +1,30 @@
+/*
+	————————————————————————————————————————————————————————————
+	BasicMath.swift
+	————————————————————————————————————————————————————————————
+	Created by Marcel Kröker on 03.04.15.
+	Copyright (c) 2015 Blubyte. All rights reserved.
+*/
+
 import Foundation
-import Cocoa
 
-infix operator ^ { associativity left precedence 150 }
-func ^(b: Double, e: Int) -> Double
-{
-	return pow(b, Double(e))
-}
-
-func binomial(n: Int, _ k: Int) -> Int
+func binomial(_ n: Int, _ k: Int) -> Int
 {
 	return k == 0 ? 1 : n == 0 ? 0 : binomial(n - 1, k) + binomial(n - 1, k - 1)
 }
 
-func kronecker(i: Int, j: Int) -> Int
+func kronecker(_ i: Int, j: Int) -> Int
 {
 	return i == j ? 1 : 0
 }
 
-func numlen(n: Int) -> Int
+func numlen(_ n: Int) -> Int
 {
 	if n == 0 { return 1 }
 	return Int(log10(Double(abs(n)))) + 1
 }
 
-func isPrime(n: Int) -> Bool
+func isPrime(_ n: Int) -> Bool
 {
 	if n <= 3 { return n > 1 }
 
@@ -44,9 +45,9 @@ func isPrime(n: Int) -> Bool
 /**
 	Returns the n-th prime number.
 */
-func getPrime(n: Int) -> Int
+func getPrime(_ n: Int) -> Int
 {
-	if n < 1 { forceException("There is no 0-th prime number") }
+	precondition(n > 0, "There is no 0-th prime number")
 
 	var prime = 2
 	var primeCount = 1
@@ -55,7 +56,6 @@ func getPrime(n: Int) -> Int
 	{
 		prime += 1
 		if isPrime(prime) { primeCount += 1 }
-
 	}
 
 	return prime
@@ -64,22 +64,22 @@ func getPrime(n: Int) -> Int
 /**
 	Works with the Sieve of Eratosthenes.
 */
-public func primesTo(n: Int) -> [Int]
+public func primesTo(_ n: Int) -> [Int]
 {
 	if n < 2 { return [] }
 
-	var A = BitField(count: n + 1, repeated: true)
+	var A = BitField(repeating: true, size: n)
 
 	var i = 2
 	while i * i <= n
 	{
-		if A.get(i)
+		if A[i - 1]
 		{
 			var j = i * i
 			var c = 1
 			while j <= n
 			{
-				A.set(j, b: false)
+				A[j - 1] = false
 				j = i * (i + c)
 				c += 1
 			}
@@ -92,31 +92,41 @@ public func primesTo(n: Int) -> [Int]
 	i = 3
 	while i <= n
 	{
-		if A.get(i) { res.append(i) }
+		if A[i - 1] { res.append(i) }
 		i += 2
 	}
 
 	return res
 }
 
-// Returns random Int within range
-func random(range: Range<Int>) -> Int
+func nextPrime( _ n: inout Int)
 {
-    let offset = abs(range.startIndex)
+	repeat
+	{
+		n += 1
+	}
+	while !isPrime(n)
+}
+
+// Returns random Int within range
+func random(_ range: Range<Int>) -> Int
+{
+    let offset = abs(range.lowerBound)
     
-    let mini = UInt32(range.startIndex + offset)
-    let maxi = UInt32(range.endIndex   + offset)
+    let mini = UInt32(range.lowerBound + offset)
+    let maxi = UInt32(range.upperBound + offset)
     
     return Int(mini + arc4random_uniform(maxi - mini)) - offset
 }
 
 // Returns array filled with n random Ints within range
-func random(range: Range<Int>, n: Int) -> [Int]
+func random(_ range: Range<Int>, _ count: Int) -> [Int]
 {
-    var res = [Int]()
-    for _ in 0..<n
+	var res = [Int](repeating: 0, count: count)
+
+    for i in 0..<count
     {
-        res.append(random(range))
+        res[i] = random(range)
     }
     return res
 }
@@ -124,35 +134,48 @@ func random(range: Range<Int>, n: Int) -> [Int]
 enum LetterSet
 {
 	case lowerCase
-	case UpperCase
-	case Numbers
-	case SpecialSymbols
-	case All
-
+	case upperCase
+	case numbers
+	case specialSymbols
+	case all
 }
 
-func randomString(length: Int, letterSet: LetterSet...) -> String
+/**
+	Creates a random String from one or multiple sets of
+	letters.
+
+	- Parameter length: Number of characters in random string.
+
+	- Parameter letterSet: Specify desired letters as variadic
+	parameters:
+		- .All
+		- .Numbers
+		- .LowerCase
+		- .UpperCase
+		- .SpecialSymbols
+*/
+func randomString(_ length: Int, letterSet: LetterSet...) -> String
 {
 	var letters = [String]()
-	var ranges = [Range<Int>]()
+	var ranges = [CountableClosedRange<Int>]()
 
 	for ele in letterSet
 	{
 		switch ele
 		{
-		case .All:
+		case .all:
 			ranges.append(33...126)
 
-		case .Numbers:
+		case .numbers:
 			ranges.append(48...57)
 
 		case .lowerCase:
 			ranges.append(97...122)
 
-		case .UpperCase:
+		case .upperCase:
 			ranges.append(65...90)
 
-		case .SpecialSymbols:
+		case .specialSymbols:
 			ranges += [33...47, 58...64, 91...96, 123...126]
 		}
 	}
@@ -161,7 +184,7 @@ func randomString(length: Int, letterSet: LetterSet...) -> String
 	{
 		for i in range
 		{
-			letters.append(String(UnicodeScalar(i)))
+			letters.append(String(describing: UnicodeScalar(i)))
 		}
 	}
 
@@ -173,138 +196,41 @@ func randomString(length: Int, letterSet: LetterSet...) -> String
 	}
 	
 	return res
-} // returns random String with length len
-
-func fibIter(x: Double) -> Double // Iterative Fibonacci
-{
-    let s5 = sqrt(5.0)
-    
-    let p1 = 1.0 / s5
-    let p2 = (1 + s5) / 2.0
-    let p3 = (1 - s5) / 2.0
-    
-    return p1 * (pow(p2, x) - pow(p3, x))
 }
 
-
-func collatz(n: Int) -> Int
-{
-	var n = n
-    var heap = [0,0]
-    
-    let s = n
-    var runs = 0
-    
-    while n > 1
-    {
-        if n < s
-        {
-            let new = runs + heap[n]
-            heap.append(new)
-            return new
-        }
-        
-        runs += 1
-        
-        if n % 2 == 0
-        {
-            let nn = n / 2
-            
-            n = nn
-        }
-        else
-        {
-            let nn = (3 * n) + 1
-            
-            n = nn
-        }
-    }
-    
-    if heap.count <= s
-    {
-        heap.append(runs)
-    }
-    
-    return runs
-}
-
-func collatzSimple(n: Int) -> Int
-{
-	var n = n
-    var runs = 0
-
-    while n > 1
-    {
-        runs += 1
-        if n % 2 == 0
-        {
-            let nn = n / 2
-            n = nn
-        }
-        else
-        {
-            let nn = (3 * n) + 1
-            n = nn
-        }
-    }
-    return runs
-}
-
-func col(n: Int)
-{
-	var provenBound = 2 // 4,2,1
-
-
-	while provenBound < n
-	{
-		var index = provenBound + 1
-
-		index = (3 * index) + 1
-		index >>= 1
-
-		while index > provenBound
-		{
-			if index & 1 == 0
-			{
-				index >>= 1
-			}
-			else
-			{
-				index = (3 * index) + 1
-			}
-		}
-		provenBound += 2
-
-	}
-	print(provenBound)	
-}
-
-func monteCarloPi(n: Int) -> Double
-{
-    var dotsInCircle = 0
-    
-    for _ in 1...n
-    {
-        if sqrt(
-			pow(  Double(arc4random()) / Double(UINT32_MAX), 2.0)
-			+ pow(Double(arc4random()) / Double(UINT32_MAX), 2.0)
-			)
-			<= 1.0
-        {
-            dotsInCircle += 1
-        }
-    }
-    
-    return (Double(dotsInCircle * 4) / Double(n))
-}
-
-func gcd(a: Int, _ b: Int) -> Int
+func gcd(_ a: Int, _ b: Int) -> Int
 {
     if b == 0 { return a }
     return gcd(b, a % b)
 }
 
-func lcm(a: Int, _ b: Int) -> Int
+func lcm(_ a: Int, _ b: Int) -> Int
 {
     return (a / gcd(a, b)) * b
+}
+
+func factorize(_ n: Int) -> [Int]
+{
+	if isPrime(n) || n == 1 { return [n] }
+
+	var n = n
+	var res = [Int]()
+	var nthPrime = 1
+
+	while true
+	{
+		nextPrime(&nthPrime)
+
+		while n % nthPrime == 0
+		{
+			n /= nthPrime
+			res.append(nthPrime)
+
+			if isPrime(n)
+			{
+				res.append(n)
+				return res
+			}
+		}
+	}
 }
