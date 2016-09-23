@@ -68,7 +68,7 @@ public func primesTo(_ n: Int) -> [Int]
 {
 	if n < 2 { return [] }
 
-	var A = BitField(repeating: true, size: n)
+	var A = [Bool](repeating: true, count: n)
 
 	var i = 2
 	while i * i <= n
