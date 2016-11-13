@@ -1,9 +1,9 @@
 /*
-	————————————————————————————————————————————————————————————
-	BenchmarkTools.swift
-	————————————————————————————————————————————————————————————
+	————————————————————————————————————————————————————————————————————————————
+	MG Benchmark Tools.swift
+	————————————————————————————————————————————————————————————————————————————
 	Created by Marcel Kröker on 03.04.15.
-	Copyright (c) 2015 Blubyte. All rights reserved.
+	Copyright (c) 2016 Blubyte. All rights reserved.
 */
 
 import Foundation
@@ -58,7 +58,9 @@ public func benchmark(_ precision: String = "ms", _ call: () -> ()) -> Int
 	let emptyCallNano = durationNS({})
 	let elapsedNano = durationNS(call)
 
-	let elapsedCorrected = elapsedNano < emptyCallNano ? 0 : elapsedNano - emptyCallNano
+	let elapsedCorrected = elapsedNano >= emptyCallNano
+		? elapsedNano - emptyCallNano
+		: 0
 
 	return adjustPrecision(elapsedCorrected, toPrecision: precision)
 }
@@ -127,7 +129,9 @@ public func benchmarkAvg(
 		elapsedNanoCombined += duration
 	}
 
-	let elapsedCorrected = elapsedNanoCombined < emptyCallsNano ? 0 : elapsedNanoCombined - emptyCallsNano
+	let elapsedCorrected = elapsedNanoCombined >= emptyCallsNano
+		? elapsedNanoCombined - emptyCallsNano
+		: 0
 
 	return (adjustPrecision(min, toPrecision: precision),
 		    adjustPrecision(elapsedCorrected / times, toPrecision: precision),
