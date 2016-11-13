@@ -19,7 +19,6 @@ private func convert(number: String, fromBase: Int, toBase: Int) -> String
 		"Y", "Z"
 	]
 
-
 	var res = ""
 	var number = number
 
