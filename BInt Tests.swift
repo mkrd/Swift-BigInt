@@ -1,42 +1,165 @@
 /*
 	————————————————————————————————————————————————————————————————————————————
-	BInt Tests.swift
+	SMP Test Module.swift
 	————————————————————————————————————————————————————————————————————————————
 	Created by Marcel Kröker on 31.01.16.
-	Copyright (c) 2015 Blubyte. All rights reserved.
+	Copyright (c) 2016 Blubyte. All rights reserved.
 */
+
+func testBaseConversion(iterations: Int)
+{
+	let chars = [
+		"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b",
+		"c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n",
+		"o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",
+		"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L",
+		"M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X",
+		"Y", "Z"
+	]
+
+	var run = 1
+
+	while run <= iterations
+	{
+		let fromBase = random(2..<chars.count)
+		let   toBase = random(2..<chars.count)
+
+		print("Run \(run), \(fromBase) to \(toBase):")
+		run += 1
+
+		// Generate a random number with a start base
+		var randNum = ""
+
+		for _ in 0..<random(2...80)
+		{
+			randNum.append(chars[random(0..<fromBase)])
+		}
+
+		while randNum[0] == "0" && randNum.characters.count > 1
+		{
+			randNum = randNum[1..<randNum.characters.count]
+		}
+
+		print(randNum)
+
+		// Convert the random number to a BInt type
+		let b1 = BInt(number: randNum, withBase: fromBase)
+		// Get the number as a string with the second base
+		let s1 = b1.asString(withBase: toBase)
+		// Convert that number to a BInt type
+		let b2 = BInt(number: s1, withBase: toBase)
+		// Get the number back as as string in the start base
+		let s2 = b2.asString(withBase: fromBase)
+
+		print(s2)
+
+		precondition(s2 == randNum)
+
+		print("success", terminator: "\n\n")
+		
+	}
+}
+
+func testBIntRandom(iterations: Int)
+{
+	// Arithmetric operators
+
+	let arithmetricInt:  [(Int, Int) -> Int]    = [(+), (-), (*), (/), (%)]
+	let arithmetricBInt: [(BInt, BInt) -> BInt] = [(+), (-), (*), (/), (%)]
+
+	var i = 0
+	while i < iterations
+	{
+		let op = random(0..<arithmetricInt.count)
+		let (x, y) = (random(-10..<11), random(-10..<11))
+
+		if (op > 2 && y == 0) { continue }
+
+		let aRes = (arithmetricInt[op])(x, y)
+		let bRes = (arithmetricBInt[op])(BInt(x), BInt(y))
+
+		if aRes.description != bRes.description { fatalError() }
+
+		i += 1
+	}
+
+	// Comparison operators
+
+	let compareInt:  [(Int, Int) -> Bool]   = [(<), (<=), (>), (>=), (==), (!=)]
+	let compareBInt: [(BInt, BInt) -> Bool] = [(<), (<=), (>), (>=), (==), (!=)]
+
+	i = 0
+	while i < iterations
+	{
+		let op = random(0..<compareInt.count)
+		let (x, y) = (random(-10..<11), random(-10..<11))
+
+		if (op > 2 && y == 0) { continue }
+
+		let aRes = (compareInt[op])(x, y)
+		let bRes = (compareBInt[op])(BInt(x), BInt(y))
+
+		if aRes != bRes { fatalError() }
+
+		i += 1
+	}
+
+}
 
 func testBInt()
 {
+	//
+	////
+	//////
+	//"MARK": - Initialization
+	//////
+	////
+	//
 
-	// Basic initialization
-	var b = BInt(0)
-	assert(b.rawValue.limbs == [0])
-	assert(b.description == "0")
+	// Test if BInt stores limbs correctly
+	precondition(BInt(limbs: [0]).rawValue.limbs == [0])
 
-	b = BInt(-0)
-	assert(b.rawValue.limbs == [0])
-	assert(b.description == "0")
+	// Test some interesting edge cases
+	for n in [0,1,-1, Int.max, Int.min]
+	{
+		precondition(n.description == BInt(n).description)
+	}
 
-	b = BInt(1)
-	assert(b.rawValue.limbs == [1])
-	assert(b.description == "1")
+	//
+	////
+	//////
+	//"MARK": - Negation
+	//////
+	////
+	//
 
-	b = BInt(-1)
-	assert(b.rawValue.limbs == [1])
-	assert(b.description == "-1")
+	for n in -4...4
+	{
+		precondition((-n).description == (-BInt(n)).description)
+	}
 
-	b = BInt(Int.max)
-	assert(b.rawValue.limbs == [UInt64(Int.max)])
-	assert(b.description == String(Int.max))
+	//
+	////
+	//////
+	//"MARK": - String conversion
+	//////
+	////
+	//
 
-	b = BInt(Int.min)
-	assert(b.rawValue.limbs == [9223372036854775808])
-	assert(b.description == String(Int.min))
+	// Get string representation and init with string
+	for n in -4...4
+	{
+		precondition(
+			n.description == BInt(n).description &&
+			n.description == BInt(n.description).description
+		)
+	}
+
 
 
 	// Alternating series
-	b = BInt(0)
+
+	var b = BInt(0)
 	for k in 0...100
 	{
 		b += (BInt(-1) ^ k) * (BInt(5) ^ k)
@@ -112,129 +235,6 @@ func testBInt()
 
 	b = combinations(50_000, 50)
 	assert(b.description == "284958500315333290867708487072990268397101930544468658476216100935982755508148971449700622210078705183923286686402942943816349032142836981589618876226813174803825580124000")
-
-
-	for x in -10...10
-	{
-		for y in -10...10
-		{
-			var b1 = BInt(0)
-			var b2 = BInt(0)
-			var b3 = BInt(0)
-			var b4 = BInt(0)
-
-			b1 = BInt(x)
-			assert(String(describing: b1) == String(x))
-
-			b1 = -BInt(x)
-			assert(String(describing: b1) == String(-x))
-
-
-			b1 =  BInt(x) +  BInt(y)
-			b2 = -BInt(x) +  BInt(y)
-			b3 =  BInt(x) + -BInt(y)
-			b4 = -BInt(x) + -BInt(y)
-			assert(String(describing: b1) == String( x +  y))
-			assert(String(describing: b2) == String(-x +  y))
-			assert(String(describing: b3) == String( x + -y))
-			assert(String(describing: b4) == String(-x + -y))
-
-			b1 =  BInt(x) -  BInt(y)
-			b2 = -BInt(x) -  BInt(y)
-			b3 =  BInt(x) - -BInt(y)
-			b4 = -BInt(x) - -BInt(y)
-			assert(String(describing: b1) == String( x -  y))
-			assert(String(describing: b2) == String(-x -  y))
-			assert(String(describing: b3) == String( x - -y))
-			assert(String(describing: b4) == String(-x - -y))
-
-			b1 =  BInt(x) *  BInt(y)
-			b2 = -BInt(x) *  BInt(y)
-			b3 =  BInt(x) * -BInt(y)
-			b4 = -BInt(x) * -BInt(y)
-			assert(String(describing: b1) == String( x *  y))
-			assert(String(describing: b2) == String(-x *  y))
-			assert(String(describing: b3) == String( x * -y))
-			assert(String(describing: b4) == String(-x * -y))
-
-			if y != 0
-			{
-				b1 =  BInt(x) /  BInt(y)
-				b2 = -BInt(x) /  BInt(y)
-				b3 =  BInt(x) / -BInt(y)
-				b4 = -BInt(x) / -BInt(y)
-				assert(String(describing: b1) == String( x /  y))
-				assert(String(describing: b2) == String(-x /  y))
-				assert(String(describing: b3) == String( x / -y))
-				assert(String(describing: b4) == String(-x / -y))
-
-				b1 =  BInt(x) %  BInt(y)
-				b2 = -BInt(x) %  BInt(y)
-				b3 =  BInt(x) % -BInt(y)
-				b4 = -BInt(x) % -BInt(y)
-				assert(String(describing: b1) == String( x %  y))
-				assert(String(describing: b2) == String(-x %  y))
-				assert(String(describing: b3) == String( x % -y))
-				assert(String(describing: b4) == String(-x % -y))
-			}
-
-			var c1 =  BInt(x) <  BInt(y)
-			var c2 = -BInt(x) <  BInt(y)
-			var c3 =  BInt(x) < -BInt(y)
-			var c4 = -BInt(x) < -BInt(y)
-			assert(c1 == ( x <  y))
-			assert(c2 == (-x <  y))
-			assert(c3 == ( x < -y))
-			assert(c4 == (-x < -y))
-
-			c1 =  BInt(x) >  BInt(y)
-			c2 = -BInt(x) >  BInt(y)
-			c3 =  BInt(x) > -BInt(y)
-			c4 = -BInt(x) > -BInt(y)
-			assert(c1 == ( x >  y))
-			assert(c2 == (-x >  y))
-			assert(c3 == ( x > -y))
-			assert(c4 == (-x > -y))
-
-			c1 =  BInt(x) <=  BInt(y)
-			c2 = -BInt(x) <=  BInt(y)
-			c3 =  BInt(x) <= -BInt(y)
-			c4 = -BInt(x) <= -BInt(y)
-			assert(c1 == ( x <=  y))
-			assert(c2 == (-x <=  y))
-			assert(c3 == ( x <= -y))
-			assert(c4 == (-x <= -y))
-
-			c1 =  BInt(x) >=  BInt(y)
-			c2 = -BInt(x) >=  BInt(y)
-			c3 =  BInt(x) >= -BInt(y)
-			c4 = -BInt(x) >= -BInt(y)
-			assert(c1 == ( x >=  y))
-			assert(c2 == (-x >=  y))
-			assert(c3 == ( x >= -y))
-			assert(c4 == (-x >= -y))
-
-			c1 =  BInt(x) ==  BInt(y)
-			c2 = -BInt(x) ==  BInt(y)
-			c3 =  BInt(x) == -BInt(y)
-			c4 = -BInt(x) == -BInt(y)
-			assert(c1 == ( x ==  y))
-			assert(c2 == (-x ==  y))
-			assert(c3 == ( x == -y))
-			assert(c4 == (-x == -y))
-
-			c1 =  BInt(x) !=  BInt(y)
-			c2 = -BInt(x) !=  BInt(y)
-			c3 =  BInt(x) != -BInt(y)
-			c4 = -BInt(x) != -BInt(y)
-			assert(c1 == ( x !=  y))
-			assert(c2 == (-x !=  y))
-			assert(c3 == ( x != -y))
-			assert(c4 == (-x != -y))
-			// <=, >, >=, are based on <, == and != are correct by default
-		}
-	}
-
 
 	for _ in 0..<100_0
 	{
