@@ -1,9 +1,9 @@
 /*
-	————————————————————————————————————————————————————————————
-	BasicMath.swift
-	————————————————————————————————————————————————————————————
+	————————————————————————————————————————————————————————————————————————————
+	MG Basic Math.swift
+	————————————————————————————————————————————————————————————————————————————
 	Created by Marcel Kröker on 03.04.15.
-	Copyright (c) 2015 Blubyte. All rights reserved.
+	Copyright (c) 2016 Blubyte. All rights reserved.
 */
 
 import Foundation
@@ -61,6 +61,7 @@ func getPrime(_ n: Int) -> Int
 	return prime
 }
 
+
 /**
 	Works with the Sieve of Eratosthenes.
 */
@@ -111,12 +112,16 @@ func nextPrime( _ n: inout Int)
 // Returns random Int within range
 func random(_ range: Range<Int>) -> Int
 {
-    let offset = abs(range.lowerBound)
-    
-    let mini = UInt32(range.lowerBound + offset)
-    let maxi = UInt32(range.upperBound + offset)
-    
-    return Int(mini + arc4random_uniform(maxi - mini)) - offset
+    let offset = Int(range.lowerBound)
+    let delta = UInt32(range.upperBound - range.lowerBound)
+
+    return offset + Int(arc4random_uniform(delta))
+}
+
+// Neccessary for (...) to work
+func random(_ range: ClosedRange<Int>) -> Int
+{
+	return random(Range(range))
 }
 
 // Returns array filled with n random Ints within range
