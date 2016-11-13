@@ -7,6 +7,8 @@ Some benchmarks are located in Benchmarks.swift, note that these are more than 1
 
 ## Installation
 Simply drag all .swift files into your project!
+All MG files and SMP Core.swift are required.
+The String, Benchmark, and Test Module are Optional.
 
 That's it ;)
 
