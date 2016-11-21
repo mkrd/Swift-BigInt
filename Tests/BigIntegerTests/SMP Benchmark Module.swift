@@ -5,6 +5,7 @@
 	Created by Marcel Kröker on 23.09.16.
 	Copyright (c) 2016 Blubyte. All rights reserved.
 */
+@testable import BigInteger
 
 func benchmarkBInt()
 {
@@ -19,6 +20,7 @@ func benchmarkBInt()
 	SMPBenchmarkStringToBInt()
 }
 
+#if false
 private func SMPBenchmarkMatices()
 {
 	let A = Matrix<BDouble>(
@@ -63,6 +65,7 @@ private func SMPBenchmarkMatices()
 		}
 	}
 }
+#endif
 
 private func SMPBenchmarkBDoubleConvergence()
 {
