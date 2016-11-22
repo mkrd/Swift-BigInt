@@ -12,8 +12,12 @@ The String, Benchmark, and Test Module are Optional.
 
 That's it ;)
 
+### Swift Package Manager
 
-
+You can use the [Swift Package Manager](https://swift.org/package-manager/) and specify the  package dependency in your `Package.swift` file by adding this:
+```
+.Package(url: "https://github.com/mkrd/Swift-Big-Integer.git", majorVersion: 1)
+```
 
 
 ## Usage

@@ -5,7 +5,10 @@
 	Created by Marcel Kröker on 03.04.15.
 	Copyright (c) 2016 Blubyte. All rights reserved.
 */
-
+#if os(Linux)
+    import Glibc
+    import CBSD
+#endif
 import Foundation
 
 func binomial(_ n: Int, _ k: Int) -> Int

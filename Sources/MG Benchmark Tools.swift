@@ -5,8 +5,26 @@
 	Created by Marcel Kröker on 03.04.15.
 	Copyright (c) 2016 Blubyte. All rights reserved.
 */
-
 import Foundation
+#if os(Linux)
+    import Glibc
+    import CBSD
+
+    private func mach_absolute_time() -> UInt64 {
+    	var tv = timeval();
+        guard gettimeofday(&tv, nil) != -1 else { return 0 }
+
+	let t = UInt64(tv.tv_usec) + UInt64(tv.tv_sec) * 1000000
+        return t;
+    }
+
+    private struct mach_timebase_info_data_t {
+	var numer: Int = 1000
+	var denom: Int = 1
+    }
+
+    private func mach_timebase_info(_: inout mach_timebase_info_data_t) {}
+#endif
 
 private func durationNS(_ call: () -> ()) -> Int
 {

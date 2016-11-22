@@ -5,6 +5,7 @@
 	Created by Marcel Kröker on 31.01.16.
 	Copyright (c) 2016 Blubyte. All rights reserved.
 */
+@testable import BigInteger
 
 func testBaseConversion(iterations: Int)
 {
