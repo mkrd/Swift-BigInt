@@ -1925,6 +1925,30 @@ public func mod_exp(_ b: BInt, _ p: BInt, _ m: BInt) -> BInt {
 }
 
 
+/// Non-negative modulo operation
+///
+/// - Parameters:
+///   - a: left hand side of the module operation
+///   - m: modulus
+/// - Returns: r := a % b such that 0 <= r < abs(m)
+public func nnmod(_ a: BInt, _ m: BInt) -> BInt {
+	let r = a % m
+	guard r.isNegative() else { return r }
+	let p = m.isNegative() ? r - m : r + m
+	return p
+}
+
+
+/// Convenience function combinding addition and non-negative modulo operations
+///
+/// - Parameters:
+///   - a: left hand side of the modulo addition
+///   - b: right hand side of the modulo addition
+///   - m: modulus
+/// - Returns: nnmod(a + b, m)
+public func mod_add(_ a: BInt, _ b: BInt, _ m: BInt) -> BInt {
+	return nnmod(a + b, m)
+}
 
 
 /*\
