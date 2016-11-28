@@ -120,6 +120,19 @@ class BigIntegerTests: XCTestCase {
 		XCTAssertEqual(a2, x2)
 	}
 
+	/// Test performance of mod_exp()
+	func testPerformanceModExp() {
+		let b = Bignum(hex: "785c8638a586c71843c374bcef11a9ab3810a6f2c88a4f8c06a3579ed8f957253979f2ce68535e6d70186e4979dedece044dddf2f59541dbba68082ff86168aba1afbe78e7889fbe438b672059ab2a05e1865e923d06fc1f2e8a642b")
+		let e = Bignum(hex: "abcdef01234567890f1e2d3c4b5c6b78abcd785c8638a586c71843c374bcef11a9ab3810a6f2c88a4f8c06a3579ed8f957253979f2ce68535e6d70186e4979dedece044dddf2f59541dbba68082ff86168aba1afbe78e7889fbe438b672059ab2a05e1865e923d06fc1f2e8a642b")
+		let m = Bignum(hex: "0fb7c06ab37c13ae217502968925063512482169013127834968915795c2f7c2c9586ce5")
+		let x = Bignum("28082478406493690655098710217842834345687220303347034179225810911513400721173064790303")
+		var a = Bignum(0)
+		measure {
+			a = mod_exp(b, e, m)
+		}
+		XCTAssertEqual(a, x)
+	}
+
     static var allTests : [(String, (BigIntegerTests) -> () throws -> Void)] {
         return [
             ("testBaseConversions", testBaseConversions),
@@ -131,6 +144,7 @@ class BigIntegerTests: XCTestCase {
             ("testMod",				testMod),
             ("testModAdd",			testModAdd),
             ("testModExp",			testModExp),
+            ("testPerformanceModExp",	testPerformanceModExp),
             ("testPerformanceData",	testPerformanceData),
             ("testPerformanceBInt", testPerformanceBInt),
         ]
