@@ -46,7 +46,7 @@ public extension Bignum
 
 	/// Initialise from an unsigned, 64 bit integer
 	///
-	/// - Parameter n: the 62 bit unsigned integer to convert to a BInt
+	/// - Parameter n: the 64 bit unsigned integer to convert to a BInt
 	public init(_ n: UInt64) {
 		self.init(limbs: [n])
 	}
