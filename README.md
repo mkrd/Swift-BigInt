@@ -6,7 +6,7 @@ Some benchmarks are located in Benchmarks.swift, note that these are more than 1
 
 
 ## Installation
-Simply drag all .swift files into your project!
+Simply drag all .swift files from the sources folder into your project!
 All MG files and SMP Core.swift are required.
 The String, Benchmark, and Test Module are Optional.
 
@@ -29,7 +29,7 @@ This subsection explains the usage of BInt and BDouble
 ```swift
 BInt(Int)
 BInt(UInt)
-BInt(String) 
+BInt(String)
 ```
 
 #### Examples:
@@ -186,7 +186,7 @@ BDouble * BDouble // Returns BDouble
 BDouble / BDouble // Returns BDouble
 
 // Comparing
-BDouble < BDouble 
+BDouble < BDouble
 /*
 Important:
 a < b <==> b > a
