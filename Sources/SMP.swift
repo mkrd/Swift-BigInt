@@ -123,6 +123,21 @@ typealias Limb   =  UInt64
 typealias Digits = [UInt64]
 typealias Digit  =  UInt64
 
+//	MARK: - Imports
+//	————————————————————————————————————————————————————————————————————————————————————————————
+//	||||||||        Operators        |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+//	————————————————————————————————————————————————————————————————————————————————————————————
+
+precedencegroup ExponentiationPrecedence
+{
+	associativity: left
+	higherThan: MultiplicationPrecedence
+	lowerThan: BitwiseShiftPrecedence
+}
+
+// Exponentiation operator
+infix operator ** : ExponentiationPrecedence
+
 //	MARK: - BInt
 //	————————————————————————————————————————————————————————————————————————————————————————————
 //	||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
@@ -918,7 +933,7 @@ fileprivate extension String
 		var res = ""
 		var number = self
 
-		if number[0] == "-"
+		if number.hasPrefix("-")
 		{
 			res = "-"
 			number.removeFirst()
@@ -2249,15 +2264,15 @@ public struct BDouble:
 	{
 		let nStr = String(d)
 
-		if let exp = nStr[Character("e")]
+		if let exp = nStr.index(of: "e")?.encodedOffset
 		{
-			let beforeExp = String(nStr[0..<exp].characters.filter{ $0 != "." })
-			var afterExp = nStr[(exp + 1)..<nStr.characters.count]
+			let beforeExp = String(Array(nStr.characters)[..<exp].filter{ $0 != "." })
+			var afterExp = String(Array(nStr.characters)[(exp + 1)...])
 			var sign = false
 
-			if let neg = afterExp[Character("-")]
+			if let neg = afterExp.index(of: "-")?.encodedOffset
 			{
-				afterExp = afterExp[(neg + 1)..<afterExp.characters.count]
+				afterExp = String(Array(afterExp.characters)[(neg + 1)...])
 				sign = true
 			}
 
@@ -2275,10 +2290,11 @@ public struct BDouble:
 			}
 		}
 
-		let i = nStr["."]!
-		let beforePoint = nStr[0..<i]
+		let i = nStr.index(of: ".")!.encodedOffset
 
-		let afterPoint = nStr[(i + 1)..<nStr.characters.count]
+		
+		let beforePoint = String(Array(nStr.characters)[..<i])
+		let afterPoint  = String(Array(nStr.characters)[(i + 1)...])
 
 		if afterPoint == "0"
 		{
