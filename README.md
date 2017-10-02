@@ -6,11 +6,8 @@ Some benchmarks are located in Benchmarks.swift, note that these are more than 1
 
 
 ## Installation
-Simply drag all .swift files from the sources folder into your project!
-All MG files and SMP Core.swift are required.
-The String, Benchmark, and Test Module are Optional.
-
-That's it ;)
+Simply drag the SMP.swift file from the sources folder into your project!
+Yes, it's that easy :)
 
 ### Swift Package Manager
 
