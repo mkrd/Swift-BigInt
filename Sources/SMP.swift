@@ -53,7 +53,7 @@
 //	- Added arbitrary base conversion.
 //
 //	——————————————————————————————————————————— v2.0 ———————————————————————————————————————————
-//	- Updated for full Swift 3 compatibility.
+//	- Updated for full Swift 4 compatibility.
 //	- Big refactor, countless optimizations for even better performance.
 //	- BInt conforms to SignedNumeric and BinaryInteger, this makes it very easy to write
 //	  generic code.
