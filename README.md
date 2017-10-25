@@ -16,6 +16,8 @@ You can use the [Swift Package Manager](https://swift.org/package-manager/) and 
 .Package(url: "https://github.com/mkrd/Swift-Big-Integer.git", majorVersion: 1)
 ```
 
+## Compatibility
+It is recommended to use Xcode 9+ and Swift 4+. Issues have been reported with older versions, so you might want to use an older version of this library if you can't update.
 
 ## Usage
 This subsection explains the usage of BInt and BDouble
