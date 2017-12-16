@@ -2260,7 +2260,7 @@ public struct BDouble:
 		self.init(BInt(number), over: BInt(1))
 	}
 
-	public public init(_ z: Int)
+	public init(_ z: Int)
 	{
 		self.init(z, over: 1)
 	}
