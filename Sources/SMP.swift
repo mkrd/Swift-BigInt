@@ -2468,7 +2468,7 @@ public func *(lhs: BDouble, rhs: BDouble) -> BDouble
 	return res
 }
 
-func /(lhs: BDouble, rhs: BDouble) -> BDouble
+public func /(lhs: BDouble, rhs: BDouble) -> BDouble
 {
 	var res =  BDouble(
 		sign:			lhs.sign != rhs.sign,
