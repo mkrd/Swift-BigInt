@@ -80,7 +80,7 @@ A lightweight, high performance bignum library for Swift for both intergers and 
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "https://github.com/twodayslate/Swift-Big-Integer.git", :tag => "v#{s.version}" }
+  s.source       = { :git => "https://github.com/mkrd/Swift-Big-Integer.git", :tag => "v#{s.version}" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
