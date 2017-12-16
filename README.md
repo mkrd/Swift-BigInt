@@ -172,7 +172,7 @@ bigD.description // Returns "-308/25"
 
 bigD.minimize() // Divides numerator and denominator by their gcd for storage and operation efficiency, usually not neccesary, because of automatic minimization
 
-big.rawData() // Returns internal structure
+bigD.rawData() // Returns internal structure
 ```
 
 ### The following Operators work with BDouble:
