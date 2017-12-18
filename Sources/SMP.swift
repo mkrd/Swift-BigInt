@@ -1476,7 +1476,7 @@ fileprivate extension Array where Element == Limb
 		}
 	}
 
-	mutating func addLimb(
+	mutating func addOneLimb(
 		_ addend: Limb,
 		padding paddingZeros: Int
 	){
@@ -1499,7 +1499,7 @@ fileprivate extension Array where Element == Limb
 		}
 	}
 
-	/// Basically self.addLimb([addendLow, addendHigh], padding: paddingZeros), but faster
+	/// Basically self.addOneLimb([addendLow, addendHigh], padding: paddingZeros), but faster
 	mutating func addTwoLimb(
 		_ addendLow: Limb,
 		_ addendHigh: Limb,
@@ -1548,7 +1548,7 @@ fileprivate extension Array where Element == Limb
 	//
 	//	MARK: - Limbs Subtraction
 	//	————————————————————————————————————————————————————————————————————————————————————————
-	//	||||||||        Limbs Subtraction        ||||||||||||||||||||||||||||||||||||||||||||||||
+	//	||||||||        Limbs Subtraction        |||||||||||||||||||||||||||||||||||||||||||||||
 	//	————————————————————————————————————————————————————————————————————————————————————————
 	//
 	//
@@ -1647,14 +1647,8 @@ fileprivate extension Array where Element == Limb
 
 				(mulHi, mulLo) = l.multipliedFullWidth(by: r)
 
-				if mulHi != 0
-				{
-					self.addTwoLimb(mulLo, mulHi, padding: i + j)
-				}
-				else
-				{
-					self.addLimb(mulLo, padding: i + j)
-				}
+				if mulHi != 0 { self.addTwoLimb(mulLo, mulHi, padding: i + j) }
+				else          { self.addOneLimb(mulLo,        padding: i + j) }
 			}
 		}
 	}
@@ -1681,14 +1675,8 @@ fileprivate extension Array where Element == Limb
 
 			(mulHi, mulLo) = l.multipliedFullWidth(by: multiplicand)
 
-			if mulHi != 0
-			{
-				self.addTwoLimb(mulLo, mulHi, padding: i)
-			}
-			else
-			{
-				self.addLimb(mulLo, padding: i)
-			}
+			if mulHi != 0 { self.addTwoLimb(mulLo, mulHi, padding: i) }
+			else {          self.addOneLimb(mulLo,        padding: i) }
 		}
 	}
 
@@ -1726,8 +1714,8 @@ fileprivate extension Array where Element == Limb
 				}
 				else
 				{
-					if i != j { res.addLimb(mulLo, padding: i + j) }
-					res.addLimb(mulLo, padding: i + j)
+					if i != j { res.addOneLimb(mulLo, padding: i + j) }
+					res.addOneLimb(mulLo, padding: i + j)
 				}
 			}
 		}
@@ -1758,7 +1746,6 @@ fileprivate extension Array where Element == Limb
 		while exponent > 1
 		{
 			if exponent & 1 != 0 { y = y.multiplyingBy(base) }
-
 			base = base.squared()
 			exponent >>= 1
 		}
@@ -1925,13 +1912,11 @@ public class BIntMath
 
 	fileprivate static func euclid(_ a: Limbs, _ b: Limbs) -> Limbs
 	{
-		var a = a
-		var b = b
+		var (a, b) = (a, b)
 		while !b.equalTo(0)
 		{
 			(a, b) = (b, a.divMod(b).remainder)
 		}
-
 		return a
 	}
 
@@ -1945,14 +1930,12 @@ public class BIntMath
 	{
 		if a.isZero() { return b }
 
-		var a = a
-		var b = b
-		var k = 0
+		var (a, b, k) = (a, b, 0)
 
 		while a.isEven() && b.isEven()
 		{
-			a = a >> 1
-			b = b >> 1
+			a >>= 1
+			b >>= 1
 			k += 1
 		}
 
@@ -1960,19 +1943,10 @@ public class BIntMath
 
 		while !t.isZero()
 		{
-			while t.isEven()
-			{
-				t = t >> 1
-			}
+			while t.isEven() { t >>= 1 }
 
-			if  t > 0
-			{
-				a = t
-			}
-			else
-			{
-				b = -t
-			}
+			if  t > 0 { a =  t }
+			else      { b = -t }
 
 			t = a - b
 		}
@@ -1998,9 +1972,7 @@ public class BIntMath
 
 	static func fib(_ n:Int) -> BInt
 	{
-		var a: Limbs = [0]
-		var b: Limbs = [1]
-		var t: Limbs
+		var a: Limbs = [0], b: Limbs = [1], t: Limbs
 
 		for _ in 2...n
 		{
@@ -2271,13 +2243,13 @@ public struct BDouble:
 
 		if let exp = nStr.index(of: "e")?.encodedOffset
 		{
-			let beforeExp = String(Array(nStr.characters)[..<exp].filter{ $0 != "." })
-			var afterExp = String(Array(nStr.characters)[(exp + 1)...])
+			let beforeExp = String(Array(nStr)[..<exp].filter{ $0 != "." })
+			var afterExp = String(Array(nStr)[(exp + 1)...])
 			var sign = false
 
 			if let neg = afterExp.index(of: "-")?.encodedOffset
 			{
-				afterExp = String(Array(afterExp.characters)[(neg + 1)...])
+				afterExp = String(Array(afterExp)[(neg + 1)...])
 				sign = true
 			}
 
@@ -2297,9 +2269,9 @@ public struct BDouble:
 
 		let i = nStr.index(of: ".")!.encodedOffset
 
-		
-		let beforePoint = String(Array(nStr.characters)[..<i])
-		let afterPoint  = String(Array(nStr.characters)[(i + 1)...])
+
+		let beforePoint = String(Array(nStr)[..<i])
+		let afterPoint  = String(Array(nStr)[(i + 1)...])
 
 		if afterPoint == "0"
 		{
@@ -2307,7 +2279,7 @@ public struct BDouble:
 		}
 		else
 		{
-			let den = ["1"] + [Character](repeating: "0", count: afterPoint.characters.count)
+			let den = ["1"] + [Character](repeating: "0", count: afterPoint.count)
 			self.init(beforePoint + afterPoint, over: String(den))
 		}
 	}
