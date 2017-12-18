@@ -113,15 +113,15 @@ import Foundation
 //	Limbs are basically single Digits in base 2^64. Each slot in an Limbs array stores one
 //	Digit of the number. The least significant digit is stored at index 0, the most significant
 //	digit is stored at the last index.
-typealias Limbs  = [UInt64]
-typealias Limb   =  UInt64
+public typealias Limbs  = [UInt64]
+public typealias Limb   =  UInt64
 
 //	A digit is a number in base 10^18. This is the biggest possible base that
 //	fits into an unsigned 64 bit number while maintaining the propery that the square root of
 //	the base is a whole number and a power of ten . Digits are required for printing BInt
 //	numbers. Limbs are converted into Digits first, and then printed.
-typealias Digits = [UInt64]
-typealias Digit  =  UInt64
+public typealias Digits = [UInt64]
+public typealias Digit  =  UInt64
 
 //	MARK: - Imports
 //	————————————————————————————————————————————————————————————————————————————————————————————
@@ -233,7 +233,7 @@ public struct BInt:
 	}
 
 	/// Create an instance initialized to an integer value.
-	init(_ z: Int)
+	public init(_ z: Int)
 	{
 		//	Since abs(Int.min) > Int.max, it is necessary to handle
 		//	z == Int.min as a special case.
@@ -249,13 +249,13 @@ public struct BInt:
 	}
 
 	/// Create an instance initialized to an unsigned integer value.
-	init(_ n: UInt)
+	public init(_ n: UInt)
 	{
 		self.init(limbs: [Limb(n)])
 	}
 
 	/// Create an instance initialized to a string value.
-	init(_ str: String)
+	public init(_ str: String)
 	{
 		var str = str
 		var sign = false
@@ -2218,7 +2218,7 @@ public struct BDouble:
 	Returns: A new BDouble
 	*/
 
-	init(sign: Bool, numerator: Limbs, denominator: Limbs)
+	public init(sign: Bool, numerator: Limbs, denominator: Limbs)
 	{
 		precondition(
 			!denominator.equalTo(0) && denominator != [] && numerator != [],
@@ -2232,7 +2232,7 @@ public struct BDouble:
 		self.minimize()
 	}
 
-	init(_ numerator: BInt, over denominator: BInt)
+	public init(_ numerator: BInt, over denominator: BInt)
 	{
 		self.init(
 			sign:			numerator.sign != denominator.sign,
@@ -2241,7 +2241,7 @@ public struct BDouble:
 		)
 	}
 
-	init(_ numerator: Int, over denominator: Int)
+	public init(_ numerator: Int, over denominator: Int)
 	{
 		self.init(
 			sign: (numerator < 0) != (denominator < 0),
@@ -2250,9 +2250,14 @@ public struct BDouble:
 		)
 	}
 
-	init(_ numerator: String, over denominator: String)
+	public init(_ numerator: String, over denominator: String)
 	{
 		self.init(BInt(numerator), over: BInt(denominator))
+	}
+
+	public init(_ number: String)
+	{
+		self.init(BInt(number), over: BInt(1))
 	}
 
 	public init(_ z: Int)
@@ -2463,7 +2468,7 @@ public func *(lhs: BDouble, rhs: BDouble) -> BDouble
 	return res
 }
 
-func /(lhs: BDouble, rhs: BDouble) -> BDouble
+public func /(lhs: BDouble, rhs: BDouble) -> BDouble
 {
 	var res =  BDouble(
 		sign:			lhs.sign != rhs.sign,

@@ -16,6 +16,13 @@ You can use the [Swift Package Manager](https://swift.org/package-manager/) and 
 .Package(url: "https://github.com/mkrd/Swift-Big-Integer.git", majorVersion: 1)
 ```
 
+### CocoaPods:
+
+Put the following in your Podfile:
+```
+pod 'BigNumber', '~> 2.0'
+```
+
 ## Compatibility
 It is recommended to use Xcode 9+ and Swift 4+. Issues have been reported with older versions, so you might want to use an older version of this library if you can't update.
 
@@ -165,7 +172,7 @@ bigD.description // Returns "-308/25"
 
 bigD.minimize() // Divides numerator and denominator by their gcd for storage and operation efficiency, usually not neccesary, because of automatic minimization
 
-big.rawData() // Returns internal structure
+bigD.rawData() // Returns internal structure
 ```
 
 ### The following Operators work with BDouble:
