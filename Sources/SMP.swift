@@ -1922,39 +1922,50 @@ public class BIntMath
 
 	fileprivate static func gcdFactors(_ lhs: Limbs, rhs: Limbs) -> (ax: Limbs, bx: Limbs)
 	{
-		let gcd = euclid(lhs, rhs)
+		let gcd = steinGcd(lhs, rhs)
 		return (lhs.divMod(gcd).quotient, rhs.divMod(gcd).quotient)
 	}
 
-	static func steinGcd(_ a: BInt, _ b: BInt) -> BInt
+	static func steinGcd(_ a: Limbs, _ b: Limbs) -> Limbs
 	{
-		if a.isZero() { return b }
+		if a == [0] { return b }
+		if b == [0] { return a }
 
-		var (a, b, k) = (a, b, 0)
+		// Trailing zeros
+		var (za, zb) = (0, 0)
 
-		while a.isEven() && b.isEven()
+		while !a.getBit(at: za) { za += 1 }
+		while !b.getBit(at: zb) { zb += 1 }
+
+		let k = min(za, zb)
+
+		var (a, b) = (a, b)
+		a.shiftDown(za)
+		b.shiftDown(k)
+
+		repeat
 		{
-			a >>= 1
-			b >>= 1
-			k += 1
+			zb = 0
+			while !b.getBit(at: zb) { zb += 1 }
+			b.shiftDown(zb)
+
+			if b.lessThan(a) { (a, b) = (b, a) }
+			// At this point, b >= a
+			b.difference(a)
 		}
+		while b != [0]
 
-		var t = a.isOdd() ? -b : a
-
-		while !t.isZero()
-		{
-			while t.isEven() { t >>= 1 }
-
-			if  t > 0 { a =  t }
-			else      { b = -t }
-
-			t = a - b
-		}
-
-		return a << k
+		return a.shiftingUp(k)
 	}
 
 	static func gcd(_ a: BInt, _ b: BInt) -> BInt
+	{
+		let limbRes = steinGcd(a.limbs, b.limbs)
+		return BInt(sign: a.sign && !limbRes.equalTo(0), limbs: limbRes)
+	}
+
+	/// Do not use this, extremely slow. Only for testing purposes.
+	static func gcdEuclid(_ a: BInt, _ b: BInt) -> BInt
 	{
 		let limbRes = euclid(a.limbs, b.limbs)
 		return BInt(sign: a.sign && !limbRes.equalTo(0), limbs: limbRes)
@@ -1962,7 +1973,7 @@ public class BIntMath
 
 	fileprivate static func lcmPositive(_ a: Limbs, _ b: Limbs) -> Limbs
 	{
-		return a.divMod(euclid(a, b)).quotient.multiplyingBy(b)
+		return a.divMod(steinGcd(a, b)).quotient.multiplyingBy(b)
 	}
 
 	static func lcm(_ a:BInt, _ b:BInt) -> BInt
@@ -2354,8 +2365,8 @@ public struct BDouble:
 			return
 		}
 
-		let gcd = BIntMath.euclid(self.numerator, self.denominator)
-
+		let gcd = BIntMath.steinGcd(self.numerator, self.denominator)
+		
 		if gcd[0] > 1 || gcd.count > 1
 		{
 			self.numerator = self.numerator.divMod(gcd).quotient

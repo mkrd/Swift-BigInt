@@ -68,8 +68,7 @@ public class Benchmarks
 			for _ in 0..<1000
 			{
 				res = res + BDouble(BInt(1), over: den)
-				den = den * BInt(2)
-
+				den *= 2
 			}
 		}
 	}
