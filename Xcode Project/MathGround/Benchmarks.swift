@@ -237,7 +237,7 @@ public class Benchmarks
 			// 07.09.17: 2857ms
 
 
-			res = BInt(asStr)
+			res = BInt(asStr)!
 		}
 
 		assert(asStr == res.description)
