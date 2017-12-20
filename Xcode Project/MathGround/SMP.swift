@@ -201,6 +201,30 @@ public struct BInt:
 		return self.limbs.map{ UInt($0) }
 	}
 
+	/// Returns a formated human readable string that says how much space (in b, kb, mb, or gb) the BInt occupies
+	public var size: String
+	{
+		var bits = 1
+		for _ in self.limbs
+		{
+			bits += 64
+		}
+
+		if bits < 1_000
+		{
+			return String(format: "%.1f b", Double(bits) / 1.0)
+		}
+		if bits < 1_000_000
+		{
+			return String(format: "%.1f kb", Double(bits) / 1_000.0)
+		}
+		if bits < 1_000_000_000
+		{
+			return String(format: "%.1f mb", Double(bits) / 1_000_000.0)
+		}
+		return String(format: "%.1f gb", Double(bits) / 1_000_000_000.0)
+	}
+
 	//
 	//
 	//	MARK: - Initializers
@@ -2340,6 +2364,34 @@ public struct BDouble:
 		return "\(self.sign)\(self.numerator)\(self.denominator)".hashValue
 	}
 
+	/// Returns a formated human readable string that says how much space (in b, kb, mb, or gb) the BDouble occupies
+	public var size: String
+	{
+		var bits = 1
+		for _ in self.numerator
+		{
+			bits += 64
+		}
+		for _ in self.denominator
+		{
+			bits += 64
+		}
+
+		if bits < 1_000
+		{
+			return String(format: "%.1f b", Double(bits) / 1.0)
+		}
+		if bits < 1_000_000
+		{
+			return String(format: "%.1f kb", Double(bits) / 1_000.0)
+		}
+		if bits < 1_000_000_000
+		{
+			return String(format: "%.1f mb", Double(bits) / 1_000_000.0)
+		}
+		return String(format: "%.1f gb", Double(bits) / 1_000_000_000.0)
+	}
+
 	public func rawData() -> (sign: Bool, numerator: [UInt64], denominator: [UInt64])
 	{
 		return (self.sign, self.numerator, self.denominator)
@@ -2467,6 +2519,7 @@ public func /(lhs: BDouble, rhs: BDouble) -> BDouble
 
 public func +(lhs: BDouble, rhs: BDouble) -> BDouble
 {
+	// a/b + c/d = ad + bc / bd, where lhs = a/b and rhs = c/d.
 	let ad = lhs.numerator.multiplyingBy(rhs.denominator)
 	let bc = rhs.numerator.multiplyingBy(lhs.denominator)
 	let bd = lhs.denominator.multiplyingBy(rhs.denominator)
