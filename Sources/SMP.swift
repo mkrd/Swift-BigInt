@@ -301,7 +301,7 @@ public struct BInt:
 	//	Requierd by protocol ExpressibleByFloatLiteral.
 	public init(floatLiteral value: Double)
 	{
-		self.init(sign: value < 0, limbs: [Limb(value)])
+		self.init(sign: value < 0.0, limbs: [Limb(value)])
 	}
 
 	//	Required by protocol ExpressibleByIntegerLiteral.
