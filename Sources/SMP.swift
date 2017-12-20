@@ -249,15 +249,15 @@ public struct BInt:
 		var sign = false
 		var base: Limbs = [1]
 		var limbs: Limbs = [0]
-	
+
 		limbs.reserveCapacity(Int(Double(str.count) / log10(pow(2.0, 64.0))))
-	
+
 		if str.hasPrefix("-")
 		{
 			str.remove(at: str.startIndex)
 			sign = str != "0"
 		}
-	
+
 		for chunk in String(str.reversed()).split(19).map({ String($0.reversed()) })
 		{
 			if let num = Limb(String(chunk))
@@ -270,7 +270,7 @@ public struct BInt:
 				return nil
 			}
 		}
-	
+
 		self.init(sign: sign, limbs: limbs)
 	}
 
@@ -348,7 +348,7 @@ public struct BInt:
 	{
 		let str = self.limbs.decimalRepresentation
 		let newStr = str.convertingBase(from: 10, toBase: base)
-	
+
 		if self.sign { return "-".appending(newStr) }
 		return newStr
 	}
@@ -368,23 +368,23 @@ public struct BInt:
 	{
 		//	Conversion only works when self has only one limb thats smaller or
 		//	equal to abs(Int.min).
-	
+
 		if self.limbs.count != 1 { return nil }
-	
+
 		let number = self.limbs[0]
-	
+
 		//	Self is within the range of Int
 		if number <= Limb(Int.max)
 		{
 			return self.sign ? -Int(number) : Int(number)
 		}
-	
+
 		//	Special case: self == Int.min
 		if number == (Limb(Int.max) + 1) && self.sign
 		{
 			return Int.min
 		}
-	
+
 		return nil
 	}
 
@@ -419,7 +419,6 @@ public struct BInt:
 	func isOdd()      -> Bool { return self.limbs[0] & 1 == 1 }
 	func isEven()     -> Bool { return self.limbs[0] & 1 == 0 }
 
-
 	///	The number of bits in the current binary representation of this value.
 	public var bitWidth: Int
 	{
@@ -450,10 +449,10 @@ public struct BInt:
 	public static func <<<T: BinaryInteger>(lhs: BInt, rhs: T) -> BInt
 	{
 		if rhs < 0 { return lhs >> rhs }
-	
+
 		let limbs = lhs.limbs.shiftingUp(Int(rhs))
 		let sign = lhs.isNegative() && !limbs.equalTo(0)
-	
+
 		return BInt(sign: sign, limbs: limbs)
 	}
 
@@ -487,16 +486,15 @@ public struct BInt:
 	public static func &(lhs: BInt, rhs: BInt) -> BInt
 	{
 		var res: Limbs = [0]
-	
+
 		for i in 0..<(64 * Swift.max(lhs.limbs.count, rhs.limbs.count))
 		{
 			let newBit = lhs.limbs.getBit(at: i) && lhs.limbs.getBit(at: i)
 			res.setBit(at: i, to: newBit)
 		}
-	
+
 		return BInt(sign: lhs.sign && rhs.sign, limbs: res)
 	}
-
 
 	//	static func &(lhs: Int, rhs: BInt) -> BInt
 	//	static func &(lhs: BInt, rhs: Int) -> BInt
@@ -525,13 +523,13 @@ public struct BInt:
 	public static func |(lhs: BInt, rhs: BInt) -> BInt
 	{
 		var res: Limbs = [0]
-	
+
 		for i in 0..<(64 * Swift.max(lhs.limbs.count, rhs.limbs.count))
 		{
 			let newBit = lhs.limbs.getBit(at: i) || lhs.limbs.getBit(at: i)
 			res.setBit(at: i, to: newBit)
 		}
-	
+
 		return BInt(sign: lhs.sign || rhs.sign, limbs: res)
 	}
 
@@ -559,13 +557,13 @@ public struct BInt:
 	public static func ^(lhs: BInt, rhs: BInt) -> BInt
 	{
 		var res: Limbs = [0]
-	
+
 		for i in 0..<(64 * Swift.max(lhs.limbs.count, rhs.limbs.count))
 		{
 			let newBit = lhs.limbs.getBit(at: i) != lhs.limbs.getBit(at: i)
 			res.setBit(at: i, to: newBit)
 		}
-	
+
 		return BInt(sign: lhs.sign != rhs.sign, limbs: res)
 	}
 
@@ -592,9 +590,9 @@ public struct BInt:
 		{
 			res.setBit(at: i, to: !res.getBit(at: i))
 		}
-	
+
 		while res.last! == 0 && res.count > 1 { res.removeLast() }
-	
+
 		return BInt(sign: !x.sign, limbs: res)
 	}
 
@@ -621,11 +619,11 @@ public struct BInt:
 			lhs.limbs.addLimbs(rhs.limbs)
 			return
 		}
-	
+
 		let rhsIsMin = rhs.limbs.lessThan(lhs.limbs)
 		lhs.limbs.difference(rhs.limbs)
 		lhs.sign = (rhs.sign && !rhsIsMin) || (lhs.sign && rhsIsMin) // DNF minimization
-	
+
 		if lhs.isZero() { lhs.sign = false }
 	}
 
@@ -735,7 +733,7 @@ public struct BInt:
 	func factorial() -> BInt
 	{
 		precondition(!self.sign, "Can't calculate the factorial of an negative number")
-	
+
 		return BInt(limbs: Limbs.recursiveMul(0, Limb(self.toInt()!)))
 	}
 
@@ -760,7 +758,7 @@ public struct BInt:
 	{
 		let limbs = lhs.limbs.divMod(rhs.limbs).quotient
 		let sign = (lhs.sign != rhs.sign) && !limbs.equalTo(0)
-	
+
 		return BInt(sign: sign, limbs: limbs)
 	}
 
@@ -784,7 +782,7 @@ public struct BInt:
 	{
 		let limbs = lhs.limbs.divMod(rhs.limbs).remainder
 		let sign = lhs.sign && !limbs.equalTo(0)
-	
+
 		return BInt(sign: sign, limbs: limbs)
 	}
 
@@ -793,7 +791,6 @@ public struct BInt:
 
 	public static func %=(lhs: inout BInt, rhs: BInt)  { lhs = lhs % rhs       }
 	static func %=(lhs: inout BInt, rhs:  Int)  { lhs = lhs % BInt(rhs) }
-
 
 	//
 	//
@@ -834,12 +831,11 @@ public struct BInt:
 
 	static func !=<T: BinaryInteger>(lhs: T, rhs: BInt) -> Bool { return rhs != lhs }
 
-
 	// Required by protocol Comparable
 	public static func <(lhs: BInt, rhs: BInt) -> Bool
 	{
 		if lhs.sign != rhs.sign { return lhs.sign }
-	
+
 		if lhs.sign { return rhs.limbs.lessThan(lhs.limbs) }
 		return lhs.limbs.lessThan(rhs.limbs)
 	}
@@ -847,7 +843,7 @@ public struct BInt:
 	static func <<T: BinaryInteger>(lhs: BInt, rhs: T) -> Bool
 	{
 		if lhs.sign != (rhs < 0) { return lhs.sign }
-	
+
 		if lhs.sign
 		{
 			if lhs.limbs.count != 1 { return true }
@@ -858,7 +854,7 @@ public struct BInt:
 			if lhs.limbs.count != 1 { return false }
 			return lhs.limbs[0] < rhs
 		}
-	
+
 	}
 
 	static func <(lhs:  Int, rhs: BInt) -> Bool { return BInt(lhs) < rhs }
@@ -915,25 +911,25 @@ fileprivate extension String
 			"M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X",
 			"Y", "Z"
 		]
-	
+
 		var res = ""
 		var number = self
-	
+
 		if number.hasPrefix("-")
 		{
 			res = "-"
 			number.removeFirst()
 		}
-	
+
 		var sum = BInt(0)
 		var multiplier = BInt(1)
-	
+
 		for char in number.reversed()
 		{
 			if let digit = chars.index(of: char)
 			{
 				precondition(digit < from)
-			
+
 				sum += digit * multiplier
 				multiplier *= from
 			}
@@ -942,14 +938,14 @@ fileprivate extension String
 				fatalError()
 			}
 		}
-	
+
 		repeat
 		{
 			res.insert(chars[(sum % toBase).toInt()!], at: res.startIndex)
 			sum /= BInt(toBase)
 		}
 			while sum != 0
-	
+
 		return res
 	}
 }
@@ -963,34 +959,34 @@ fileprivate extension Array where Element == Limb
 		// First, convert limbs to digits
 		var digits: Digits = [0]
 		var power: Digits = [1]
-	
+
 		for limb in self
 		{
 			let digit = (limb >= DigitBase)
 				? [limb % DigitBase, limb / DigitBase]
 				: [limb]
-		
+
 			digits.addProductOfDigits(digit, power)
-		
+
 			var nextPower: Digits = [0]
 			nextPower.addProductOfDigits(power, [446_744_073_709_551_616, 18])
 			power = nextPower
 		}
-	
+
 		// Then, convert digits to string
 		var res = String(digits.last!)
-	
+
 		if digits.count == 1 { return res }
-	
+
 		for i in (0..<(digits.count - 1)).reversed()
 		{
 			let str = String(digits[i])
-		
+
 			let leadingZeros = String(repeating: "0", count: DigitZeros - str.count)
-		
+
 			res.append(leadingZeros.appending(str))
 		}
-	
+
 		return res
 	}
 }
@@ -1007,18 +1003,18 @@ fileprivate extension Digit
 	{
 		let (lLo, lHi) = (self % DigitHalfBase, self / DigitHalfBase)
 		let (rLo, rHi) = (multiplicand % DigitHalfBase, multiplicand / DigitHalfBase)
-	
+
 		let K = (lHi * rLo) + (rHi * lLo)
-	
+
 		var resLo = (lLo * rLo) + ((K % DigitHalfBase) * DigitHalfBase)
 		var resHi = (lHi * rHi) + (K / DigitHalfBase)
-	
+
 		if resLo >= DigitBase
 		{
 			resLo -= DigitBase
 			resHi += 1
 		}
-	
+
 		return (resLo, resHi)
 	}
 }
@@ -1029,15 +1025,15 @@ fileprivate extension Array where Element == Digit
 		padding paddingZeros: Int
 		){
 		let sc = self.count
-	
+
 		if paddingZeros >  sc { self += Digits(repeating: 0, count: paddingZeros &- sc) }
 		if paddingZeros >= sc { self.append(addend); return }
-	
+
 		// Now, i < sc
 		var i = paddingZeros
-	
+
 		let ovfl = self[i].addReportingOverflowDigit(addend)
-	
+
 		while ovfl
 		{
 			i += 1
@@ -1054,17 +1050,17 @@ fileprivate extension Array where Element == Digit
 		padding paddingZeros: Int)
 	{
 		let sc = self.count
-	
+
 		if paddingZeros >  sc { self += Digits(repeating: 0, count: paddingZeros &- sc) }
 		if paddingZeros >= sc { self += [addendLow, addendHigh]; return }
-	
+
 		// Now, i < sc
 		var i = paddingZeros
 		var newDigit: Digit
-	
+
 		let ovfl1 = self[i].addReportingOverflowDigit(addendLow)
 		i += 1
-	
+
 		if i == sc
 		{
 			newDigit = (addendHigh &+ (ovfl1 ? 1 : 0)) % DigitBase
@@ -1072,7 +1068,7 @@ fileprivate extension Array where Element == Digit
 			if newDigit == 0 { self.append(1) }
 			return
 		}
-	
+
 		// Still, i < sc
 		var ovfl2 = self[i].addReportingOverflowDigit(addendHigh)
 		if ovfl1
@@ -1080,7 +1076,7 @@ fileprivate extension Array where Element == Digit
 			self[i] += 1
 			if self[i] == DigitBase { self[i] = 0; ovfl2 = true }
 		}
-	
+
 		while ovfl2
 		{
 			i += 1
@@ -1095,21 +1091,21 @@ fileprivate extension Array where Element == Digit
 	{
 		let (mpc, mcc) = (multiplier.count, multiplicand.count)
 		self.reserveCapacity(mpc &+ mcc)
-	
+
 		var l, r, resLo, resHi: Digit
-	
+
 		for i in 0..<mpc
 		{
 			l = multiplier[i]
 			if l == 0 { continue }
-		
+
 			for j in 0..<mcc
 			{
 				r = multiplicand[j]
 				if r == 0 { continue }
-			
+
 				(resLo, resHi) = l.multipliedFullWidthDigit(by: r)
-			
+
 				if resHi == 0
 				{
 					self.addOneDigit(resLo, padding: i + j)
@@ -1154,12 +1150,12 @@ fileprivate extension Array where Element == Limb
 	{
 		var lastBits = 0
 		var last = self.last!
-	
+
 		while last != 0 {
 			last >>= 1
 			lastBits += 1
 		}
-	
+
 		return ((self.count - 1) * 64) + lastBits
 	}
 
@@ -1167,11 +1163,11 @@ fileprivate extension Array where Element == Limb
 	func getBit(at i: Int) -> Bool
 	{
 		let limbIndex = Int(Limb(i) >> 6)
-	
+
 		if limbIndex >= self.count { return false }
-	
+
 		let bitIndex = Limb(i) & 0b111_111
-	
+
 		return (self[limbIndex] & (1 << bitIndex)) != 0
 	}
 
@@ -1181,13 +1177,13 @@ fileprivate extension Array where Element == Limb
 		to bit: Bool
 		){
 		let limbIndex = Int(Limb(i) >> 6)
-	
+
 		if limbIndex >= self.count && !bit { return }
-	
+
 		let bitIndex = Limb(i) & 0b111_111
-	
+
 		while limbIndex >= self.count { self.append(0) }
-	
+
 		if bit
 		{
 			self[limbIndex] |= (1 << bitIndex)
@@ -1212,32 +1208,32 @@ fileprivate extension Array where Element == Limb
 	{
 		// No shifting is required in this case
 		if shift == 0 || self.equalTo(0) { return }
-	
+
 		let limbShifts =  shift >> 6
 		let bitShifts = Limb(shift) & 0x3f
-	
+
 		if bitShifts != 0
 		{
 			var previousCarry = Limb(0)
 			var carry = Limb(0)
 			var ele = Limb(0) // use variable to minimize array accesses
-		
+
 			for i in 0..<self.count
 			{
 				ele = self[i]
-			
+
 				carry = ele >> (64 - bitShifts)
-			
+
 				ele <<= bitShifts
 				ele |= previousCarry // carry from last step
 				previousCarry = carry
-			
+
 				self[i] = ele
 			}
-		
+
 			if previousCarry != 0 { self.append(previousCarry) }
 		}
-	
+
 		if limbShifts != 0
 		{
 			self.insert(contentsOf: Limbs(repeating: 0, count: limbShifts), at: 0)
@@ -1254,41 +1250,41 @@ fileprivate extension Array where Element == Limb
 	mutating func shiftDown(_ shift: Int)
 	{
 		if shift == 0 || self.equalTo(0) { return }
-	
+
 		let limbShifts =  shift >> 6
 		let bitShifts = Limb(shift) & 0x3f
-	
+
 		if limbShifts >= self.count
 		{
 			self = [0]
 			return
 		}
-	
+
 		self.removeSubrange(0..<limbShifts)
-	
+
 		if bitShifts != 0
 		{
 			var previousCarry = Limb(0)
 			var carry = Limb(0)
 			var ele = Limb(0) // use variable to minimize array accesses
-		
+
 			var i = self.count - 1 // use while for high performance
 			while i >= 0
 			{
 				ele = self[i]
-			
+
 				carry = ele << (64 - bitShifts)
-			
+
 				ele >>= bitShifts
 				ele |= previousCarry
 				previousCarry = carry
-			
+
 				self[i] = ele
-			
+
 				i -= 1
 			}
 		}
-	
+
 		if self.last! == 0 && self.count != 1 { self.removeLast() }
 	}
 
@@ -1312,11 +1308,11 @@ fileprivate extension Array where Element == Limb
 	mutating func addLimbs(_ addend: Limbs)
 	{
 		let (sc, ac) = (self.count, addend.count)
-	
+
 		var (newLimb, ovfl) = (Limb(0), false)
-	
+
 		let minCount = Swift.min(sc, ac)
-	
+
 		var i = 0
 		while i < minCount
 		{
@@ -1324,18 +1320,18 @@ fileprivate extension Array where Element == Limb
 			{
 				(newLimb, ovfl) =  self[i].addingReportingOverflow(addend[i])
 				newLimb = newLimb &+ 1
-			
+
 				ovfl = ovfl || newLimb == 0
 			}
 			else
 			{
 				(newLimb, ovfl) = self[i].addingReportingOverflow(addend[i])
 			}
-		
+
 			self[i] = newLimb
 			i += 1
 		}
-	
+
 		while ovfl
 		{
 			if i < sc
@@ -1350,7 +1346,7 @@ fileprivate extension Array where Element == Limb
 				{
 					(newLimb, ovfl) = self[i].addingReportingOverflow(1)
 				}
-			
+
 				self[i] = newLimb
 			}
 			else
@@ -1366,10 +1362,10 @@ fileprivate extension Array where Element == Limb
 					return
 				}
 			}
-		
+
 			i += 1
 		}
-	
+
 		if self.count < ac
 		{
 			self.append(contentsOf: addend.suffix(from: i))
@@ -1392,17 +1388,17 @@ fileprivate extension Array where Element == Limb
 		padding paddingZeros: Int
 		){
 		let sc = self.count
-	
+
 		if paddingZeros >  sc { self += Digits(repeating: 0, count: paddingZeros &- sc) }
 		if paddingZeros >= sc { self += addend; return }
-	
+
 		// Now, i < sc
 		let ac = addend.count &+ paddingZeros
-	
+
 		var (newLimb, ovfl) = (Limb(0), false)
-	
+
 		let minCount = Swift.min(sc, ac)
-	
+
 		var i = paddingZeros
 		while i < minCount
 		{
@@ -1417,10 +1413,10 @@ fileprivate extension Array where Element == Limb
 			{
 				(self[i], ovfl) = self[i].addingReportingOverflow(addend[i &- paddingZeros])
 			}
-		
+
 			i += 1
 		}
-	
+
 		while ovfl
 		{
 			if i < sc
@@ -1442,10 +1438,10 @@ fileprivate extension Array where Element == Limb
 					return
 				}
 			}
-		
+
 			i += 1
 		}
-	
+
 		if self.count < ac
 		{
 			self.append(contentsOf: addend.suffix(from: i &- paddingZeros))
@@ -1457,16 +1453,16 @@ fileprivate extension Array where Element == Limb
 		padding paddingZeros: Int
 		){
 		let sc = self.count
-	
+
 		if paddingZeros >  sc { self += Digits(repeating: 0, count: paddingZeros &- sc) }
 		if paddingZeros >= sc { self.append(addend); return }
-	
+
 		// Now, i < lhc
 		var i = paddingZeros
-	
+
 		var ovfl: Bool
 		(self[i], ovfl) = self[i].addingReportingOverflow(addend)
-	
+
 		while ovfl
 		{
 			i += 1
@@ -1482,18 +1478,18 @@ fileprivate extension Array where Element == Limb
 		padding paddingZeros: Int)
 	{
 		let sc = self.count
-	
+
 		if paddingZeros >  sc { self += Digits(repeating: 0, count: paddingZeros &- sc) }
 		if paddingZeros >= sc { self += [addendLow, addendHigh]; return }
-	
+
 		// Now, i < sc
 		var i = paddingZeros
 		var newLimb: Limb
-	
+
 		var ovfl1: Bool
 		(self[i], ovfl1) =  self[i].addingReportingOverflow(addendLow)
 		i += 1
-	
+
 		if i == sc
 		{
 			newLimb = addendHigh &+ (ovfl1 ? 1 : 0)
@@ -1501,17 +1497,17 @@ fileprivate extension Array where Element == Limb
 			if newLimb == 0 { self.append(1) }
 			return
 		}
-	
+
 		// Still, i < sc
 		var ovfl2: Bool
 		(self[i], ovfl2) = self[i].addingReportingOverflow(addendHigh)
-	
+
 		if ovfl1
 		{
 			self[i] = self[i] &+ 1
 			if self[i] == 0 { ovfl2 = true }
 		}
-	
+
 		while ovfl2
 		{
 			i += 1
@@ -1536,15 +1532,15 @@ fileprivate extension Array where Element == Limb
 		var subtrahend = subtrahend
 		// swap to get difference
 		if self.lessThan(subtrahend) { swap(&self, &subtrahend) }
-	
+
 		let rhc = subtrahend.count
 		var ovfl = false
-	
+
 		var i = 0
-	
+
 		// skip first zeros
 		while i < rhc && subtrahend[i] == 0 { i += 1 }
-	
+
 		while i < rhc
 		{
 			if ovfl
@@ -1557,10 +1553,10 @@ fileprivate extension Array where Element == Limb
 			{
 				(self[i], ovfl) = self[i].subtractingReportingOverflow(subtrahend[i])
 			}
-		
+
 			i += 1
 		}
-	
+
 		while ovfl
 		{
 			if i >= self.count
@@ -1568,17 +1564,17 @@ fileprivate extension Array where Element == Limb
 				self.append(Limb.max)
 				break
 			}
-		
+
 			(self[i], ovfl) = self[i].subtractingReportingOverflow(1)
-		
+
 			i += 1
 		}
-	
+
 		if self.count > 1 && self.last! == 0 // cut excess zeros if required
 		{
 			var j = self.count - 2
 			while j >= 1 && self[j] == 0 { j -= 1 }
-		
+
 			self.removeSubrange((j + 1)..<self.count)
 		}
 	}
@@ -1605,24 +1601,24 @@ fileprivate extension Array where Element == Limb
 		multiplicand: Limbs
 		){
 		let (mpc, mcc) = (multiplier.count, multiplicand.count)
-	
+
 		self.reserveCapacity(mpc + mcc)
-	
+
 		// Minimize array subscript calls
 		var l, r, mulHi, mulLo: Limb
-	
+
 		for i in 0..<mpc
 		{
 			l = multiplier[i]
 			if l == 0 { continue }
-		
+
 			for j in 0..<mcc
 			{
 				r = multiplicand[j]
 				if r == 0 { continue }
-			
+
 				(mulHi, mulLo) = l.multipliedFullWidth(by: r)
-			
+
 				if mulHi != 0 { self.addTwoLimb(mulLo, mulHi, padding: i + j) }
 				else          { self.addOneLimb(mulLo,        padding: i + j) }
 			}
@@ -1640,17 +1636,17 @@ fileprivate extension Array where Element == Limb
 			// If r == 0 then do nothing with res
 			return
 		}
-	
+
 		// Minimize array subscript calls
 		var l, mulHi, mulLo: Limb
-	
+
 		for i in 0..<multiplier.count
 		{
 			l = multiplier[i]
 			if l == 0 { continue }
-		
+
 			(mulHi, mulLo) = l.multipliedFullWidth(by: multiplicand)
-		
+
 			if mulHi != 0 { self.addTwoLimb(mulLo, mulHi, padding: i) }
 			else {          self.addOneLimb(mulLo,        padding: i) }
 		}
@@ -1667,22 +1663,22 @@ fileprivate extension Array where Element == Limb
 	{
 		var res: Limbs = [0]
 		res.reserveCapacity(2 * self.count)
-	
+
 		// Minimize array subscript calls
 		var l, r, mulHi, mulLo: Limb
-	
+
 		for i in 0..<self.count
 		{
 			l = self[i]
 			if l == 0 { continue }
-		
+
 			for j in 0...i
 			{
 				r = self[j]
 				if r == 0 { continue }
-			
+
 				(mulHi, mulLo) = l.multipliedFullWidth(by: r)
-			
+
 				if mulHi != 0
 				{
 					if i != j { res.addTwoLimb(mulLo, mulHi, padding: i + j) }
@@ -1695,7 +1691,7 @@ fileprivate extension Array where Element == Limb
 				}
 			}
 		}
-	
+
 		return res
 	}
 
@@ -1714,18 +1710,18 @@ fileprivate extension Array where Element == Limb
 	{
 		if exponent == 0 { return [1] }
 		if exponent == 1 { return self }
-	
+
 		var base = self
 		var exponent = exponent
 		var y: Limbs = [1]
-	
+
 		while exponent > 1
 		{
 			if exponent & 1 != 0 { y = y.multiplyingBy(base) }
 			base = base.squared()
 			exponent >>= 1
 		}
-	
+
 		return base.multiplyingBy(y)
 	}
 
@@ -1733,9 +1729,9 @@ fileprivate extension Array where Element == Limb
 	static func recursiveMul(_ n: Limb, _ k: Limb) -> Limbs
 	{
 		if n >= k - 1 { return [k] }
-	
+
 		let m = (n + k) >> 1
-	
+
 		return recursiveMul(n, m).multiplyingBy(recursiveMul(m, k))
 	}
 
@@ -1758,15 +1754,15 @@ fileprivate extension Array where Element == Limb
 	func divMod(_ divisor: Limbs) -> (quotient: Limbs, remainder: Limbs)
 	{
 		precondition(!divisor.equalTo(0), "Division or Modulo by zero not allowed")
-	
+
 		if self.equalTo(0) { return ([0], [0]) }
-	
+
 		var (quotient, remainder): (Limbs, Limbs) = ([0], [0])
 		var (previousCarry, carry, ele): (Limb, Limb, Limb) = (0, 0, 0)
-	
+
 		// bits of lhs minus one bit
 		var i = (64 * (self.count - 1)) + Int(log2(Double(self.last!)))
-	
+
 		while i >= 0
 		{
 			// shift remainder by 1 to the left
@@ -1780,18 +1776,18 @@ fileprivate extension Array where Element == Limb
 				remainder[r] = ele
 			}
 			if previousCarry != 0 { remainder.append(previousCarry) }
-		
+
 			remainder.setBit(at: 0, to: self.getBit(at: i))
-		
+
 			if !remainder.lessThan(divisor)
 			{
 				remainder.difference(divisor)
 				quotient.setBit(at: i, to: true)
 			}
-		
+
 			i -= 1
 		}
-	
+
 		return (quotient, remainder)
 	}
 
@@ -1828,19 +1824,19 @@ fileprivate extension Array where Element == Limb
 	{
 		let lhsc = self.count
 		let rhsc = compare.count
-	
+
 		if lhsc != rhsc
 		{
 			return lhsc < rhsc
 		}
-	
+
 		var i = lhsc - 1
 		while i >= 0
 		{
 			if self[i] != compare[i] { return self[i] < compare[i] }
 			i -= 1
 		}
-	
+
 		return false // lhs == rhs
 	}
 
@@ -1868,19 +1864,19 @@ public class BIntMath
 	static func isMersenne(_ exp: Int) -> Bool
 	{
 		var mersenne = Limbs(repeating: Limb.max, count: exp >> 6)
-	
+
 		if (exp % 64) > 0
 		{
 			mersenne.append((Limb(1) << Limb(exp % 64)) - Limb(1))
 		}
-	
+
 		var res: Limbs = [4]
-	
+
 		for _ in 0..<(exp - 2)
 		{
 			res = res.squared().differencing([2]).divMod(mersenne).remainder
 		}
-	
+
 		return res.equalTo(0)
 	}
 
@@ -1903,28 +1899,28 @@ public class BIntMath
 	static func steinGcd(_ a: BInt, _ b: BInt) -> BInt
 	{
 		if a.isZero() { return b }
-	
+
 		var (a, b, k) = (a, b, 0)
-	
+
 		while a.isEven() && b.isEven()
 		{
 			a >>= 1
 			b >>= 1
 			k += 1
 		}
-	
+
 		var t = a.isOdd() ? -b : a
-	
+
 		while !t.isZero()
 		{
 			while t.isEven() { t >>= 1 }
-		
+
 			if  t > 0 { a =  t }
 			else      { b = -t }
-		
+
 			t = a - b
 		}
-	
+
 		return a << k
 	}
 
@@ -1947,17 +1943,16 @@ public class BIntMath
 	static func fib(_ n:Int) -> BInt
 	{
 		var a: Limbs = [0], b: Limbs = [1], t: Limbs
-	
+
 		for _ in 2...n
 		{
 			t = b
 			b.addLimbs(a)
 			a = t
 		}
-	
+
 		return BInt(limbs: b)
 	}
-
 
 	///	Order matters, repetition not allowed.
 	static func permutations(_ n: Int, _ k: Int) -> BInt
@@ -1971,7 +1966,7 @@ public class BIntMath
 	{
 		// n ** k
 		return BInt(n) ** k
-	
+
 	}
 
 	///	Order does not matter, repetition not allowed.
@@ -1992,23 +1987,23 @@ public class BIntMath
 	{
 		let limbs = n >> 6
 		let singleBits = n % 64
-	
+
 		var res = Limbs(repeating: 0, count: Int(limbs))
-	
+
 		for i in 0..<Int(limbs)
 		{
 			res[i] = Limb(arc4random_uniform(UInt32.max)) |
 				(Limb(arc4random_uniform(UInt32.max)) << 32)
 		}
-	
+
 		if singleBits > 0
 		{
 			var last: Limb
-		
+
 			if singleBits < 32
 			{
 				last = Limb(arc4random_uniform(UInt32(2 ** singleBits)))
-			
+
 			}
 			else if singleBits == 32
 			{
@@ -2019,19 +2014,19 @@ public class BIntMath
 				last = Limb(arc4random_uniform(UInt32.max)) |
 					(Limb(arc4random_uniform(UInt32(2 ** (singleBits - 32)))) << 32)
 			}
-		
+
 			res.append(last)
 		}
-	
+
 		return BInt(limbs: res)
 	}
 
 	func isPrime(_ n: BInt) -> Bool
 	{
 		if n <= 3 { return n > 1 }
-	
+
 		if ((n % 2) == 0) || ((n % 3) == 0) { return false }
-	
+
 		var i = 5
 		while (i * i) <= n
 		{
@@ -2043,7 +2038,6 @@ public class BIntMath
 		}
 		return true
 	}
-
 
 	/// Quick exponentiation/modulo algorithm
 	/// FIXME: for security, this should use the constant-time Montgomery algorithm to thwart timing attacks
@@ -2070,7 +2064,6 @@ public class BIntMath
 		return result
 	}
 
-
 	/// Non-negative modulo operation
 	///
 	/// - Parameters:
@@ -2083,7 +2076,6 @@ public class BIntMath
 		let p = m.isNegative() ? r - m : r + m
 		return p
 	}
-
 
 	/// Convenience function combinding addition and non-negative modulo operations
 	///
@@ -2127,7 +2119,6 @@ public struct BDouble:
 		lhs = res
 	}
 
-
 	public init?<T>(exactly source: T) where T : BinaryInteger {
 		self.init(0.0)
 	}
@@ -2161,11 +2152,11 @@ public struct BDouble:
 			!denominator.equalTo(0) && denominator != [] && numerator != [],
 			"Denominator can't be zero and limbs can't be []"
 		)
-	
+
 		self.sign = sign
 		self.numerator = numerator
 		self.denominator = denominator
-	
+
 		self.minimize()
 	}
 
@@ -2208,13 +2199,13 @@ public struct BDouble:
 				let beforeExp = String(Array(nStr)[..<exp].filter{ $0 != "." })
 				var afterExp = String(Array(nStr)[(exp + 1)...])
 				var sign = false
-			
+
 				if let neg = afterExp.index(of: "-")?.encodedOffset
 				{
 					afterExp = String(Array(afterExp)[(neg + 1)...])
 					sign = true
 				}
-			
+
 				if sign
 				{
 					let den = ["1"] + [Character](repeating: "0", count: Int(afterExp)!)
@@ -2228,14 +2219,14 @@ public struct BDouble:
 					return
 				}
 			}
-		
+
 			if let io = nStr.index(of: ".")
 			{
 				let i = io.encodedOffset
-			
+
 				let beforePoint = String(Array(nStr)[..<i])
 				let afterPoint  = String(Array(nStr)[(i + 1)...])
-			
+
 				if afterPoint == "0"
 				{
 					self.init(beforePoint, over: "1")
@@ -2260,7 +2251,7 @@ public struct BDouble:
 	public init(_ d: Double)
 	{
 		let nStr = String(d)
-	
+
 		self.init(nStr)!
 	}
 
@@ -2282,14 +2273,14 @@ public struct BDouble:
 	public var fractionDescription : String
 	{
 		var res = (self.sign ? "-" : "")
-	
+
 		res.append(self.numerator.decimalRepresentation)
-	
+
 		if self.denominator != [1]
 		{
 			res.append("/".appending(self.denominator.decimalRepresentation))
 		}
-	
+
 		return res
 	}
 
@@ -2315,18 +2306,19 @@ public struct BDouble:
 	public func decimalExpansion(precisionAfterComma digits: Int) -> String
 	{
 		let multiplier = [10].exponentiating(digits)
-	
+
 		let rawRes = numerator.multiplyingBy(multiplier).divMod(denominator).quotient
-	
+
 		var res = BInt(limbs: rawRes).description
-	
+
 		if digits > 0
 		{
 			res.insert(".", at: String.Index(encodedOffset: res.count - digits))
 		}
-	
+
 		return res
 	}
+
 	public var hashValue: Int
 	{
 		return "\(self.sign)\(self.numerator)\(self.denominator)".hashValue
@@ -2356,9 +2348,9 @@ public struct BDouble:
 			self.denominator = [1]
 			return
 		}
-	
+
 		let gcd = BIntMath.euclid(self.numerator, self.denominator)
-	
+
 		if gcd[0] > 1 || gcd.count > 1
 		{
 			self.numerator = self.numerator.divMod(gcd).quotient
@@ -2402,10 +2394,16 @@ public func ==(lhs: BDouble, rhs: BDouble) -> Bool
 
 	return true
 }
+public func ==(lhs: BDouble, rhs: Double) -> Bool { return lhs == BDouble(rhs) }
+public func ==(lhs: Double, rhs: BDouble) -> Bool { return BDouble(lhs) == rhs }
+
 public func !=(lhs: BDouble, rhs: BDouble) -> Bool
 {
 	return !(lhs == rhs)
 }
+public func !=(lhs: BDouble, rhs: Double) -> Bool { return lhs != BDouble(rhs) }
+public func !=(lhs: Double, rhs: BDouble) -> Bool { return BDouble(lhs) != rhs }
+
 public func <(lhs: BDouble, rhs: BDouble) -> Bool
 {
 	if lhs.sign != rhs.sign { return lhs.sign }
@@ -2418,9 +2416,21 @@ public func <(lhs: BDouble, rhs: BDouble) -> Bool
 
 	return ad.lessThan(bc)
 }
-public func  >(lhs: BDouble, rhs: BDouble) -> Bool { return rhs < lhs }
+public func <(lhs: BDouble, rhs: Double) -> Bool { return lhs < BDouble(rhs) }
+public func <(lhs: Double, rhs: BDouble) -> Bool { return BDouble(lhs) < rhs }
+
+public func >(lhs: BDouble, rhs: BDouble) -> Bool { return rhs < lhs }
+public func >(lhs: BDouble, rhs: Double) -> Bool { return lhs > BDouble(rhs) }
+public func >(lhs: Double, rhs: BDouble) -> Bool { return BDouble(lhs) > rhs }
+
 public func <=(lhs: BDouble, rhs: BDouble) -> Bool { return !(rhs < lhs) }
+public func <=(lhs: BDouble, rhs: Double) -> Bool { return lhs <= BDouble(rhs) }
+public func <=(lhs: Double, rhs: BDouble) -> Bool { return BDouble(lhs) <= rhs }
+
 public func >=(lhs: BDouble, rhs: BDouble) -> Bool { return !(lhs < rhs) }
+public func >=(lhs: BDouble, rhs: Double) -> Bool { return lhs >= BDouble(rhs) }
+public func >=(lhs: Double, rhs: BDouble) -> Bool { return BDouble(lhs) >= rhs }
+
 public func *(lhs: BDouble, rhs: BDouble) -> BDouble
 {
 	var res =  BDouble(
@@ -2432,6 +2442,9 @@ public func *(lhs: BDouble, rhs: BDouble) -> BDouble
 	if res.isZero() { res.sign = false }
 	return res
 }
+public func *(lhs: BDouble, rhs: Double) -> BDouble { return lhs * BDouble(rhs) }
+public func *(lhs: Double, rhs: BDouble) -> BDouble { return BDouble(lhs) * rhs }
+
 public func /(lhs: BDouble, rhs: BDouble) -> BDouble
 {
 	var res =  BDouble(
@@ -2443,6 +2456,9 @@ public func /(lhs: BDouble, rhs: BDouble) -> BDouble
 	if res.isZero() { res.sign = false }
 	return res
 }
+public func /(lhs: BDouble, rhs: Double) -> BDouble { return lhs / BDouble(rhs) }
+public func /(lhs: Double, rhs: BDouble) -> BDouble { return BDouble(lhs) / rhs }
+
 public func +(lhs: BDouble, rhs: BDouble) -> BDouble
 {
 	let ad = lhs.numerator.multiplyingBy(rhs.denominator)
@@ -2457,6 +2473,9 @@ public func +(lhs: BDouble, rhs: BDouble) -> BDouble
 		denominator: bd
 	)
 }
+public func +(lhs: BDouble, rhs: Double) -> BDouble { return lhs + BDouble(rhs) }
+public func +(lhs: Double, rhs: BDouble) -> BDouble { return BDouble(lhs) + rhs }
+
 public prefix func -(n: BDouble) -> BDouble
 {
 	var n = n
@@ -2467,6 +2486,9 @@ public func -(lhs: BDouble, rhs: BDouble) -> BDouble
 {
 	return lhs + -rhs
 }
+public func -(lhs: BDouble, rhs: Double) -> BDouble { return lhs - BDouble(rhs) }
+public func -(lhs: Double, rhs: BDouble) -> BDouble { return BDouble(lhs) - rhs }
+
 public func abs(_ lhs: BDouble) -> BDouble
 {
 	return BDouble(
