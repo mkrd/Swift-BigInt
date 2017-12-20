@@ -1,10 +1,10 @@
-//
-//  Benchmarks.swift
-//  MathGround
-//
-//  Created by Marcel Kröker on 05.09.17.
-//  Copyright © 2017 Marcel Kröker. All rights reserved.
-//
+/*
+*   ————————————————————————————————————————————————————————————————————————————
+*   Benchmarks.swift
+*   ————————————————————————————————————————————————————————————————————————————
+*   Created by Marcel Kröker on 05.09.17.
+*   Copyright © 2017 Marcel Kröker. All rights reserved.
+*/
 
 import Foundation
 
@@ -68,8 +68,7 @@ public class Benchmarks
 			for _ in 0..<1000
 			{
 				res = res + BDouble(BInt(1), over: den)
-				den = den * BInt(2)
-
+				den *= 2
 			}
 		}
 	}
@@ -238,7 +237,7 @@ public class Benchmarks
 			// 07.09.17: 2857ms
 
 
-			res = BInt(asStr)
+			res = BInt(asStr)!
 		}
 
 		assert(asStr == res.description)
