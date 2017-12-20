@@ -95,49 +95,38 @@
 //	Maximum line length: 96 characters
 //
 //	————————————————————————————————————————————————————————————————————————————————————————————
-
-
-
 //	MARK: - Imports
 //	————————————————————————————————————————————————————————————————————————————————————————————
 //	||||||||        Imports        |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 //	————————————————————————————————————————————————————————————————————————————————————————————
-
 import Foundation
-
 //	MARK: - Typealiases
 //	————————————————————————————————————————————————————————————————————————————————————————————
 //	||||||||        Typealiases        |||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 //	————————————————————————————————————————————————————————————————————————————————————————————
-
 //	Limbs are basically single Digits in base 2^64. Each slot in an Limbs array stores one
 //	Digit of the number. The least significant digit is stored at index 0, the most significant
 //	digit is stored at the last index.
 public typealias Limbs  = [UInt64]
 public typealias Limb   =  UInt64
-
 //	A digit is a number in base 10^18. This is the biggest possible base that
 //	fits into an unsigned 64 bit number while maintaining the propery that the square root of
 //	the base is a whole number and a power of ten . Digits are required for printing BInt
 //	numbers. Limbs are converted into Digits first, and then printed.
 public typealias Digits = [UInt64]
 public typealias Digit  =  UInt64
-
 //	MARK: - Imports
 //	————————————————————————————————————————————————————————————————————————————————————————————
 //	||||||||        Operators        |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 //	————————————————————————————————————————————————————————————————————————————————————————————
-
 precedencegroup ExponentiationPrecedence
 {
 	associativity: left
 	higherThan: MultiplicationPrecedence
 	lowerThan: BitwiseShiftPrecedence
 }
-
 // Exponentiation operator
 infix operator ** : ExponentiationPrecedence
-
 //	MARK: - BInt
 //	————————————————————————————————————————————————————————————————————————————————————————————
 //	||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
@@ -146,7 +135,6 @@ infix operator ** : ExponentiationPrecedence
 //	||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 //	||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 //	————————————————————————————————————————————————————————————————————————————————————————————
-
 ///	BInt is an arbitrary precision integer value type. It stores a number in base 2^64 notation
 ///	as an array. Each element of the array is called a limb, which is of type UInt64, the whole
 ///	array is called limbs and has the type [UInt64]. A boolean sign variable determines if the
@@ -279,7 +267,7 @@ public struct BInt:
 	}
 
 	/// Create an instance initialized to a string value.
-	public init(_ str: String)
+	public init?(_ str: String)
 	{
 		var str = str
 		var sign = false
@@ -303,7 +291,7 @@ public struct BInt:
 			}
 			else
 			{
-				fatalError("Error: String must only consist of Digits (0-9)")
+				return nil
 			}
 		}
 
@@ -375,7 +363,7 @@ public struct BInt:
 		return (self.sign ? "-" : "").appending(self.limbs.decimalRepresentation)
 	}
 
-	public init(number: String, withBase base: Int)
+	public init?(number: String, withBase base: Int)
 	{
 		self.init(number.convertingBase(from: base, toBase: 10))
 	}
@@ -455,7 +443,6 @@ public struct BInt:
 	func isOdd()      -> Bool { return self.limbs[0] & 1 == 1 }
 	func isEven()     -> Bool { return self.limbs[0] & 1 == 0 }
 
-
 	///	The number of bits in the current binary representation of this value.
 	public var bitWidth: Int
 	{
@@ -533,9 +520,8 @@ public struct BInt:
 		return BInt(sign: lhs.sign && rhs.sign, limbs: res)
 	}
 
-
-//	static func &(lhs: Int, rhs: BInt) -> BInt
-//	static func &(lhs: BInt, rhs: Int) -> BInt
+	//	static func &(lhs: Int, rhs: BInt) -> BInt
+	//	static func &(lhs: BInt, rhs: Int) -> BInt
 
 	///	Stores the result of performing a bitwise AND operation on the two given values in the
 	///	left-hand-side variable.
@@ -545,8 +531,8 @@ public struct BInt:
 		lhs = res
 	}
 
-//	static func &=(inout lhs: Int, rhs: BInt)
-//	static func &=(inout lhs: BInt, rhs: Int)
+	//	static func &=(inout lhs: Int, rhs: BInt)
+	//	static func &=(inout lhs: BInt, rhs: Int)
 
 	//
 	//
@@ -830,7 +816,6 @@ public struct BInt:
 	public static func %=(lhs: inout BInt, rhs: BInt)  { lhs = lhs % rhs       }
 	static func %=(lhs: inout BInt, rhs:  Int)  { lhs = lhs % BInt(rhs) }
 
-
 	//
 	//
 	//	MARK: - BInt Comparing
@@ -869,7 +854,6 @@ public struct BInt:
 	}
 
 	static func !=<T: BinaryInteger>(lhs: T, rhs: BInt) -> Bool { return rhs != lhs }
-
 
 	// Required by protocol Comparable
 	public static func <(lhs: BInt, rhs: BInt) -> Bool
@@ -915,7 +899,6 @@ public struct BInt:
 	static func >=(lhs:  Int, rhs: BInt) -> Bool { return !(BInt(lhs) < rhs) }
 	static func >=(lhs: BInt, rhs:  Int) -> Bool { return !(lhs < BInt(rhs)) }
 }
-
 //
 //
 //	MARK: - String operations
@@ -929,7 +912,6 @@ public struct BInt:
 //
 //
 //
-
 fileprivate extension String
 {
 	// Splits the string into equally sized parts (exept for the last one).
@@ -991,12 +973,9 @@ fileprivate extension String
 		return res
 	}
 }
-
 fileprivate let DigitBase:     Digit = 1_000_000_000_000_000_000
 fileprivate let DigitHalfBase: Digit =             1_000_000_000
 fileprivate let DigitZeros           =                        18
-
-
 fileprivate extension Array where Element == Limb
 {
 	var decimalRepresentation: String
@@ -1035,7 +1014,6 @@ fileprivate extension Array where Element == Limb
 		return res
 	}
 }
-
 fileprivate extension Digit
 {
 	mutating func addReportingOverflowDigit(_ addend: Digit) -> Bool
@@ -1064,13 +1042,12 @@ fileprivate extension Digit
 		return (resLo, resHi)
 	}
 }
-
 fileprivate extension Array where Element == Digit
 {
 	mutating func addOneDigit(
 		_ addend: Limb,
 		padding paddingZeros: Int
-	){
+		){
 		let sc = self.count
 
 		if paddingZeros >  sc { self += Digits(repeating: 0, count: paddingZeros &- sc) }
@@ -1165,10 +1142,6 @@ fileprivate extension Array where Element == Digit
 		}
 	}
 }
-
-
-
-
 //
 //
 //	MARK: - Limbs extension
@@ -1182,7 +1155,6 @@ fileprivate extension Array where Element == Digit
 //
 //
 //
-
 // Extension to Limbs type
 fileprivate extension Array where Element == Limb
 {
@@ -1227,7 +1199,7 @@ fileprivate extension Array where Element == Limb
 	mutating func setBit(
 		at i: Int,
 		to bit: Bool
-	){
+		){
 		let limbIndex = Int(Limb(i) >> 6)
 
 		if limbIndex >= self.count && !bit { return }
@@ -1438,7 +1410,7 @@ fileprivate extension Array where Element == Limb
 	mutating func addLimbs(
 		_ addend: Limbs,
 		padding paddingZeros: Int
-	){
+		){
 		let sc = self.count
 
 		if paddingZeros >  sc { self += Digits(repeating: 0, count: paddingZeros &- sc) }
@@ -1503,7 +1475,7 @@ fileprivate extension Array where Element == Limb
 	mutating func addOneLimb(
 		_ addend: Limb,
 		padding paddingZeros: Int
-	){
+		){
 		let sc = self.count
 
 		if paddingZeros >  sc { self += Digits(repeating: 0, count: paddingZeros &- sc) }
@@ -1651,7 +1623,7 @@ fileprivate extension Array where Element == Limb
 	mutating func addProductOf(
 		multiplier: Limbs,
 		multiplicand: Limbs
-	){
+		){
 		let (mpc, mcc) = (multiplier.count, multiplicand.count)
 
 		self.reserveCapacity(mpc + mcc)
@@ -1681,7 +1653,7 @@ fileprivate extension Array where Element == Limb
 	mutating func addProductOf(
 		multiplier: Limbs,
 		multiplicand: Limb
-	){
+		){
 		if multiplicand < 2
 		{
 			if multiplicand == 1 { self.addLimbs(multiplier) }
@@ -1897,7 +1869,6 @@ fileprivate extension Array where Element == Limb
 		return self[0] == compare && self.count == 1
 	}
 }
-
 //
 //
 //	MARK: - Useful BInt math functions
@@ -1911,7 +1882,6 @@ fileprivate extension Array where Element == Limb
 //
 //
 //
-
 public class BIntMath
 {
 	/// Returns true iff (2 ** exp) - 1 is a mersenne prime.
@@ -2019,7 +1989,6 @@ public class BIntMath
 		return BInt(limbs: b)
 	}
 
-
 	///	Order matters, repetition not allowed.
 	static func permutations(_ n: Int, _ k: Int) -> BInt
 	{
@@ -2105,7 +2074,6 @@ public class BIntMath
 		return true
 	}
 
-
 	/// Quick exponentiation/modulo algorithm
 	/// FIXME: for security, this should use the constant-time Montgomery algorithm to thwart timing attacks
 	///
@@ -2131,7 +2099,6 @@ public class BIntMath
 		return result
 	}
 
-
 	/// Non-negative modulo operation
 	///
 	/// - Parameters:
@@ -2145,7 +2112,6 @@ public class BIntMath
 		return p
 	}
 
-
 	/// Convenience function combinding addition and non-negative modulo operations
 	///
 	/// - Parameters:
@@ -2157,7 +2123,6 @@ public class BIntMath
 		return nnmod(a + b, m)
 	}
 }
-
 //
 //
 //	MARK: - BDouble
@@ -2171,7 +2136,6 @@ public class BIntMath
 //
 //
 //
-
 public struct BDouble:
 	ExpressibleByIntegerLiteral,
 	ExpressibleByFloatLiteral,
@@ -2190,7 +2154,6 @@ public struct BDouble:
 		lhs = res
 	}
 
-
 	public init?<T>(exactly source: T) where T : BinaryInteger {
 		self.init(0.0)
 	}
@@ -2203,13 +2166,6 @@ public struct BDouble:
 		let res = lhs * rhs
 		lhs = res
 	}
-
-
-
-
-
-
-
 
 	var sign = Bool()
 	var numerator = Limbs()
@@ -2257,14 +2213,69 @@ public struct BDouble:
 		)
 	}
 
-	public init(_ numerator: String, over denominator: String)
+	public init?(_ numerator: String, over denominator: String)
 	{
-		self.init(BInt(numerator), over: BInt(denominator))
+		if let n = BInt(numerator) {
+			if let d = BInt(denominator) {
+				self.init(n, over: d)
+				return
+			}
+		}
+		return nil
 	}
 
-	public init(_ number: String)
+	public init?(_ nStr: String)
 	{
-		self.init(BInt(number), over: BInt(1))
+		if let bi = BInt(nStr) {
+			self.init(bi, over: 1)
+		} else {
+			if let exp = nStr.index(of: "e")?.encodedOffset
+			{
+				let beforeExp = String(Array(nStr)[..<exp].filter{ $0 != "." })
+				var afterExp = String(Array(nStr)[(exp + 1)...])
+				var sign = false
+
+				if let neg = afterExp.index(of: "-")?.encodedOffset
+				{
+					afterExp = String(Array(afterExp)[(neg + 1)...])
+					sign = true
+				}
+
+				if sign
+				{
+					let den = ["1"] + [Character](repeating: "0", count: Int(afterExp)!)
+					self.init(beforeExp, over: String(den))
+					return
+				}
+				else
+				{
+					let num = beforeExp + String([Character](repeating: "0", count: Int(afterExp)!))
+					self.init(num, over: "1")
+					return
+				}
+			}
+
+			if let io = nStr.index(of: ".")
+			{
+				let i = io.encodedOffset
+
+				let beforePoint = String(Array(nStr)[..<i])
+				let afterPoint  = String(Array(nStr)[(i + 1)...])
+
+				if afterPoint == "0"
+				{
+					self.init(beforePoint, over: "1")
+				}
+				else
+				{
+					let den = ["1"] + [Character](repeating: "0", count: afterPoint.count)
+					self.init(beforePoint + afterPoint, over: String(den))
+				}
+			} else
+			{
+				return nil
+			}
+		}
 	}
 
 	public init(_ z: Int)
@@ -2276,47 +2287,7 @@ public struct BDouble:
 	{
 		let nStr = String(d)
 
-		if let exp = nStr.index(of: "e")?.encodedOffset
-		{
-			let beforeExp = String(Array(nStr)[..<exp].filter{ $0 != "." })
-			var afterExp = String(Array(nStr)[(exp + 1)...])
-			var sign = false
-
-			if let neg = afterExp.index(of: "-")?.encodedOffset
-			{
-				afterExp = String(Array(afterExp)[(neg + 1)...])
-				sign = true
-			}
-
-			if sign
-			{
-				let den = ["1"] + [Character](repeating: "0", count: Int(afterExp)!)
-				self.init(beforeExp, over: String(den))
-				return
-			}
-			else
-			{
-				let num = beforeExp + String([Character](repeating: "0", count: Int(afterExp)!))
-				self.init(num, over: "1")
-				return
-			}
-		}
-
-		let i = nStr.index(of: ".")!.encodedOffset
-
-
-		let beforePoint = String(Array(nStr)[..<i])
-		let afterPoint  = String(Array(nStr)[(i + 1)...])
-
-		if afterPoint == "0"
-		{
-			self.init(beforePoint, over: "1")
-		}
-		else
-		{
-			let den = ["1"] + [Character](repeating: "0", count: afterPoint.count)
-			self.init(beforePoint + afterPoint, over: String(den))
-		}
+		self.init(nStr)!
 	}
 
 	public init(integerLiteral value: Int)
@@ -2331,6 +2302,11 @@ public struct BDouble:
 
 	public var description: String
 	{
+		return self.fractionDescription
+	}
+
+	public var fractionDescription : String
+	{
 		var res = (self.sign ? "-" : "")
 
 		res.append(self.numerator.decimalRepresentation)
@@ -2341,6 +2317,25 @@ public struct BDouble:
 		}
 
 		return res
+	}
+
+	static private var _precision = 4
+	static public var precision : Int
+	{
+		get
+		{
+			return _precision
+		}
+		set
+		{
+			_precision = newValue > 0 ? newValue : 0
+		}
+	}
+	public var precision : Int = BDouble.precision
+
+	public var decimalDescription : String
+	{
+		return self.decimalExpansion(precisionAfterComma: self.precision)
 	}
 
 	public func decimalExpansion(precisionAfterComma digits: Int) -> String
@@ -2418,7 +2413,7 @@ public struct BDouble:
 		}
 
 		let gcd = BIntMath.steinGcd(self.numerator, self.denominator)
-		
+
 		if gcd[0] > 1 || gcd.count > 1
 		{
 			self.numerator = self.numerator.divMod(gcd).quotient
@@ -2426,14 +2421,13 @@ public struct BDouble:
 		}
 	}
 
-//	public func sqrt(precision digits: Int) -> BDouble
-//	{
-//		// let self = v
-//		// Find x such that x*x=v <==> x = v/x
-//
-//	}
+	//	public func sqrt(precision digits: Int) -> BDouble
+	//	{
+	//		// let self = v
+	//		// Find x such that x*x=v <==> x = v/x
+	//
+	//	}
 }
-
 /*\
 /**\
 /***\
@@ -2455,8 +2449,6 @@ public struct BDouble:
 \***/
 \**/
 \*/
-
-
 public func ==(lhs: BDouble, rhs: BDouble) -> Bool
 {
 	if lhs.sign != rhs.sign { return false }
@@ -2465,11 +2457,15 @@ public func ==(lhs: BDouble, rhs: BDouble) -> Bool
 
 	return true
 }
+public func ==(lhs: BDouble, rhs: Double) -> Bool { return lhs == BDouble(rhs) }
+public func ==(lhs: Double, rhs: BDouble) -> Bool { return BDouble(lhs) == rhs }
 
 public func !=(lhs: BDouble, rhs: BDouble) -> Bool
 {
 	return !(lhs == rhs)
 }
+public func !=(lhs: BDouble, rhs: Double) -> Bool { return lhs != BDouble(rhs) }
+public func !=(lhs: Double, rhs: BDouble) -> Bool { return BDouble(lhs) != rhs }
 
 public func <(lhs: BDouble, rhs: BDouble) -> Bool
 {
@@ -2483,13 +2479,20 @@ public func <(lhs: BDouble, rhs: BDouble) -> Bool
 
 	return ad.lessThan(bc)
 }
+public func <(lhs: BDouble, rhs: Double) -> Bool { return lhs < BDouble(rhs) }
+public func <(lhs: Double, rhs: BDouble) -> Bool { return BDouble(lhs) < rhs }
 
-public func  >(lhs: BDouble, rhs: BDouble) -> Bool { return rhs < lhs }
+public func >(lhs: BDouble, rhs: BDouble) -> Bool { return rhs < lhs }
+public func >(lhs: BDouble, rhs: Double) -> Bool { return lhs > BDouble(rhs) }
+public func >(lhs: Double, rhs: BDouble) -> Bool { return BDouble(lhs) > rhs }
+
 public func <=(lhs: BDouble, rhs: BDouble) -> Bool { return !(rhs < lhs) }
+public func <=(lhs: BDouble, rhs: Double) -> Bool { return lhs <= BDouble(rhs) }
+public func <=(lhs: Double, rhs: BDouble) -> Bool { return BDouble(lhs) <= rhs }
+
 public func >=(lhs: BDouble, rhs: BDouble) -> Bool { return !(lhs < rhs) }
-
-
-
+public func >=(lhs: BDouble, rhs: Double) -> Bool { return lhs >= BDouble(rhs) }
+public func >=(lhs: Double, rhs: BDouble) -> Bool { return BDouble(lhs) >= rhs }
 
 public func *(lhs: BDouble, rhs: BDouble) -> BDouble
 {
@@ -2502,6 +2505,8 @@ public func *(lhs: BDouble, rhs: BDouble) -> BDouble
 	if res.isZero() { res.sign = false }
 	return res
 }
+public func *(lhs: BDouble, rhs: Double) -> BDouble { return lhs * BDouble(rhs) }
+public func *(lhs: Double, rhs: BDouble) -> BDouble { return BDouble(lhs) * rhs }
 
 public func /(lhs: BDouble, rhs: BDouble) -> BDouble
 {
@@ -2514,8 +2519,8 @@ public func /(lhs: BDouble, rhs: BDouble) -> BDouble
 	if res.isZero() { res.sign = false }
 	return res
 }
-
-
+public func /(lhs: BDouble, rhs: Double) -> BDouble { return lhs / BDouble(rhs) }
+public func /(lhs: Double, rhs: BDouble) -> BDouble { return BDouble(lhs) / rhs }
 
 public func +(lhs: BDouble, rhs: BDouble) -> BDouble
 {
@@ -2532,6 +2537,8 @@ public func +(lhs: BDouble, rhs: BDouble) -> BDouble
 		denominator: bd
 	)
 }
+public func +(lhs: BDouble, rhs: Double) -> BDouble { return lhs + BDouble(rhs) }
+public func +(lhs: Double, rhs: BDouble) -> BDouble { return BDouble(lhs) + rhs }
 
 public prefix func -(n: BDouble) -> BDouble
 {
@@ -2539,11 +2546,12 @@ public prefix func -(n: BDouble) -> BDouble
 	n.negate()
 	return n
 }
-
 public func -(lhs: BDouble, rhs: BDouble) -> BDouble
 {
 	return lhs + -rhs
 }
+public func -(lhs: BDouble, rhs: Double) -> BDouble { return lhs - BDouble(rhs) }
+public func -(lhs: Double, rhs: BDouble) -> BDouble { return BDouble(lhs) - rhs }
 
 public func abs(_ lhs: BDouble) -> BDouble
 {
