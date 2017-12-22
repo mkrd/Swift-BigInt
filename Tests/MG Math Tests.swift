@@ -14,7 +14,7 @@ public class MG_Math_Tests
 	{
 		for i in 2...200
 		{
-			let primes = math.primesTo(i)
+			let primes = math.primesThrough(i)
 
 			for j in 2...i
 			{
@@ -30,7 +30,7 @@ public class MG_Math_Tests
 		}
 
 		benchmarkPrint(title: "primes") {
-			let n = math.primesTo(150_000_000)
+			let n = math.primesThrough(150_000_000)
 			print("\(Double(n.count) / 1_000_000.0) Million")
 		}
 	}

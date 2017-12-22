@@ -79,11 +79,6 @@ Benchmarks.BIntToString()
 //    return CGImageDestinationFinalize(destination)
 //}
 //
-//
-//
-//
-//
-//
 //func makeAndSave()
 //{
 //    let dimension = 4000
@@ -111,14 +106,8 @@ Benchmarks.BIntToString()
 //    writeCGImage(img, to: writeURL)
 //}
 //
-//
-//
-//benchmarkPrint(title: "hm")
+//benchmarkPrint(title: "")
 //{
 //    makeAndSave()
 //}
-
-
-
-
 

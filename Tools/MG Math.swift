@@ -23,7 +23,9 @@ func **(lhs: Int, rhs: Int) -> Int
 	return res
 }
 
-// Automatic type inference for operators that operate on Int and Double, Use Double as the resulting type.
+/*	Automatic type inference for operators that operate on Int and Double,
+ *	use Double as the resulting type.
+ */
 
 func +(lhs: Double, rhs: Int) -> Double { return lhs + Double(rhs) }
 func +(lhs: Int, rhs: Double) -> Double { return Double(lhs) + rhs }
@@ -92,7 +94,10 @@ public class math
 		return (a / math.gcd(a, b)) * b
 	}
 
-	/// Returns the number of decimal digits of the input. Positive and negative numbers are treated equally.
+	/**
+	 *	Returns the number of digits of the input in the specified base.
+	 *	Positive and negative numbers are treated equally.
+	 */
 	public static func digitsCount(base b: Int, _ n: Int) -> Int
 	{
 		var n = abs(n)
@@ -107,7 +112,7 @@ public class math
 		return count
 	}
 
-	// Returns true iff n is a prime number
+	// Returns true iff n is a prime number.
 	public static func isPrime(_ n: Int) -> Bool
 	{
 		if n <= 3 { return n > 1 }
@@ -129,10 +134,9 @@ public class math
 	/// Returns the n-th prime number. The first one is 2, etc.
 	public static func getPrime(_ n: Int) -> Int
 	{
-		precondition(n > 0, "There is no 0-th prime number")
+		precondition(n > 0, "There is no \(n)-th prime number")
 
-		var prime = 2
-		var primeCount = 1
+		var (prime, primeCount) = (2, 1)
 
 		while primeCount != n
 		{
@@ -146,48 +150,14 @@ public class math
 
 
 	/// Returns all primes that are smaller or equal to n. Works with the Sieve of Eratosthenes.
-//    public static func primesTo(_ n: Int) -> [Int]
-//    {
-//        if n < 2 { return [] }
-//
-//        var A = [Bool](repeating: true, count: n)
-//
-//        var i = 2
-//        while i * i <= n
-//        {
-//            if A[i - 1]
-//            {
-//                var j = i * i
-//                var c = 1
-//                while j <= n
-//                {
-//                    A[j - 1] = false
-//                    j = i * (i + c)
-//                    c += 1
-//                }
-//            }
-//            i += 1
-//        }
-//
-//        var res = [2]
-//        i = 3
-//        while i <= n
-//        {
-//            if A[i - 1] { res.append(i) }
-//            i += 2
-//        }
-//        return res
-//    }
-    
-    public static func primesTo(_ n: Int) -> [Int]
+    public static func primesThrough(_ n: Int) -> [Int]
     {
         if n <  2 { return [] }
         
         // represent numbers 3,5,... that are <= n
         var A = [Bool](repeating: true, count: n >> 1)
         
-        var i, j, c: Int
-        i = 3
+        var (i, j, c) = (3, 0, 0)
         while i * i <= n
         {
             if A[(i >> 1) - 1]
@@ -204,14 +174,14 @@ public class math
         }
         
         var res = [2]
-        
-        i = 3
-        while i <= n
-        {
-            if A[(i >> 1) - 1] { res.append(i) }
-            i += 2
-        }
-        
+
+		i = 3
+		while i <= n
+		{
+			if A[(i >> 1) - 1] { res.append(i) }
+			i += 2
+		}
+
         return res
     }
     
@@ -343,7 +313,7 @@ public class math
 		{
 			for symbol in range
 			{
-				letters.append(String(describing: UnicodeScalar(symbol)))
+				letters.append(String(describing: UnicodeScalar(symbol)!))
 			}
 		}
 
@@ -385,7 +355,7 @@ public class math
 				
 				if n == 1 { return res }
 				
-				if isPrime(n)
+				if math.isPrime(n)
 				{
 					res.append((n, 1))
 					return res
