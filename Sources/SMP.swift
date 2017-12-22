@@ -192,11 +192,8 @@ public struct BInt:
 	/// Returns a formated human readable string that says how much space (in b, kb, mb, or gb) the BInt occupies
 	public var size: String
 	{
-		var bits = 1
-		for _ in self.limbs
-		{
-			bits += 64
-		}
+		// One bit for the sign, plus the size of the limbs.
+		let bits = 1 + (self.limbs.count * 64)
 
 		if bits < 1_000
 		{
@@ -2362,15 +2359,8 @@ public struct BDouble:
 	/// Returns a formated human readable string that says how much space (in b, kb, mb, or gb) the BDouble occupies
 	public var size: String
 	{
-		var bits = 1
-		for _ in self.numerator
-		{
-			bits += 64
-		}
-		for _ in self.denominator
-		{
-			bits += 64
-		}
+		// One bit for the sign, plus the size of the numerator and denominator.
+		let bits = 1 + ((self.numerator.count + self.denominator.count) * 64)
 
 		if bits < 1_000
 		{
