@@ -2059,7 +2059,7 @@ public class BIntMath
 			else
 			{
 				last = Limb(arc4random_uniform(UInt32.max)) |
-					(Limb(arc4random_uniform(UInt32(2 ** (singleBits - 32)))) << 32)
+					(Limb(arc4random_uniform(UInt32(2.0 ** (singleBits - 32)))) << 32)
 			}
 
 			res.append(last)
@@ -2259,15 +2259,21 @@ public struct BDouble:
 
 				if sign
 				{
-					let den = ["1"] + [Character](repeating: "0", count: Int(afterExp)!)
-					self.init(beforeExp, over: String(den))
-					return
+					if let safeAfterExp = Int(afterExp) {
+						let den = ["1"] + [Character](repeating: "0", count: safeAfterExp)
+						self.init(beforeExp, over: String(den))
+						return
+					}
+					return nil
 				}
 				else
 				{
-					let num = beforeExp + String([Character](repeating: "0", count: Int(afterExp)!))
-					self.init(num, over: "1")
-					return
+					if let safeAfterExp = Int(afterExp) {
+						let num = beforeExp + String([Character](repeating: "0", count: safeAfterExp))
+						self.init(num, over: "1")
+						return
+					}
+					return nil
 				}
 			}
 
@@ -2354,10 +2360,29 @@ public struct BDouble:
 		}
 		set
 		{
-			_precision = abs(newValue)
+			var nv = newValue
+			if nv < 0 {
+				nv = 0
+			}
+			_precision = nv
 		}
 	}
-	public var precision : Int = BDouble.precision
+	private var _precision : Int = BDouble.precision
+	public var precision : Int
+	{
+		get
+		{
+			return _precision
+		}
+		set
+		{
+		var nv = newValue
+		if nv < 0 {
+		nv = 0
+		}
+		_precision = nv
+		}
+	}
 
 	public var decimalDescription : String
 	{
@@ -2753,4 +2778,8 @@ public func ceil(_ base: BDouble) -> BInt
 	}
 
 	return retVal
+}
+
+public func pow(_ base : BDouble, _ exp : Int) -> BDouble {
+	return base**exp
 }
