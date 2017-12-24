@@ -2391,19 +2391,46 @@ public struct BDouble:
 
 	public func decimalExpansion(precisionAfterComma digits: Int) -> String
 	{
+		if self.isZero() {
+			return "0." + String(repeating: "0", count: max(digits, 1))
+		}
+		
 		let multiplier = [10].exponentiating(digits)
 
-		let rawRes = numerator.multiplyingBy(multiplier).divMod(denominator).quotient
+		let rawRes = abs(self).numerator.multiplyingBy(multiplier).divMod(self.denominator).quotient
 
-		var res = BInt(limbs: rawRes).description
-
-		if digits > 0 && digits < res.count
-		{
+		var res = BInt(limbs: rawRes).description // just the BInt
+		
+		print("before", res)
+		
+		if digits > 0 && digits < res.count {
 			res.insert(".", at: String.Index(encodedOffset: res.count - digits))
 		} else if res.count <= digits {
-			res = "0." + res.padding(toLength: digits, withPad: "0", startingAt: 0)
+			let origRes = res
+			let w = abs(self).numerator.multiplyingBy(multiplier).divMod(self.denominator).remainder
+			res = "0." + String((BInt(limbs: w).description as String).reversed())
+			if res.count < digits + 2
+			{
+				print("adding padding")
+				let pad = String(repeating: "0", count: max(digits, 1))
+				res = res.padding(toLength: digits+2-origRes.count, withPad: pad, startingAt: res.count)
+			}
+			res = res + origRes
+			res = res.prefix(max(3, digits+2)).description
+			print("warning!", res, digits, w)
 		}
-
+		
+		if res == "0"
+		{
+			res = "0." + String(repeating: "0", count: max(digits, 1))
+		}
+		
+		if self.isNegative() {
+			res = "-" + res
+		}
+		
+		print("after", res, self.numerator, self.denominator)
+		
 		return res
 	}
 

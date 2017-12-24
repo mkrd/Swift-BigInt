@@ -143,6 +143,30 @@ class BDoubleTests : XCTestCase {
 		XCTAssert(bigD?.decimalDescription == "123456789")
 		bigD?.precision = -100
 		XCTAssert(bigD?.decimalDescription == "123456789")
+		
+		bigD = BDouble("-123456789.123456789")
+		bigD?.precision = 2
+		XCTAssert(bigD?.decimalDescription == "-123456789.12", (bigD?.decimalDescription)!)
+		bigD?.precision = 4
+		XCTAssert(bigD?.decimalDescription == "-123456789.1234", (bigD?.decimalDescription)!)
+		bigD?.precision = 10
+		XCTAssert(bigD?.decimalDescription == "-123456789.1234567890", (bigD?.decimalDescription)!)
+		bigD?.precision = 20
+		XCTAssert(bigD?.decimalDescription == "-123456789.12345678900000000000")
+		bigD?.precision = 0
+		XCTAssert(bigD?.decimalDescription == "-123456789")
+		bigD?.precision = -1
+		XCTAssert(bigD?.decimalDescription == "-123456789")
+		bigD?.precision = -100
+		XCTAssert(bigD?.decimalDescription == "-123456789")
+		
+		bigD = BDouble("0.0000000003") // nine zeroes
+		bigD?.precision = 0
+		XCTAssert(bigD?.decimalDescription == "0.0", (bigD?.decimalDescription)!)
+		bigD?.precision = 10
+		XCTAssert(bigD?.decimalDescription == "0.0000000003", (bigD?.decimalDescription)!)
+		bigD?.precision = 5
+		XCTAssert(bigD?.decimalDescription == "0.00000", (bigD?.decimalDescription)!)
 	}
 
     func testPerformanceExample() {
