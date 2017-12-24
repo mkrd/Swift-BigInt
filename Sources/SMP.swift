@@ -2420,6 +2420,30 @@ public struct BDouble:
 		}
 	}
 
+	public func rounded() -> BInt
+	{
+		if self.isZero() {
+			return BInt(0)
+		}
+		let digits = 3
+		let multiplier = [10].exponentiating(digits)
+
+		let rawRes = self.numerator.multiplyingBy(multiplier).divMod(self.denominator).quotient
+
+		let res = BInt(limbs: rawRes).description
+
+		let offset = res.count - digits
+		let rhs = Double("0." + res.suffix(offset+1))!
+		let lhs = res.prefix(offset)
+		var retVal = BInt(String(lhs))!
+		if rhs > 0.5
+		{
+			retVal = retVal + 1
+		}
+
+		return retVal
+	}
+
 	//	public func sqrt(precision digits: Int) -> BDouble
 	//	{
 	//		// let self = v
@@ -2559,4 +2583,62 @@ public func abs(_ lhs: BDouble) -> BDouble
 		numerator: lhs.numerator,
 		denominator: lhs.denominator
 	)
+}
+
+// TODO: pow function that supports Double/BDouble in the exponent
+public func pow(_ base : BDouble, _ exponent : Int) -> BDouble
+{
+	if exponent == 0
+	{
+		return BDouble(1)
+	}
+	if exponent == 1
+	{
+		return base
+	}
+	if exponent < 0
+	{
+		return BDouble(1) / pow(base, -exponent)
+	}
+
+	return base * pow(base, expontent-1)
+}
+
+public func floor(_ base: BDouble) -> BInt
+{
+	let digits = 3
+	let multiplier = [10].exponentiating(digits)
+
+	let rawRes = base.numerator.multiplyingBy(multiplier).divMod(base.denominator).quotient
+
+	let res = BInt(limbs: rawRes).description
+
+	let offset = res.count - digits
+	let lhs = res.prefix(offset)
+
+	return BInt(String(lhs))!
+}
+
+public func ceil(_ base: BDouble) -> BInt
+{
+	if base.isZero() {
+		return BInt(0)
+	}
+	let digits = 3
+	let multiplier = [10].exponentiating(digits)
+
+	let rawRes = base.numerator.multiplyingBy(multiplier).divMod(base.denominator).quotient
+
+	let res = BInt(limbs: rawRes).description
+
+	let offset = res.count - digits
+	let rhs = Double("0." + res.suffix(offset+1))!
+	let lhs = res.prefix(offset)
+	var retVal = BInt(String(lhs))!
+	if rhs > 0.0
+	{
+		retVal = retVal + 1
+	}
+
+	return retVal
 }
