@@ -165,6 +165,8 @@ class BDoubleTests : XCTestCase {
 		XCTAssert(bigD?.decimalDescription == "0.0", (bigD?.decimalDescription)!)
 		bigD?.precision = 10
 		XCTAssert(bigD?.decimalDescription == "0.0000000003", (bigD?.decimalDescription)!)
+		bigD?.precision = 15
+		XCTAssert(bigD?.decimalDescription == "0.000000000300000", (bigD?.decimalDescription)!)
 		bigD?.precision = 5
 		XCTAssert(bigD?.decimalDescription == "0.00000", (bigD?.decimalDescription)!)
 	}

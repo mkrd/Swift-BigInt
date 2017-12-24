@@ -2067,6 +2067,7 @@ public class BIntMath
 
 		return BInt(limbs: res)
 	}
+	let random = randomBInt
 
 	func isPrime(_ n: BInt) -> Bool
 	{
