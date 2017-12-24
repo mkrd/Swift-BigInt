@@ -642,7 +642,7 @@ public struct BInt:
 	//
 	//
 
-	prefix static func +(x: BInt) -> BInt
+	public prefix static func +(x: BInt) -> BInt
 	{
 		return x
 	}
@@ -2156,43 +2156,47 @@ public struct BDouble:
 	Comparable,
 	Hashable
 {
-	public static func -=(lhs: inout BDouble, rhs: BDouble) {
-		let res = lhs - rhs
-		lhs = res
-	}
-
-	public static func +=(lhs: inout BDouble, rhs: BDouble) {
-		let res = lhs + rhs
-		lhs = res
-	}
-
-	public init?<T>(exactly source: T) where T : BinaryInteger {
-		self.init(0.0)
-	}
-
-	public var magnitude: Double = 0.0
-
-	public typealias Magnitude = Double
-
-	public static func *=(lhs: inout BDouble, rhs: BDouble) {
-		let res = lhs * rhs
-		lhs = res
-	}
+	//
+	//
+	//	MARK: - Internal data
+	//	————————————————————————————————————————————————————————————————————————————————————————
+	//	||||||||        Internal data        |||||||||||||||||||||||||||||||||||||||||||||||||||
+	//	————————————————————————————————————————————————————————————————————————————————————————
+	//
+	//
+	//
 
 	var sign = Bool()
 	var numerator = Limbs()
 	var denominator = Limbs()
 
+	public typealias Magnitude = Double
+	public var magnitude: Double = 0.0
+
+	//
+	//
+	//	MARK: - Initializers
+	//	————————————————————————————————————————————————————————————————————————————————————————
+	//	||||||||        Initializers        ||||||||||||||||||||||||||||||||||||||||||||||||||||
+	//	————————————————————————————————————————————————————————————————————————————————————————
+	//
+	//
+	//
+
+	public init?<T>(exactly source: T) where T : BinaryInteger
+	{
+		self.init(0.0)
+	}
+
 	/**
-	Inits a BDouble with two Limbs as numerator and denominator
+		Inits a BDouble with two Limbs as numerator and denominator
 
-	- Parameters:
-	- numerator: The upper part of the fraction as Limbs
-	- denominator: The lower part of the fraction as Limbs
+		- Parameters:
+		- numerator: The upper part of the fraction as Limbs
+		- denominator: The lower part of the fraction as Limbs
 
-	Returns: A new BDouble
+		Returns: A new BDouble
 	*/
-
 	public init(sign: Bool, numerator: Limbs, denominator: Limbs)
 	{
 		precondition(
@@ -2312,6 +2316,16 @@ public struct BDouble:
 		self.init(value)
 	}
 
+	//
+	//
+	//	MARK: - Descriptions
+	//	————————————————————————————————————————————————————————————————————————————————————————
+	//	||||||||        Descriptions        ||||||||||||||||||||||||||||||||||||||||||||||||||||
+	//	————————————————————————————————————————————————————————————————————————————————————————
+	//
+	//
+	//
+
 	public var description: String
 	{
 		return self.fractionDescription
@@ -2340,7 +2354,7 @@ public struct BDouble:
 		}
 		set
 		{
-			_precision = newValue > 0 ? newValue : 0
+			_precision = abs(newValue)
 		}
 	}
 	public var precision : Int = BDouble.precision
@@ -2377,7 +2391,9 @@ public struct BDouble:
 		return 1 + ((self.numerator.count + self.denominator.count) * 64)
 	}
 
-	/// Returns a formated human readable string that says how much space (in bytes, kilobytes, megabytes, or gigabytes) the BDouble occupies
+	/** Returns a formated human readable string that says how much space
+		(in bytes, kilobytes, megabytes, or gigabytes) the BDouble occupies
+	*/
 	public var sizeDescription: String
 	{
 		// One bit for the sign, plus the size of the numerator and denominator.
@@ -2406,14 +2422,6 @@ public struct BDouble:
 	public func isPositive() -> Bool { return !self.sign }
 	public func isNegative() -> Bool { return self.sign }
 	public func isZero() -> Bool { return self.numerator.equalTo(0) }
-
-	public mutating func negate()
-	{
-		if !self.isZero()
-		{
-			self.sign = !self.sign
-		}
-	}
 
 	public mutating func minimize()
 	{
@@ -2462,131 +2470,242 @@ public struct BDouble:
 	//		// Find x such that x*x=v <==> x = v/x
 	//
 	//	}
+
+	//
+	//
+	//	MARK: - BDouble Addition
+	//	————————————————————————————————————————————————————————————————————————————————————————
+	//	||||||||        BDouble Addition        ||||||||||||||||||||||||||||||||||||||||||||||||
+	//	————————————————————————————————————————————————————————————————————————————————————————
+	//
+	//
+	//
+
+	public static func +(lhs: BDouble, rhs: BDouble) -> BDouble
+	{
+		// a/b + c/d = ad + bc / bd, where lhs = a/b and rhs = c/d.
+		let ad = lhs.numerator.multiplyingBy(rhs.denominator)
+		let bc = rhs.numerator.multiplyingBy(lhs.denominator)
+		let bd = lhs.denominator.multiplyingBy(rhs.denominator)
+
+		let resNumerator = BInt(sign: lhs.sign, limbs: ad) + BInt(sign: rhs.sign, limbs: bc)
+
+		return BDouble(
+			sign: resNumerator.sign && !resNumerator.limbs.equalTo(0),
+			numerator: resNumerator.limbs,
+			denominator: bd
+		)
+	}
+
+	public static func +(lhs: BDouble, rhs: Double) -> BDouble { return lhs + BDouble(rhs) }
+	public static func +(lhs: Double, rhs: BDouble) -> BDouble { return BDouble(lhs) + rhs }
+
+	public static func +=(lhs: inout BDouble, rhs: BDouble) {
+		let res = lhs + rhs
+		lhs = res
+	}
+
+	public static func +=(lhs: inout BDouble, rhs: Double) { lhs += BDouble(rhs) }
+
+
+	//
+	//
+	//	MARK: - BDouble Negation
+	//	————————————————————————————————————————————————————————————————————————————————————————
+	//	||||||||        BDouble Negation        ||||||||||||||||||||||||||||||||||||||||||||||||
+	//	————————————————————————————————————————————————————————————————————————————————————————
+	//
+	//
+	//
+
+	public mutating func negate()
+	{
+		if !self.isZero()
+		{
+			self.sign = !self.sign
+		}
+	}
+
+	public static prefix func -(n: BDouble) -> BDouble
+	{
+		var n = n
+		n.negate()
+		return n
+	}
+
+	//
+	//
+	//	MARK: - BDouble Subtraction
+	//	————————————————————————————————————————————————————————————————————————————————————————
+	//	||||||||        BDouble Subtraction        |||||||||||||||||||||||||||||||||||||||||||||
+	//	————————————————————————————————————————————————————————————————————————————————————————
+	//
+	//
+	//
+
+	public static func -(lhs: BDouble, rhs: BDouble) -> BDouble
+	{
+		return lhs + -rhs
+	}
+	public static func -(lhs: BDouble, rhs: Double) -> BDouble { return lhs - BDouble(rhs) }
+	public static func -(lhs: Double, rhs: BDouble) -> BDouble { return BDouble(lhs) - rhs }
+
+	public static func -=(lhs: inout BDouble, rhs: BDouble) {
+		let res = lhs - rhs
+		lhs = res
+	}
+
+	public static func -=(lhs: inout BDouble, rhs: Double) { lhs -= BDouble(rhs) }
+
+	//
+	//
+	//	MARK: - BDouble Multiplication
+	//	————————————————————————————————————————————————————————————————————————————————————————
+	//	||||||||        BDouble Multiplication        ||||||||||||||||||||||||||||||||||||||||||
+	//	————————————————————————————————————————————————————————————————————————————————————————
+	//
+	//
+	//
+
+	public static func *(lhs: BDouble, rhs: BDouble) -> BDouble
+	{
+		var res =  BDouble(
+			sign:			lhs.sign != rhs.sign,
+			numerator:		lhs.numerator.multiplyingBy(rhs.numerator),
+			denominator:	lhs.denominator.multiplyingBy(rhs.denominator)
+		)
+
+		if res.isZero() { res.sign = false }
+		return res
+	}
+	public static func *(lhs: BDouble, rhs: Double) -> BDouble { return lhs * BDouble(rhs) }
+	public static func *(lhs: Double, rhs: BDouble) -> BDouble { return BDouble(lhs) * rhs }
+
+	public static func *=(lhs: inout BDouble, rhs: BDouble) {
+		let res = lhs * rhs
+		lhs = res
+	}
+
+	public static func *=(lhs: inout BDouble, rhs: Double) { lhs *= BDouble(rhs) }
+
+	//
+	//
+	//	MARK: - BDouble Exponentiation
+	//	————————————————————————————————————————————————————————————————————————————————————————
+	//	||||||||        BDouble Exponentiation        ||||||||||||||||||||||||||||||||||||||||||
+	//	————————————————————————————————————————————————————————————————————————————————————————
+	//
+	//
+	//
+
+	// TODO: Exponentiation function that supports Double/BDouble in the exponent
+	public static func **(_ base : BDouble, _ exponent : Int) -> BDouble
+	{
+		if exponent == 0
+		{
+			return BDouble(1)
+		}
+		if exponent == 1
+		{
+			return base
+		}
+		if exponent < 0
+		{
+			return BDouble(1) / (base ** -exponent)
+		}
+
+		return base * (base ** (exponent - 1))
+	}
+
+	//
+	//
+	//	MARK: - BDouble Division
+	//	————————————————————————————————————————————————————————————————————————————————————————
+	//	||||||||        BDouble Division        ||||||||||||||||||||||||||||||||||||||||||||||||
+	//	————————————————————————————————————————————————————————————————————————————————————————
+	//
+	//
+	//
+
+	public static func /(lhs: BDouble, rhs: BDouble) -> BDouble
+	{
+		var res =  BDouble(
+			sign:			lhs.sign != rhs.sign,
+			numerator:		lhs.numerator.multiplyingBy(rhs.denominator),
+			denominator:	lhs.denominator.multiplyingBy(rhs.numerator)
+		)
+
+		if res.isZero() { res.sign = false }
+		return res
+	}
+	public static func /(lhs: BDouble, rhs: Double) -> BDouble { return lhs / BDouble(rhs) }
+	public static func /(lhs: Double, rhs: BDouble) -> BDouble { return BDouble(lhs) / rhs }
+
+	//
+	//
+	//	MARK: - BDouble Comparing
+	//	————————————————————————————————————————————————————————————————————————————————————————
+	//	||||||||        BDouble Comparing        |||||||||||||||||||||||||||||||||||||||||||||||
+	//	————————————————————————————————————————————————————————————————————————————————————————
+	//
+	//
+	//
+
+	public static func ==(lhs: BDouble, rhs: BDouble) -> Bool
+	{
+		if lhs.sign != rhs.sign { return false }
+		if lhs.numerator != rhs.numerator { return false }
+		if lhs.denominator != rhs.denominator { return false }
+
+		return true
+	}
+	public static func ==(lhs: BDouble, rhs: Double) -> Bool { return lhs == BDouble(rhs) }
+	public static func ==(lhs: Double, rhs: BDouble) -> Bool { return BDouble(lhs) == rhs }
+
+	public static func !=(lhs: BDouble, rhs: BDouble) -> Bool
+	{
+		return !(lhs == rhs)
+	}
+	public static func !=(lhs: BDouble, rhs: Double) -> Bool { return lhs != BDouble(rhs) }
+	public static func !=(lhs: Double, rhs: BDouble) -> Bool { return BDouble(lhs) != rhs }
+
+	public static func <(lhs: BDouble, rhs: BDouble) -> Bool
+	{
+		if lhs.sign != rhs.sign { return lhs.sign }
+
+		// more efficient than lcm version
+		let ad  = lhs.numerator.multiplyingBy(rhs.denominator)
+		let bc = rhs.numerator.multiplyingBy(lhs.denominator)
+
+		if lhs.sign { return bc.lessThan(ad) }
+
+		return ad.lessThan(bc)
+	}
+	public static func <(lhs: BDouble, rhs: Double) -> Bool { return lhs < BDouble(rhs) }
+	public static func <(lhs: Double, rhs: BDouble) -> Bool { return BDouble(lhs) < rhs }
+
+	public static func >(lhs: BDouble, rhs: BDouble) -> Bool { return rhs < lhs }
+	public static func >(lhs: BDouble, rhs: Double) -> Bool { return lhs > BDouble(rhs) }
+	public static func >(lhs: Double, rhs: BDouble) -> Bool { return BDouble(lhs) > rhs }
+
+	public static func <=(lhs: BDouble, rhs: BDouble) -> Bool { return !(rhs < lhs) }
+	public static func <=(lhs: BDouble, rhs: Double) -> Bool { return lhs <= BDouble(rhs) }
+	public static func <=(lhs: Double, rhs: BDouble) -> Bool { return BDouble(lhs) <= rhs }
+
+	public static func >=(lhs: BDouble, rhs: BDouble) -> Bool { return !(lhs < rhs) }
+	public static func >=(lhs: BDouble, rhs: Double) -> Bool { return lhs >= BDouble(rhs) }
+	public static func >=(lhs: Double, rhs: BDouble) -> Bool { return BDouble(lhs) >= rhs }
 }
-/*\
-/**\
-/***\
-/****\
-/*****\
-/******\
-/*******\
-/********\
-/*********\
-/**********\
-//MARK:    - BDouble Operators, needs to be more!
-\**********/
-\*********/
-\********/
-\*******/
-\******/
-\*****/
-\****/
-\***/
-\**/
-\*/
-public func ==(lhs: BDouble, rhs: BDouble) -> Bool
-{
-	if lhs.sign != rhs.sign { return false }
-	if lhs.numerator != rhs.numerator { return false }
-	if lhs.denominator != rhs.denominator { return false }
 
-	return true
-}
-public func ==(lhs: BDouble, rhs: Double) -> Bool { return lhs == BDouble(rhs) }
-public func ==(lhs: Double, rhs: BDouble) -> Bool { return BDouble(lhs) == rhs }
-
-public func !=(lhs: BDouble, rhs: BDouble) -> Bool
-{
-	return !(lhs == rhs)
-}
-public func !=(lhs: BDouble, rhs: Double) -> Bool { return lhs != BDouble(rhs) }
-public func !=(lhs: Double, rhs: BDouble) -> Bool { return BDouble(lhs) != rhs }
-
-public func <(lhs: BDouble, rhs: BDouble) -> Bool
-{
-	if lhs.sign != rhs.sign { return lhs.sign }
-
-	// more efficient than lcm version
-	let ad  = lhs.numerator.multiplyingBy(rhs.denominator)
-	let bc = rhs.numerator.multiplyingBy(lhs.denominator)
-
-	if lhs.sign { return bc.lessThan(ad) }
-
-	return ad.lessThan(bc)
-}
-public func <(lhs: BDouble, rhs: Double) -> Bool { return lhs < BDouble(rhs) }
-public func <(lhs: Double, rhs: BDouble) -> Bool { return BDouble(lhs) < rhs }
-
-public func >(lhs: BDouble, rhs: BDouble) -> Bool { return rhs < lhs }
-public func >(lhs: BDouble, rhs: Double) -> Bool { return lhs > BDouble(rhs) }
-public func >(lhs: Double, rhs: BDouble) -> Bool { return BDouble(lhs) > rhs }
-
-public func <=(lhs: BDouble, rhs: BDouble) -> Bool { return !(rhs < lhs) }
-public func <=(lhs: BDouble, rhs: Double) -> Bool { return lhs <= BDouble(rhs) }
-public func <=(lhs: Double, rhs: BDouble) -> Bool { return BDouble(lhs) <= rhs }
-
-public func >=(lhs: BDouble, rhs: BDouble) -> Bool { return !(lhs < rhs) }
-public func >=(lhs: BDouble, rhs: Double) -> Bool { return lhs >= BDouble(rhs) }
-public func >=(lhs: Double, rhs: BDouble) -> Bool { return BDouble(lhs) >= rhs }
-
-public func *(lhs: BDouble, rhs: BDouble) -> BDouble
-{
-	var res =  BDouble(
-		sign:			lhs.sign != rhs.sign,
-		numerator:		lhs.numerator.multiplyingBy(rhs.numerator),
-		denominator:	lhs.denominator.multiplyingBy(rhs.denominator)
-	)
-
-	if res.isZero() { res.sign = false }
-	return res
-}
-public func *(lhs: BDouble, rhs: Double) -> BDouble { return lhs * BDouble(rhs) }
-public func *(lhs: Double, rhs: BDouble) -> BDouble { return BDouble(lhs) * rhs }
-
-public func /(lhs: BDouble, rhs: BDouble) -> BDouble
-{
-	var res =  BDouble(
-		sign:			lhs.sign != rhs.sign,
-		numerator:		lhs.numerator.multiplyingBy(rhs.denominator),
-		denominator:	lhs.denominator.multiplyingBy(rhs.numerator)
-	)
-
-	if res.isZero() { res.sign = false }
-	return res
-}
-public func /(lhs: BDouble, rhs: Double) -> BDouble { return lhs / BDouble(rhs) }
-public func /(lhs: Double, rhs: BDouble) -> BDouble { return BDouble(lhs) / rhs }
-
-public func +(lhs: BDouble, rhs: BDouble) -> BDouble
-{
-	// a/b + c/d = ad + bc / bd, where lhs = a/b and rhs = c/d.
-	let ad = lhs.numerator.multiplyingBy(rhs.denominator)
-	let bc = rhs.numerator.multiplyingBy(lhs.denominator)
-	let bd = lhs.denominator.multiplyingBy(rhs.denominator)
-
-	let resNumerator = BInt(sign: lhs.sign, limbs: ad) + BInt(sign: rhs.sign, limbs: bc)
-
-	return BDouble(
-		sign: resNumerator.sign && !resNumerator.limbs.equalTo(0),
-		numerator: resNumerator.limbs,
-		denominator: bd
-	)
-}
-public func +(lhs: BDouble, rhs: Double) -> BDouble { return lhs + BDouble(rhs) }
-public func +(lhs: Double, rhs: BDouble) -> BDouble { return BDouble(lhs) + rhs }
-
-public prefix func -(n: BDouble) -> BDouble
-{
-	var n = n
-	n.negate()
-	return n
-}
-public func -(lhs: BDouble, rhs: BDouble) -> BDouble
-{
-	return lhs + -rhs
-}
-public func -(lhs: BDouble, rhs: Double) -> BDouble { return lhs - BDouble(rhs) }
-public func -(lhs: Double, rhs: BDouble) -> BDouble { return BDouble(lhs) - rhs }
+//
+//
+//	MARK: - BDouble more Operators
+//	————————————————————————————————————————————————————————————————————————————————————————————
+//	||||||||        BDouble more Operators        ||||||||||||||||||||||||||||||||||||||||||||||
+//	————————————————————————————————————————————————————————————————————————————————————————————
+//
+//
+//
 
 public func abs(_ lhs: BDouble) -> BDouble
 {
@@ -2595,25 +2714,6 @@ public func abs(_ lhs: BDouble) -> BDouble
 		numerator: lhs.numerator,
 		denominator: lhs.denominator
 	)
-}
-
-// TODO: pow function that supports Double/BDouble in the exponent
-public func pow(_ base : BDouble, _ exponent : Int) -> BDouble
-{
-	if exponent == 0
-	{
-		return BDouble(1)
-	}
-	if exponent == 1
-	{
-		return base
-	}
-	if exponent < 0
-	{
-		return BDouble(1) / pow(base, -exponent)
-	}
-
-	return base * pow(base, exponent - 1)
 }
 
 public func floor(_ base: BDouble) -> BInt
@@ -2649,7 +2749,7 @@ public func ceil(_ base: BDouble) -> BInt
 	var retVal = BInt(String(lhs))!
 	if rhs > 0.0
 	{
-		retVal = retVal + 1
+		retVal += 1
 	}
 
 	return retVal
