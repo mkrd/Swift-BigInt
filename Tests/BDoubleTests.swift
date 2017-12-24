@@ -14,7 +14,7 @@ class BDoubleTests : XCTestCase {
         super.tearDown()
     }
 
-    func testCreation() {
+    func testInitialization() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
 		XCTAssertNil(BDouble("alphabet"))
@@ -93,6 +93,38 @@ class BDoubleTests : XCTestCase {
 			let rn = Double(Double(arc4random()) / Double(UINT32_MAX))
 			XCTAssert(pow(BDouble(rn), 1) == rn)
 		}
+	}
+	
+	func testRounding() {
+		XCTAssert(BDouble("-1.0")?.rounded() == BInt("-1"))
+		XCTAssert(BDouble("-1.1")?.rounded() == BInt("-1"))
+		XCTAssert(BDouble("-1.5")?.rounded() == BInt("-1"))
+		XCTAssert(BDouble("-1.6")?.rounded() == BInt("-2"))
+		XCTAssert(BDouble("0")?.rounded() == BInt("0"))
+		XCTAssert(BDouble("1.0")?.rounded() == BInt("1"))
+		XCTAssert(BDouble("1.1")?.rounded() == BInt("1"))
+		XCTAssert(BDouble("1.5")?.rounded() == BInt("1"))
+		XCTAssert(BDouble("1.6")?.rounded() == BInt("2"))
+		
+		XCTAssert(floor(BDouble(-1.0)) == BInt("-1"))
+		XCTAssert(floor(BDouble(-1.1)) == BInt("-2"))
+		XCTAssert(floor(BDouble(-1.5)) == BInt("-2"))
+		XCTAssert(floor(BDouble(-1.6)) == BInt("-2"))
+		XCTAssert(floor(BDouble(0)) == BInt("0"))
+		XCTAssert(floor(BDouble(1.0)) == BInt("1"))
+		XCTAssert(floor(BDouble(1.1)) == BInt("1"))
+		XCTAssert(floor(BDouble(1.5)) == BInt("1"))
+		XCTAssert(floor(BDouble(1.6)) == BInt("1"))
+		
+		XCTAssert(ceil(BDouble(-1.0)) == BInt("-1"))
+		XCTAssert(ceil(BDouble(-1.1)) == BInt("-1"))
+		XCTAssert(ceil(BDouble(-1.5)) == BInt("-1"))
+		XCTAssert(ceil(BDouble(-1.6)) == BInt("-1"))
+		XCTAssert(ceil(BDouble(0)) == BInt("0"))
+		XCTAssert(ceil(BDouble(1.0)) == BInt("1"))
+		XCTAssert(ceil(BDouble(1.1)) == BInt("2"))
+		XCTAssert(ceil(BDouble(1.5)) == BInt("2"))
+		XCTAssert(ceil(BDouble(1.6)) == BInt("2"))
 	}
 	
 	func testPrecision() {

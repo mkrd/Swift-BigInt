@@ -2467,6 +2467,9 @@ public struct BDouble:
 		}
 	}
 
+	/**
+	 * If the right side of the decimal is greater than 0.5 then it will round up (ceil), otherwise round down (floor) to the nearest BInt
+	 */
 	public func rounded() -> BInt
 	{
 		if self.isZero() {
@@ -2475,17 +2478,26 @@ public struct BDouble:
 		let digits = 3
 		let multiplier = [10].exponentiating(digits)
 
-		let rawRes = self.numerator.multiplyingBy(multiplier).divMod(self.denominator).quotient
+		let rawRes = abs(self).numerator.multiplyingBy(multiplier).divMod(self.denominator).quotient
 
 		let res = BInt(limbs: rawRes).description
 
 		let offset = res.count - digits
-		let rhs = Double("0." + res.suffix(offset+1))!
+		let rhs = Double("0." + res.suffix(res.count - offset))!
 		let lhs = res.prefix(offset)
 		var retVal = BInt(String(lhs))!
-		if rhs > 0.5
+		
+		if self.isNegative()
 		{
-			retVal = retVal + 1
+			retVal = -retVal
+			if rhs > 0.5 {
+				retVal = retVal - BInt(1)
+			}
+		} else {
+			if rhs > 0.5
+			{
+				retVal = retVal + 1
+			}
 		}
 
 		return retVal
@@ -2745,40 +2757,61 @@ public func abs(_ lhs: BDouble) -> BDouble
 
 public func floor(_ base: BDouble) -> BInt
 {
+	if base.isZero()
+	{
+		return BInt(0)
+	}
+	
 	let digits = 3
 	let multiplier = [10].exponentiating(digits)
 
-	let rawRes = base.numerator.multiplyingBy(multiplier).divMod(base.denominator).quotient
+	let rawRes = abs(base).numerator.multiplyingBy(multiplier).divMod(base.denominator).quotient
 
 	let res = BInt(limbs: rawRes).description
-
+	
 	let offset = res.count - digits
-	let lhs = res.prefix(offset)
-
-	return BInt(String(lhs))!
+	let lhs = res.prefix(offset).description
+	let rhs = Double("0." + res.suffix(res.count - offset))!
+	
+	var ans = BInt(String(lhs))!
+	if base.isNegative() {
+		ans = -ans
+		if rhs > 0.0 {
+			ans = ans - BInt(1)
+		}
+	}
+	return ans
 }
 
 public func ceil(_ base: BDouble) -> BInt
 {
-	if base.isZero() {
+	if base.isZero()
+	{
 		return BInt(0)
 	}
 	let digits = 3
 	let multiplier = [10].exponentiating(digits)
 
-	let rawRes = base.numerator.multiplyingBy(multiplier).divMod(base.denominator).quotient
+	let rawRes = abs(base).numerator.multiplyingBy(multiplier).divMod(base.denominator).quotient
 
 	let res = BInt(limbs: rawRes).description
 
 	let offset = res.count - digits
-	let rhs = Double("0." + res.suffix(offset + 1))!
+	let rhs = Double("0." + res.suffix(res.count - offset))!
 	let lhs = res.prefix(offset)
+	
 	var retVal = BInt(String(lhs))!
-	if rhs > 0.0
+	
+	if base.isNegative()
 	{
-		retVal += 1
+		retVal = -retVal
+	} else {
+		if rhs > 0.0
+		{
+			retVal += 1
+		}
 	}
-
+	
 	return retVal
 }
 
