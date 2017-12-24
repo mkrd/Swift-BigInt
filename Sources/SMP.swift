@@ -198,25 +198,31 @@ public struct BInt:
 		return self.limbs.map{ UInt($0) }
 	}
 
-	/// Returns a formated human readable string that says how much space (in b, kb, mb, or gb) the BInt occupies
-	public var size: String
+	/// Returns the size of the BInt in bits.
+	public var size: Int
+	{
+		return 1 + (self.limbs.count * 64)
+	}
+
+	/// Returns a formated human readable string that says how much space (in bytes, kilobytes, megabytes, or gigabytes) the BInt occupies.
+	public var sizeDescription: String
 	{
 		// One bit for the sign, plus the size of the limbs.
-		let bits = 1 + (self.limbs.count * 64)
+		let bits = self.size
 
-		if bits < 1_000
+		if bits < 8_000
 		{
-			return String(format: "%.1f b", Double(bits) / 1.0)
+			return String(format: "%.1f b", Double(bits) / 8.0)
 		}
-		if bits < 1_000_000
+		if bits < 8_000_000
 		{
-			return String(format: "%.1f kb", Double(bits) / 1_000.0)
+			return String(format: "%.1f kb", Double(bits) / 8_000.0)
 		}
-		if bits < 1_000_000_000
+		if bits < 8_000_000_000
 		{
-			return String(format: "%.1f mb", Double(bits) / 1_000_000.0)
+			return String(format: "%.1f mb", Double(bits) / 8_000_000.0)
 		}
-		return String(format: "%.1f gb", Double(bits) / 1_000_000_000.0)
+		return String(format: "%.1f gb", Double(bits) / 8_000_000_000.0)
 	}
 
 	//
@@ -2365,25 +2371,31 @@ public struct BDouble:
 		return "\(self.sign)\(self.numerator)\(self.denominator)".hashValue
 	}
 
-	/// Returns a formated human readable string that says how much space (in b, kb, mb, or gb) the BDouble occupies
-	public var size: String
+	/// Returns the size of the BDouble in bits.
+	public var size: Int
+	{
+		return 1 + ((self.numerator.count + self.denominator.count) * 64)
+	}
+
+	/// Returns a formated human readable string that says how much space (in bytes, kilobytes, megabytes, or gigabytes) the BDouble occupies
+	public var sizeDescription: String
 	{
 		// One bit for the sign, plus the size of the numerator and denominator.
-		let bits = 1 + ((self.numerator.count + self.denominator.count) * 64)
+		let bits = self.size
 
-		if bits < 1_000
+		if bits < 8_000
 		{
-			return String(format: "%.1f b", Double(bits) / 1.0)
+			return String(format: "%.1f b", Double(bits) / 8.0)
 		}
-		if bits < 1_000_000
+		if bits < 8_000_000
 		{
-			return String(format: "%.1f kb", Double(bits) / 1_000.0)
+			return String(format: "%.1f kb", Double(bits) / 8_000.0)
 		}
-		if bits < 1_000_000_000
+		if bits < 8_000_000_000
 		{
-			return String(format: "%.1f mb", Double(bits) / 1_000_000.0)
+			return String(format: "%.1f mb", Double(bits) / 8_000_000.0)
 		}
-		return String(format: "%.1f gb", Double(bits) / 1_000_000_000.0)
+		return String(format: "%.1f gb", Double(bits) / 8_000_000_000.0)
 	}
 
 	public func rawData() -> (sign: Bool, numerator: [UInt64], denominator: [UInt64])
@@ -2601,7 +2613,7 @@ public func pow(_ base : BDouble, _ exponent : Int) -> BDouble
 		return BDouble(1) / pow(base, -exponent)
 	}
 
-	return base * pow(base, expontent-1)
+	return base * pow(base, exponent - 1)
 }
 
 public func floor(_ base: BDouble) -> BInt
@@ -2632,7 +2644,7 @@ public func ceil(_ base: BDouble) -> BInt
 	let res = BInt(limbs: rawRes).description
 
 	let offset = res.count - digits
-	let rhs = Double("0." + res.suffix(offset+1))!
+	let rhs = Double("0." + res.suffix(offset + 1))!
 	let lhs = res.prefix(offset)
 	var retVal = BInt(String(lhs))!
 	if rhs > 0.0
