@@ -2397,9 +2397,11 @@ public struct BDouble:
 
 		var res = BInt(limbs: rawRes).description
 
-		if digits > 0
+		if digits > 0 && digits < res.count
 		{
 			res.insert(".", at: String.Index(encodedOffset: res.count - digits))
+		} else if res.count <= digits {
+			res = "0." + res.padding(toLength: digits, withPad: "0", startingAt: 0)
 		}
 
 		return res

@@ -1,4 +1,5 @@
 import XCTest
+import Foundation
 @testable import BigNumber
 
 class BDoubleTests : XCTestCase {
@@ -31,17 +32,66 @@ class BDoubleTests : XCTestCase {
 		XCTAssert(BDouble("+1.2e+10")?.fractionDescription == "120000000000")
 		XCTAssert(BDouble("-1.2e10")?.fractionDescription == "-120000000000")
 		XCTAssert(BDouble("1.2")?.fractionDescription == "6/5")
+		
+		for _ in 0..<100 {
+			let rn = Double(Double(arc4random()) / Double(UINT32_MAX))
+			XCTAssertNotNil(BDouble(rn))
+			
+			let rn2 = pow(rn * 100, 2.0)
+			XCTAssertNotNil(BDouble(rn2))
+		}
     }
+	
+	func testCompare() {
+		XCTAssert(BDouble(1.0) == BDouble(1.0))
+		XCTAssert(BDouble(1.1) != BDouble(1.0))
+		XCTAssert(BDouble(2.0) > BDouble(1.0))
+		XCTAssert(BDouble(-1) < BDouble(1.0))
+		XCTAssert(BDouble(0.0) <= BDouble(1.0))
+		XCTAssert(BDouble(1.1) >= BDouble(1.0))
+		
+		XCTAssert(1.0 == BDouble(1.0))
+		XCTAssert(1.1 != BDouble(1.0))
+		XCTAssert(2.0 > BDouble(1.0))
+		XCTAssert(0.0 < BDouble(1.0))
+		XCTAssert(-1.0 <= BDouble(1.0))
+		XCTAssert(1.1 >= BDouble(1.0))
+		
+		XCTAssert(BDouble(1.0) == 1.0)
+		XCTAssert(BDouble(1.1) != 1.0)
+		XCTAssert(BDouble(2.0) > 1.0)
+		XCTAssert(BDouble(-1) < 1.0)
+		XCTAssert(BDouble(0.0) <= 1.0)
+		XCTAssert(BDouble(1.1) >= 1.0)
+		
+		for _ in 1..<100 {
+			let rn = Double(Double(arc4random()) / Double(UINT32_MAX))
+			let rn2 = pow(rn * 100, 2.0)
+			
+			XCTAssert(BDouble(rn) < BDouble(rn2))
+			XCTAssert(BDouble(rn) <= BDouble(rn2))
+			XCTAssert(BDouble(rn2) > BDouble(rn))
+			XCTAssert(BDouble(rn2) >= BDouble(rn))
+			XCTAssert(BDouble(rn) == BDouble(rn))
+			XCTAssert(BDouble(rn2) != BDouble(rn))
+		}
+	}
 	
 	func testPow() {
 		// Test that a number to the zero power is 1
 		for i in 0..<100 {
 			XCTAssert(pow(BDouble(Double(i)), 0) == 1.0)
+			
+			let rn = Double(Double(arc4random()) / Double(UINT32_MAX))
+			XCTAssert(pow(BDouble(rn), 0) == 1.0)
 		}
 		
 		// Test that a number to the one power is itself
 		for i in 0..<100 {
 			XCTAssert(pow(BDouble(Double(i)), 1) == Double(i))
+			
+			let rn = Double(Double(arc4random()) / Double(UINT32_MAX))
+			XCTAssert(pow(BDouble(rn), 1) == rn)
 		}
 	}
 	
@@ -53,6 +103,8 @@ class BDoubleTests : XCTestCase {
 		XCTAssert(bigD?.decimalDescription == "123456789.1234")
 		bigD?.precision = 10
 		XCTAssert(bigD?.decimalDescription == "123456789.1234567890")
+		bigD?.precision = 20
+		XCTAssert(bigD?.decimalDescription == "123456789.12345678900000000000")
 		bigD?.precision = 0
 		XCTAssert(bigD?.decimalDescription == "123456789")
 		bigD?.precision = -1
