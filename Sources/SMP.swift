@@ -2333,11 +2333,17 @@ public struct BDouble:
 	//
 	//
 
+	/**
+	 * returns the current value in a fraction format
+	 */
 	public var description: String
 	{
 		return self.fractionDescription
 	}
 
+	/**
+	 * returns the current value in a fraction format
+	 */
 	public var fractionDescription : String
 	{
 		var res = (self.sign ? "-" : "")
@@ -2353,6 +2359,9 @@ public struct BDouble:
 	}
 
 	static private var _precision = 4
+	/**
+	 * the global percision for all newly created values
+	 */
 	static public var precision : Int
 	{
 		get
@@ -2369,6 +2378,10 @@ public struct BDouble:
 		}
 	}
 	private var _precision : Int = BDouble.precision
+	
+	/**
+	 * the precision for the current value
+	 */
 	public var precision : Int
 	{
 		get
@@ -2385,11 +2398,17 @@ public struct BDouble:
 		}
 	}
 
+	/**
+	 * returns the current value in decimal format with the current precision
+	 */
 	public var decimalDescription : String
 	{
 		return self.decimalExpansion(precisionAfterComma: self.precision)
 	}
 
+	/**
+	 * returns the current value in decimal format
+	 */
 	public func decimalExpansion(precisionAfterComma digits: Int) -> String
 	{
 		if self.isZero() {
@@ -2440,14 +2459,17 @@ public struct BDouble:
 		return "\(self.sign)\(self.numerator)\(self.denominator)".hashValue
 	}
 
-	/// Returns the size of the BDouble in bits.
+	/**
+	 * Returns the size of the BDouble in bits.
+     */
 	public var size: Int
 	{
 		return 1 + ((self.numerator.count + self.denominator.count) * 64)
 	}
 
-	/** Returns a formated human readable string that says how much space
-		(in bytes, kilobytes, megabytes, or gigabytes) the BDouble occupies
+	/**
+	 * Returns a formated human readable string that says how much space
+	 * (in bytes, kilobytes, megabytes, or gigabytes) the BDouble occupies
 	*/
 	public var sizeDescription: String
 	{
@@ -2496,7 +2518,8 @@ public struct BDouble:
 	}
 
 	/**
-	 * If the right side of the decimal is greater than 0.5 then it will round up (ceil), otherwise round down (floor) to the nearest BInt
+	 * If the right side of the decimal is greater than 0.5 then it will round up (ceil),
+	 * otherwise round down (floor) to the nearest BInt
 	 */
 	public func rounded() -> BInt
 	{
@@ -2585,6 +2608,9 @@ public struct BDouble:
 	//
 	//
 
+	/**
+	 * makes the current value negative
+	 */
 	public mutating func negate()
 	{
 		if !self.isZero()
@@ -2774,15 +2800,22 @@ public struct BDouble:
 //
 //
 
-public func abs(_ lhs: BDouble) -> BDouble
+/**
+ * Returns the absolute value of the given number.
+* - param x: a big double
+ */
+public func abs(_ x: BDouble) -> BDouble
 {
 	return BDouble(
 		sign: false,
-		numerator: lhs.numerator,
-		denominator: lhs.denominator
+		numerator: x.numerator,
+		denominator: x.denominator
 	)
 }
 
+/**
+ * round to largest BInt value not greater than base
+ */
 public func floor(_ base: BDouble) -> BInt
 {
 	if base.isZero()
@@ -2808,9 +2841,13 @@ public func floor(_ base: BDouble) -> BInt
 			ans = ans - BInt(1)
 		}
 	}
+	
 	return ans
 }
 
+/**
+ * round to smallest BInt value not less than base
+ */
 public func ceil(_ base: BDouble) -> BInt
 {
 	if base.isZero()
@@ -2843,6 +2880,9 @@ public func ceil(_ base: BDouble) -> BInt
 	return retVal
 }
 
+/**
+ * Returns a BDouble number raised to a given power.
+ */
 public func pow(_ base : BDouble, _ exp : Int) -> BDouble {
 	return base**exp
 }
