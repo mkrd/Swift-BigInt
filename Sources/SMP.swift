@@ -2802,7 +2802,7 @@ public struct BDouble:
 
 /**
  * Returns the absolute value of the given number.
-* - param x: a big double
+ * - parameter x: a big double
  */
 public func abs(_ x: BDouble) -> BDouble
 {
@@ -2841,7 +2841,7 @@ public func floor(_ base: BDouble) -> BInt
 			ans = ans - BInt(1)
 		}
 	}
-	
+
 	return ans
 }
 
