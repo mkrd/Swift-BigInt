@@ -170,6 +170,15 @@ class BDoubleTests : XCTestCase {
 		bigD?.precision = 5
 		XCTAssert(bigD?.decimalDescription == "0.00000", (bigD?.decimalDescription)!)
 	}
+	
+	func testOperations() {
+		XCTAssert(BDouble(1.5) + BDouble(2.0) == BDouble(3.5))
+		XCTAssert(BDouble(1.5) - BDouble(2.0) == BDouble(-0.5))
+		XCTAssert(BDouble(1.5) * BDouble(2.0) == BDouble(3.0))
+		XCTAssert(BDouble(1.0) / BDouble(2.0) == BDouble(0.5))
+		XCTAssert(-BDouble(6.54) == BDouble(-6.54))
+		testPow()
+	}
 
     func testPerformanceExample() {
         // This is an example of a performance test case.
