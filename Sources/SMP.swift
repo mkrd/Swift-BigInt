@@ -2059,7 +2059,7 @@ public class BIntMath
 			else
 			{
 				last = Limb(arc4random_uniform(UInt32.max)) |
-					(Limb(arc4random_uniform(UInt32(2 ** (singleBits - 32)))) << 32)
+					(Limb(arc4random_uniform(UInt32(2.0 ** (singleBits - 32)))) << 32)
 			}
 
 			res.append(last)
@@ -2067,6 +2067,7 @@ public class BIntMath
 
 		return BInt(limbs: res)
 	}
+	let random = randomBInt
 
 	func isPrime(_ n: BInt) -> Bool
 	{
@@ -2259,15 +2260,21 @@ public struct BDouble:
 
 				if sign
 				{
-					let den = ["1"] + [Character](repeating: "0", count: Int(afterExp)!)
-					self.init(beforeExp, over: String(den))
-					return
+					if let safeAfterExp = Int(afterExp) {
+						let den = ["1"] + [Character](repeating: "0", count: safeAfterExp)
+						self.init(beforeExp, over: String(den))
+						return
+					}
+					return nil
 				}
 				else
 				{
-					let num = beforeExp + String([Character](repeating: "0", count: Int(afterExp)!))
-					self.init(num, over: "1")
-					return
+					if let safeAfterExp = Int(afterExp) {
+						let num = beforeExp + String([Character](repeating: "0", count: safeAfterExp))
+						self.init(num, over: "1")
+						return
+					}
+					return nil
 				}
 			}
 
@@ -2326,11 +2333,17 @@ public struct BDouble:
 	//
 	//
 
+	/**
+	 * returns the current value in a fraction format
+	 */
 	public var description: String
 	{
 		return self.fractionDescription
 	}
 
+	/**
+	 * returns the current value in a fraction format
+	 */
 	public var fractionDescription : String
 	{
 		var res = (self.sign ? "-" : "")
@@ -2346,6 +2359,9 @@ public struct BDouble:
 	}
 
 	static private var _precision = 4
+	/**
+	 * the global percision for all newly created values
+	 */
 	static public var precision : Int
 	{
 		get
@@ -2354,29 +2370,87 @@ public struct BDouble:
 		}
 		set
 		{
-			_precision = abs(newValue)
+			var nv = newValue
+			if nv < 0 {
+				nv = 0
+			}
+			_precision = nv
 		}
 	}
-	public var precision : Int = BDouble.precision
+	private var _precision : Int = BDouble.precision
+	
+	/**
+	 * the precision for the current value
+	 */
+	public var precision : Int
+	{
+		get
+		{
+			return _precision
+		}
+		set
+		{
+		var nv = newValue
+		if nv < 0 {
+		nv = 0
+		}
+		_precision = nv
+		}
+	}
 
+	/**
+	 * returns the current value in decimal format with the current precision
+	 */
 	public var decimalDescription : String
 	{
 		return self.decimalExpansion(precisionAfterComma: self.precision)
 	}
 
+	/**
+	 * returns the current value in decimal format
+	 */
 	public func decimalExpansion(precisionAfterComma digits: Int) -> String
 	{
+		if self.isZero() {
+			return "0." + String(repeating: "0", count: max(digits, 1))
+		}
+		
 		let multiplier = [10].exponentiating(digits)
 
-		let rawRes = numerator.multiplyingBy(multiplier).divMod(denominator).quotient
+		let rawRes = abs(self).numerator.multiplyingBy(multiplier).divMod(self.denominator).quotient
 
-		var res = BInt(limbs: rawRes).description
-
-		if digits > 0
-		{
+		var res = BInt(limbs: rawRes).description // just the BInt
+		
+		print("before", res)
+		
+		if digits > 0 && digits < res.count {
 			res.insert(".", at: String.Index(encodedOffset: res.count - digits))
+		} else if res.count <= digits {
+			let origRes = res
+			let w = abs(self).numerator.multiplyingBy(multiplier).divMod(self.denominator).remainder
+			res = "0." + String((BInt(limbs: w).description as String).reversed())
+			if res.count < digits + 2
+			{
+				print("adding padding")
+				let pad = String(repeating: "0", count: max(digits, 1))
+				res = res.padding(toLength: digits+2-origRes.count, withPad: pad, startingAt: res.count)
+			}
+			res = res + origRes
+			res = res.prefix(max(3, digits+2)).description
+			print("warning!", res, digits, w)
 		}
-
+		
+		if res == "0"
+		{
+			res = "0." + String(repeating: "0", count: max(digits, 1))
+		}
+		
+		if self.isNegative() {
+			res = "-" + res
+		}
+		
+		print("after", res, self.numerator, self.denominator)
+		
 		return res
 	}
 
@@ -2385,14 +2459,17 @@ public struct BDouble:
 		return "\(self.sign)\(self.numerator)\(self.denominator)".hashValue
 	}
 
-	/// Returns the size of the BDouble in bits.
+	/**
+	 * Returns the size of the BDouble in bits.
+     */
 	public var size: Int
 	{
 		return 1 + ((self.numerator.count + self.denominator.count) * MemoryLayout<Limb>.size * 8)
 	}
 
-	/** Returns a formated human readable string that says how much space
-		(in bytes, kilobytes, megabytes, or gigabytes) the BDouble occupies
+	/**
+	 * Returns a formated human readable string that says how much space
+	 * (in bytes, kilobytes, megabytes, or gigabytes) the BDouble occupies
 	*/
 	public var sizeDescription: String
 	{
@@ -2440,6 +2517,10 @@ public struct BDouble:
 		}
 	}
 
+	/**
+	 * If the right side of the decimal is greater than 0.5 then it will round up (ceil),
+	 * otherwise round down (floor) to the nearest BInt
+	 */
 	public func rounded() -> BInt
 	{
 		if self.isZero() {
@@ -2448,17 +2529,26 @@ public struct BDouble:
 		let digits = 3
 		let multiplier = [10].exponentiating(digits)
 
-		let rawRes = self.numerator.multiplyingBy(multiplier).divMod(self.denominator).quotient
+		let rawRes = abs(self).numerator.multiplyingBy(multiplier).divMod(self.denominator).quotient
 
 		let res = BInt(limbs: rawRes).description
 
 		let offset = res.count - digits
-		let rhs = Double("0." + res.suffix(offset+1))!
+		let rhs = Double("0." + res.suffix(res.count - offset))!
 		let lhs = res.prefix(offset)
 		var retVal = BInt(String(lhs))!
-		if rhs > 0.5
+		
+		if self.isNegative()
 		{
-			retVal = retVal + 1
+			retVal = -retVal
+			if rhs > 0.5 {
+				retVal = retVal - BInt(1)
+			}
+		} else {
+			if rhs > 0.5
+			{
+				retVal = retVal + 1
+			}
 		}
 
 		return retVal
@@ -2518,6 +2608,9 @@ public struct BDouble:
 	//
 	//
 
+	/**
+	 * makes the current value negative
+	 */
 	public mutating func negate()
 	{
 		if !self.isZero()
@@ -2707,50 +2800,89 @@ public struct BDouble:
 //
 //
 
-public func abs(_ lhs: BDouble) -> BDouble
+/**
+ * Returns the absolute value of the given number.
+ * - parameter x: a big double
+ */
+public func abs(_ x: BDouble) -> BDouble
 {
 	return BDouble(
 		sign: false,
-		numerator: lhs.numerator,
-		denominator: lhs.denominator
+		numerator: x.numerator,
+		denominator: x.denominator
 	)
 }
 
+/**
+ * round to largest BInt value not greater than base
+ */
 public func floor(_ base: BDouble) -> BInt
 {
+	if base.isZero()
+	{
+		return BInt(0)
+	}
+	
 	let digits = 3
 	let multiplier = [10].exponentiating(digits)
 
-	let rawRes = base.numerator.multiplyingBy(multiplier).divMod(base.denominator).quotient
+	let rawRes = abs(base).numerator.multiplyingBy(multiplier).divMod(base.denominator).quotient
 
 	let res = BInt(limbs: rawRes).description
-
+	
 	let offset = res.count - digits
-	let lhs = res.prefix(offset)
+	let lhs = res.prefix(offset).description
+	let rhs = Double("0." + res.suffix(res.count - offset))!
+	
+	var ans = BInt(String(lhs))!
+	if base.isNegative() {
+		ans = -ans
+		if rhs > 0.0 {
+			ans = ans - BInt(1)
+		}
+	}
 
-	return BInt(String(lhs))!
+	return ans
 }
 
+/**
+ * round to smallest BInt value not less than base
+ */
 public func ceil(_ base: BDouble) -> BInt
 {
-	if base.isZero() {
+	if base.isZero()
+	{
 		return BInt(0)
 	}
 	let digits = 3
 	let multiplier = [10].exponentiating(digits)
 
-	let rawRes = base.numerator.multiplyingBy(multiplier).divMod(base.denominator).quotient
+	let rawRes = abs(base).numerator.multiplyingBy(multiplier).divMod(base.denominator).quotient
 
 	let res = BInt(limbs: rawRes).description
 
 	let offset = res.count - digits
-	let rhs = Double("0." + res.suffix(offset + 1))!
+	let rhs = Double("0." + res.suffix(res.count - offset))!
 	let lhs = res.prefix(offset)
+	
 	var retVal = BInt(String(lhs))!
-	if rhs > 0.0
+	
+	if base.isNegative()
 	{
-		retVal += 1
+		retVal = -retVal
+	} else {
+		if rhs > 0.0
+		{
+			retVal += 1
+		}
 	}
-
+	
 	return retVal
+}
+
+/**
+ * Returns a BDouble number raised to a given power.
+ */
+public func pow(_ base : BDouble, _ exp : Int) -> BDouble {
+	return base**exp
 }
