@@ -1,6 +1,28 @@
 import Foundation
 
-benchmarkPrint(title: "All tests pased, duration")
+
+func iterateByLowestSumOfComponents(_ imax: Int, _ jmax: Int) -> [(Int, Int)]
+{
+	var i, j: Int
+	var grid = [(Int, Int)]()
+
+	for sum in 0...(imax + jmax)
+	{
+		if sum < imax { (i, j) = (sum, 0) }
+		else { (i, j) = (imax, sum - imax) }
+
+		while j <= jmax && i >= 0
+		{
+			grid.append((i, j))
+			(i, j) = (i - 1, j + 1)
+		}
+	}
+	return grid
+}
+
+
+
+benchmarkPrint(title: "All tests passed, duration")
 {
     SMP_Tests.testBaseConversionRandom()
     SMP_Tests.testBIntRandom()
@@ -10,15 +32,17 @@ benchmarkPrint(title: "All tests pased, duration")
     MG_Matrix_Tests.testSparseMatrix()
 }
 
-Benchmarks.BDoubleConverging()
-Benchmarks.exponentiation()
-Benchmarks.factorial()
-Benchmarks.fibonacci()
+//Benchmarks.BDoubleConverging()
+//Benchmarks.exponentiation()
+//Benchmarks.factorial()
+//Benchmarks.fibonacci()
 //Benchmarks.Matrix1()
 //Benchmarks.mersennes()
-Benchmarks.BIntToString()
+//Benchmarks.BIntToString()
 //Benchmarks.StringToBInt()
-//Benchmarks.permutationsAndCombinations()
+////Benchmarks.permutationsAndCombinations()
+//Benchmarks.multiplicationBalanced()
+//Benchmarks.multiplicationUnbalanced()
 
 
 

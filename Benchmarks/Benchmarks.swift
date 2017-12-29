@@ -263,4 +263,26 @@ public class Benchmarks
 			_ = BIntMath.combinations(8000, 4000)
 		}
 	}
+
+	static func multiplicationBalanced()
+	{
+		benchmarkPrint(title: "Multiply two random BInts with size of 270_000 and 270_000 bits")
+		{
+			let b1 = BIntMath.randomBInt(bits: 270_000)
+			let b2 = BIntMath.randomBInt(bits: 270_000)
+
+			_ = b1 * b2
+		}
+	}
+
+	static func multiplicationUnbalanced()
+	{
+		benchmarkPrint(title: "Multiply two random BInts with size of 70_000_000 and 1_000 bits")
+		{
+			let b1 = BIntMath.randomBInt(bits: 70_000_000)
+			let b2 = BIntMath.randomBInt(bits: 1_000)
+
+			_ = b1 * b2
+		}
+	}
 }

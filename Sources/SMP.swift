@@ -201,7 +201,7 @@ public struct BInt:
 	/// Returns the size of the BInt in bits.
 	public var size: Int
 	{
-		return 1 + (self.limbs.count * 64)
+		return 1 + (self.limbs.count * MemoryLayout<Limb>.size * 8)
 	}
 
 	/// Returns a formated human readable string that says how much space (in bytes, kilobytes, megabytes, or gigabytes) the BInt occupies.
@@ -1635,7 +1635,7 @@ fileprivate extension Array where Element == Limb
 	mutating func addProductOf(
 		multiplier: Limbs,
 		multiplicand: Limbs
-		){
+	){
 		let (mpc, mcc) = (multiplier.count, multiplicand.count)
 
 		self.reserveCapacity(mpc + mcc)
@@ -2388,7 +2388,7 @@ public struct BDouble:
 	/// Returns the size of the BDouble in bits.
 	public var size: Int
 	{
-		return 1 + ((self.numerator.count + self.denominator.count) * 64)
+		return 1 + ((self.numerator.count + self.denominator.count) * MemoryLayout<Limb>.size * 8)
 	}
 
 	/** Returns a formated human readable string that says how much space
