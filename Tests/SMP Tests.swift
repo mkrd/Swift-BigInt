@@ -176,14 +176,14 @@ public class SMP_Tests
         ////
         //
         
-        XCTAssert(BInt("ffff",16) == 65535)
-        XCTAssert(BInt("ff",16) == 255.0)
-        XCTAssert(BInt("ff",16) != 100.0)
-        XCTAssert(BInt("ffff",16)! > 255.0)
-        XCTAssert(BInt("f",16)! < 255.0)
-        XCTAssert(BInt("0",16)! <= 1.0)
+        XCTAssert(BInt("ffff",radix:16) == 65535)
+        XCTAssert(BInt("ff",radix:16) == 255.0)
+        XCTAssert(BInt("ff",radix:16) != 100.0)
+        XCTAssert(BInt("ffff",radix:16)! > 255.0)
+        XCTAssert(BInt("f",radix:16)! < 255.0)
+        XCTAssert(BInt("0",radix:16)! <= 1.0)
         XCTAssert(BInt("f")! >= 1.0)
-        
+        XCTAssert(BInt("rfff",radix:16) == nil)
         
 		//
 		////

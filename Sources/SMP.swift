@@ -319,9 +319,15 @@ public struct BInt:
         var exp = BInt(1)
         
         for c in str.reversed() {
-            let value =  BInt(Int(String(c), radix: radix)!)
-            total = total + (value * exp)
-            exp = exp * bint16
+            let int = Int(String(c), radix: radix)
+            if int != nil {
+                let value =  BInt(int!)
+                total = total + (value * exp)
+                exp = exp * bint16
+            } else {
+                return nil
+            }
+            
         }
         
         print(total)
@@ -2329,9 +2335,14 @@ public struct BDouble:
         var exp = BDouble(1)
         
         for c in nStr.reversed() {
-            let value =  BDouble(Int(String(c), radix: radix)!)
-            total = total + (value * exp)
-            exp = exp * bint16
+            let int = Int(String(c), radix: radix)
+            if int != nil {
+                let value =  BDouble(int!)
+                total = total + (value * exp)
+                exp = exp * bint16
+            } else {
+                return nil
+            }
         }
         
         self.init(String(describing:total))
