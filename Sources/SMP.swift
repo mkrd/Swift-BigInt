@@ -311,7 +311,7 @@ public struct BInt:
     }
     
     /// Create an instance initialized to a hex string value.
-    public init?(_ str: String,_ base: Int)
+    public init?(_ str: String, radix: Int)
     {
         let bint16 = BInt(16)
         
@@ -319,7 +319,7 @@ public struct BInt:
         var exp = BInt(1)
         
         for c in str.reversed() {
-            let value =  BInt(Int(String(c), radix: base)!)
+            let value =  BInt(Int(String(c), radix: radix)!)
             total = total + (value * exp)
             exp = exp * bint16
         }
@@ -2321,7 +2321,7 @@ public struct BDouble:
     }
     
     /// Create an instance initialized to a hex string value.
-    public init?(_ nStr: String,_ base: Int)
+    public init?(_ nStr: String, radix: Int)
     {
         let bint16 = BDouble(16)
         
@@ -2329,7 +2329,7 @@ public struct BDouble:
         var exp = BDouble(1)
         
         for c in nStr.reversed() {
-            let value =  BDouble(Int(String(c), radix: base)!)
+            let value =  BDouble(Int(String(c), radix: radix)!)
             total = total + (value * exp)
             exp = exp * bint16
         }
