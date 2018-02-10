@@ -36,7 +36,7 @@ This subsection explains the usage of BInt and BDouble
 BInt(Int)
 BInt(UInt)
 BInt(String)?
-BInt(String,Int)?
+BInt(String,radix: Int)?
 ```
 
 #### Examples:
@@ -44,13 +44,13 @@ BInt(String,Int)?
 let i = BInt(12)
 let i = BInt(-9234)
 let i = BInt("-2343241765837645983267582365876326491813491053680428560284652986203287826526")!
-let i = BInt("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",16)!
+let i = BInt("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",radix: 16)!
 ```
 
 #### BInt offers 8 struct methods:
 ```swift
 let big = BInt("-143141341")!
-let big = BInt("fffffffffffffffffffff",16)!
+let big = BInt("fffffffffffffffffffff",radix: 16)!
 
 big.description // Returns "-143141341"
 => print(big) // prints "-143141341"
@@ -154,7 +154,7 @@ public func nnmod(_ a: BInt, _ m: BInt) -> BInt
 BDouble(Int)
 BDouble(Double)
 BDouble(String)?
-BDouble(String, int)?
+BDouble(String, radix: int)?
 BDouble(Int, over: Int)
 BDouble(String, over: String)?
 ```
@@ -165,6 +165,7 @@ let d = BDouble(221)
 let d = BDouble(1.192)
 let d = BDouble(3, over: 4)
 let d = BDouble("1" over: "3421342675925672365438867862653658268376582356831563158967")!
+let i = BDouble("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",radix: 16)!
 ```
 
 #### BDouble offers these struct methods:
