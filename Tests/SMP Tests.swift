@@ -185,6 +185,14 @@ public class SMP_Tests
         XCTAssert(BInt("f")! >= 1.0)
         XCTAssert(BInt("rfff",radix:16) == nil)
         
+        XCTAssert(BInt("44",radix:5) == 68.0)
+        XCTAssert(BInt("44",radix:5) != 100.0)
+        XCTAssert(BInt("321",radix:5)! > 255.0)
+        XCTAssert(BInt("3",radix:5)! < 255.0)
+        XCTAssert(BInt("0",radix:5)! <= 1.0)
+        XCTAssert(BInt("4",radix:5)! >= 1.0)
+        XCTAssert(BInt("rfff",radix:5) == nil)
+        
 		//
 		////
 		//////
