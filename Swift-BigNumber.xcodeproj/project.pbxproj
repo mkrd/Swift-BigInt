@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AE8388AF203F1CB000FAC88F /* BigNumber.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE8388A6203F1CAF00FAC88F /* BigNumber.framework */; };
+		AE8388B4203F1CB000FAC88F /* BigNumber_iOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE8388B3203F1CB000FAC88F /* BigNumber_iOSTests.swift */; };
+		AE8388B6203F1CB000FAC88F /* BigNumber_iOS.h in Headers */ = {isa = PBXBuildFile; fileRef = AE8388A8203F1CB000FAC88F /* BigNumber_iOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AE8388BD203F1CC800FAC88F /* SMP.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F92B421D0F7452003CDF7D /* SMP.swift */; };
 		C224D2D51DCFBAFE006CD7C5 /* MG Complex.swift in Sources */ = {isa = PBXBuildFile; fileRef = C224D2D41DCFBAFE006CD7C5 /* MG Complex.swift */; };
 		C24E721B1E58D69F008AD14D /* MG SuperSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24E721A1E58D69F008AD14D /* MG SuperSwift.swift */; };
 		C26D70B91F62A6230012AA54 /* SMP Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26D70B81F62A6230012AA54 /* SMP Tests.swift */; };
@@ -28,6 +32,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		AE8388B0203F1CB000FAC88F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C2F92B301D0F7421003CDF7D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AE8388A5203F1CAF00FAC88F;
+			remoteInfo = "BigNumber-iOS";
+		};
 		F646295E1FF017EA0074A180 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C2F92B301D0F7421003CDF7D /* Project object */;
@@ -50,6 +61,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		AE8388A6203F1CAF00FAC88F /* BigNumber.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BigNumber.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE8388A8203F1CB000FAC88F /* BigNumber_iOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BigNumber_iOS.h; sourceTree = "<group>"; };
+		AE8388A9203F1CB000FAC88F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AE8388AE203F1CB000FAC88F /* BigNumber-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "BigNumber-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AE8388B3203F1CB000FAC88F /* BigNumber_iOSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigNumber_iOSTests.swift; sourceTree = "<group>"; };
+		AE8388B5203F1CB000FAC88F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C224D2D41DCFBAFE006CD7C5 /* MG Complex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MG Complex.swift"; sourceTree = "<group>"; };
 		C24E721A1E58D69F008AD14D /* MG SuperSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MG SuperSwift.swift"; sourceTree = "<group>"; };
 		C26D70B81F62A6230012AA54 /* SMP Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SMP Tests.swift"; sourceTree = "<group>"; };
@@ -75,6 +92,21 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		AE8388A2203F1CAF00FAC88F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AE8388AB203F1CB000FAC88F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE8388AF203F1CB000FAC88F /* BigNumber.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C2F92B351D0F7421003CDF7D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -101,6 +133,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AE8388A7203F1CB000FAC88F /* BigNumber-iOS */ = {
+			isa = PBXGroup;
+			children = (
+				AE8388A8203F1CB000FAC88F /* BigNumber_iOS.h */,
+				AE8388A9203F1CB000FAC88F /* Info.plist */,
+			);
+			path = "BigNumber-iOS";
+			sourceTree = "<group>";
+		};
+		AE8388B2203F1CB000FAC88F /* BigNumber-iOSTests */ = {
+			isa = PBXGroup;
+			children = (
+				AE8388B3203F1CB000FAC88F /* BigNumber_iOSTests.swift */,
+				AE8388B5203F1CB000FAC88F /* Info.plist */,
+			);
+			path = "BigNumber-iOSTests";
+			sourceTree = "<group>";
+		};
 		C29F6AE41FEB1BD200AD0478 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -161,11 +211,15 @@
 				C29F6AE51FEB1BE900AD0478 /* Sources */,
 				C29F6AE41FEB1BD200AD0478 /* Tests */,
 				C28F71EE1DF0557800CE18C6 /* Info.plist */,
+				AE8388A7203F1CB000FAC88F /* BigNumber-iOS */,
+				AE8388B2203F1CB000FAC88F /* BigNumber-iOSTests */,
 				C2A4928A1DF05294001992B1 /* Products */,
 				F64629231FF015E40074A180 /* MathGround */,
 				F64629261FF016610074A180 /* Frameworks */,
 				F64629541FF017E90074A180 /* BigNumber.framework */,
 				F646295C1FF017EA0074A180 /* BigNumberTests.xctest */,
+				AE8388A6203F1CAF00FAC88F /* BigNumber.framework */,
+				AE8388AE203F1CB000FAC88F /* BigNumber-iOSTests.xctest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -180,6 +234,14 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		AE8388A3203F1CAF00FAC88F /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE8388B6203F1CB000FAC88F /* BigNumber_iOS.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F64629511FF017E90074A180 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -190,6 +252,42 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		AE8388A5203F1CAF00FAC88F /* BigNumber-iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AE8388B7203F1CB000FAC88F /* Build configuration list for PBXNativeTarget "BigNumber-iOS" */;
+			buildPhases = (
+				AE8388A1203F1CAF00FAC88F /* Sources */,
+				AE8388A2203F1CAF00FAC88F /* Frameworks */,
+				AE8388A3203F1CAF00FAC88F /* Headers */,
+				AE8388A4203F1CAF00FAC88F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "BigNumber-iOS";
+			productName = "BigNumber-iOS";
+			productReference = AE8388A6203F1CAF00FAC88F /* BigNumber.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		AE8388AD203F1CB000FAC88F /* BigNumber-iOSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AE8388BA203F1CB000FAC88F /* Build configuration list for PBXNativeTarget "BigNumber-iOSTests" */;
+			buildPhases = (
+				AE8388AA203F1CB000FAC88F /* Sources */,
+				AE8388AB203F1CB000FAC88F /* Frameworks */,
+				AE8388AC203F1CB000FAC88F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AE8388B1203F1CB000FAC88F /* PBXTargetDependency */,
+			);
+			name = "BigNumber-iOSTests";
+			productName = "BigNumber-iOSTests";
+			productReference = AE8388AE203F1CB000FAC88F /* BigNumber-iOSTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		C2F92B371D0F7421003CDF7D /* MathGround */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C2F92B3F1D0F7421003CDF7D /* Build configuration list for PBXNativeTarget "MathGround" */;
@@ -253,6 +351,14 @@
 				LastUpgradeCheck = 0900;
 				ORGANIZATIONNAME = "Marcel Kröker";
 				TargetAttributes = {
+					AE8388A5203F1CAF00FAC88F = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
+					AE8388AD203F1CB000FAC88F = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
 					C2F92B371D0F7421003CDF7D = {
 						CreatedOnToolsVersion = 8.0;
 						LastSwiftMigration = 0900;
@@ -285,11 +391,27 @@
 				C2F92B371D0F7421003CDF7D /* MathGround */,
 				F64629531FF017E90074A180 /* BigNumber */,
 				F646295B1FF017EA0074A180 /* BigNumberTests */,
+				AE8388A5203F1CAF00FAC88F /* BigNumber-iOS */,
+				AE8388AD203F1CB000FAC88F /* BigNumber-iOSTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		AE8388A4203F1CAF00FAC88F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AE8388AC203F1CB000FAC88F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F64629521FF017E90074A180 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -307,6 +429,22 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		AE8388A1203F1CAF00FAC88F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE8388BD203F1CC800FAC88F /* SMP.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AE8388AA203F1CB000FAC88F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE8388B4203F1CB000FAC88F /* BigNumber_iOSTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C2F92B341D0F7421003CDF7D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -347,6 +485,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		AE8388B1203F1CB000FAC88F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AE8388A5203F1CAF00FAC88F /* BigNumber-iOS */;
+			targetProxy = AE8388B0203F1CB000FAC88F /* PBXContainerItemProxy */;
+		};
 		F646295F1FF017EA0074A180 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = F64629531FF017E90074A180 /* BigNumber */;
@@ -355,6 +498,110 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		AE8388B8203F1CB000FAC88F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = "BigNumber-iOS/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yuzushioh.BigNumber-iOS";
+				PRODUCT_NAME = BigNumber;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		AE8388B9203F1CB000FAC88F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = "BigNumber-iOS/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yuzushioh.BigNumber-iOS";
+				PRODUCT_NAME = BigNumber;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		AE8388BB203F1CB000FAC88F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = "BigNumber-iOSTests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yuzushioh.BigNumber-iOSTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		AE8388BC203F1CB000FAC88F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = "BigNumber-iOSTests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.yuzushioh.BigNumber-iOSTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		C2F92B3D1D0F7421003CDF7D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -595,6 +842,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		AE8388B7203F1CB000FAC88F /* Build configuration list for PBXNativeTarget "BigNumber-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AE8388B8203F1CB000FAC88F /* Debug */,
+				AE8388B9203F1CB000FAC88F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AE8388BA203F1CB000FAC88F /* Build configuration list for PBXNativeTarget "BigNumber-iOSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AE8388BB203F1CB000FAC88F /* Debug */,
+				AE8388BC203F1CB000FAC88F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		C2F92B331D0F7421003CDF7D /* Build configuration list for PBXProject "Swift-BigNumber" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
