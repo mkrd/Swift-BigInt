@@ -81,6 +81,7 @@ class BDoubleTests : XCTestCase {
         XCTAssert(BDouble("3",radix:5)! < 255.0)
         XCTAssert(BDouble("0",radix:5)! <= 1.0)
         XCTAssert(BDouble("4",radix:5)! >= 1.0)
+        
 		
 		for _ in 1..<100 {
 			let rn = Double(Double(arc4random()) / Double(UINT32_MAX))
