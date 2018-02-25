@@ -75,7 +75,6 @@ class BDoubleTests : XCTestCase {
         XCTAssert(BDouble("f",radix:16)! < 255.0)
         XCTAssert(BDouble("0",radix:16)! <= 1.0)
         XCTAssert(BDouble("f",radix:16)! >= 1.0)
-        
         XCTAssert(BDouble("44",radix:5) == 68.0)
         XCTAssert(BDouble("44",radix:5) != 100.0)
         XCTAssert(BDouble("321",radix:5)! > 255.0)
