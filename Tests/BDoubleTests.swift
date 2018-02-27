@@ -32,6 +32,11 @@ class BDoubleTests : XCTestCase {
 		XCTAssert(BDouble("+1.2e+10")?.fractionDescription == "120000000000")
 		XCTAssert(BDouble("-1.2e10")?.fractionDescription == "-120000000000")
 		XCTAssert(BDouble("1.2")?.fractionDescription == "6/5")
+        	XCTAssert(BDouble("ffff",radix:16) == 65535)
+        	XCTAssert(BDouble("rfff",radix:16) == nil)
+        	XCTAssert(BDouble("ff",radix:10) == nil)
+        	XCTAssert(BDouble("255",radix:6) == 597)
+        	XCTAssert(BDouble("999",radix:10) == 2457)
 		
 		for _ in 0..<100 {
 			let rn = Double(Double(arc4random()) / Double(UINT32_MAX))
@@ -63,6 +68,20 @@ class BDoubleTests : XCTestCase {
 		XCTAssert(BDouble(-1) < 1.0)
 		XCTAssert(BDouble(0.0) <= 1.0)
 		XCTAssert(BDouble(1.1) >= 1.0)
+        
+        	XCTAssert(BDouble("ff",radix:16) == 255.0)
+        	XCTAssert(BDouble("ff",radix:16) != 100.0)
+        	XCTAssert(BDouble("ffff",radix:16)! > 255.0)
+        	XCTAssert(BDouble("f",radix:16)! < 255.0)
+        	XCTAssert(BDouble("0",radix:16)! <= 1.0)
+        	XCTAssert(BDouble("f",radix:16)! >= 1.0)
+        	XCTAssert(BDouble("44",radix:5) == 68.0)
+        	XCTAssert(BDouble("44",radix:5) != 100.0)
+        	XCTAssert(BDouble("321",radix:5)! > 255.0)
+        	XCTAssert(BDouble("3",radix:5)! < 255.0)
+        	XCTAssert(BDouble("0",radix:5)! <= 1.0)
+        	XCTAssert(BDouble("4",radix:5)! >= 1.0)
+        
 		
 		for _ in 1..<100 {
 			let rn = Double(Double(arc4random()) / Double(UINT32_MAX))

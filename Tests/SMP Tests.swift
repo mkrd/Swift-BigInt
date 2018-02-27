@@ -40,7 +40,6 @@ public class SMP_Tests
 		precondition(bigGCD == BInt(66))
 	}
 
-
 	static func testBaseConversionRandom()
 	{
 		let iterations = 100
@@ -168,7 +167,32 @@ public class SMP_Tests
 		{
 			precondition(n.description == BInt(n).description)
 		}
+        
+		//
+		////
+		//////
+		//"MARK": - Hexadecimal
+		//////
+		////
+		//
 
+		XCTAssert(BInt("ffff",radix:16) == 65535)
+		XCTAssert(BInt("ff",radix:16) == 255.0)
+		XCTAssert(BInt("ff",radix:16) != 100.0)
+		XCTAssert(BInt("ffff",radix:16)! > 255.0)
+		XCTAssert(BInt("f",radix:16)! < 255.0)
+		XCTAssert(BInt("0",radix:16)! <= 1.0)
+		XCTAssert(BInt("f")! >= 1.0)
+		XCTAssert(BInt("rfff",radix:16) == nil)
+
+		XCTAssert(BInt("44",radix:5) == 68.0)
+		XCTAssert(BInt("44",radix:5) != 100.0)
+		XCTAssert(BInt("321",radix:5)! > 255.0)
+		XCTAssert(BInt("3",radix:5)! < 255.0)
+		XCTAssert(BInt("0",radix:5)! <= 1.0)
+		XCTAssert(BInt("4",radix:5)! >= 1.0)
+		XCTAssert(BInt("rfff",radix:5) == nil)
+        
 		//
 		////
 		//////
