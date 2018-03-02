@@ -171,6 +171,39 @@ class BDoubleTests : XCTestCase {
 		XCTAssert(bigD?.decimalDescription == "0.00000", (bigD?.decimalDescription)!)
 	}
 	
+	func testRadix() {
+		XCTAssert(BDouble("aa", radix: 16) == 170)
+		XCTAssert(BDouble("0xaa", radix: 16) == 170)
+		XCTAssert(BDouble("invalid", radix: 16) == nil)
+		
+		XCTAssert(BDouble("252", radix: 8) == 170)
+		XCTAssert(BDouble("0o252", radix: 8) == 170)
+		XCTAssert(BDouble("invalid", radix: 8) == nil)
+		
+		XCTAssert(BDouble("11", radix: 2) == 3)
+		XCTAssert(BDouble("0b11", radix: 2) == 3)
+		XCTAssert(BDouble("invalid", radix: 2) == nil)
+		
+		XCTAssert(BDouble("ffff",radix:16) == 65535)
+		XCTAssert(BDouble("rfff",radix:16) == nil)
+		XCTAssert(BDouble("ff",radix:10) == nil)
+		XCTAssert(BDouble("255",radix:6) == 107)
+		XCTAssert(BDouble("999",radix:10) == 999)
+		XCTAssert(BDouble("ff",radix:16) == 255.0)
+		XCTAssert(BDouble("ff",radix:16) != 100.0)
+		XCTAssert(BDouble("ffff",radix:16)! > 255.0)
+		XCTAssert(BDouble("f",radix:16)! < 255.0)
+		XCTAssert(BDouble("0",radix:16)! <= 1.0)
+		XCTAssert(BDouble("f",radix:16)! >= 1.0)
+		XCTAssert(BDouble("44",radix:5) == 24)
+		XCTAssert(BDouble("44",radix:5) != 100.0)
+		XCTAssert(BDouble("321",radix:5)! == 86)
+		XCTAssert(BDouble("3",radix:5)! < 255.0)
+		XCTAssert(BDouble("0",radix:5)! <= 1.0)
+		XCTAssert(BDouble("4",radix:5)! >= 1.0)
+		XCTAssert(BDouble("923492349",radix:32)! == 9967689075849)
+	}
+	
 	func testOperations() {
 		XCTAssert(BDouble(1.5) + BDouble(2.0) == BDouble(3.5))
 		XCTAssert(BDouble(1.5) - BDouble(2.0) == BDouble(-0.5))
