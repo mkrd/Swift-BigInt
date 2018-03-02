@@ -29,6 +29,7 @@
 		F646295D1FF017EA0074A180 /* BigNumber.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F64629541FF017E90074A180 /* BigNumber.framework */; };
 		F646296C1FF018540074A180 /* BDoubleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64629241FF016070074A180 /* BDoubleTests.swift */; };
 		F646296D1FF019F40074A180 /* SMP.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F92B421D0F7452003CDF7D /* SMP.swift */; };
+		F6632C4A204918BF00B73607 /* SMP.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F92B421D0F7452003CDF7D /* SMP.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -478,6 +479,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F6632C4A204918BF00B73607 /* SMP.swift in Sources */,
 				F646296C1FF018540074A180 /* BDoubleTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

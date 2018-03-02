@@ -309,6 +309,32 @@ public struct BInt:
 
 		self.init(sign: sign, limbs: limbs)
 	}
+	
+	/// Create an instance initialized to a string with the value of mathematical numerical system of the specified radix (base).
+	/// So for example, to get the value of hexadecimal string radix value must be set to 16.
+	public init?(_ str: String, radix: Int)
+	{
+		let bint16 = BInt(radix)
+		
+		var total = BInt(0)
+		var exp = BInt(1)
+		
+		for c in str.reversed() {
+			let int = Int(String(c), radix: radix)
+			if int != nil {
+				let value =  BInt(int!)
+				total = total + (value * exp)
+				exp = exp * bint16
+			} else {
+				return nil
+			}
+			
+		}
+		
+		print(total)
+		
+		self.init(total)
+	}
 
 	//	Requierd by protocol ExpressibleByFloatLiteral.
 	public init(floatLiteral value: Double)
@@ -2301,6 +2327,30 @@ public struct BDouble:
 		}
 	}
 
+	/// Create an instance initialized to a string with the value of mathematical numerical system of the specified radix (base).
+	/// So for example, to get the value of hexadecimal string radix value must be set to 16.
+	public init?(_ nStr: String, radix: Int)
+	{
+		let bint16 = BDouble(radix)
+		
+		var total = BDouble(0)
+		var exp = BDouble(1)
+		
+		for c in nStr.reversed() {
+			let int = Int(String(c), radix: radix)
+			if int != nil {
+				let value =  BDouble(int!)
+				total = total + (value * exp)
+				exp = exp * bint16
+			} else {
+				return nil
+			}
+		}
+		
+		self.init(String(describing:total))
+		
+	}
+	
 	public init(_ z: Int)
 	{
 		self.init(z, over: 1)
