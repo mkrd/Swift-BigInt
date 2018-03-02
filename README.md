@@ -20,7 +20,7 @@ You can use the [Swift Package Manager](https://swift.org/package-manager/) and 
 
 Put the following in your Podfile:
 ```
-pod 'BigNumber', '~> 2.0'
+pod 'BigNumber', '~> 2.0', :git => 'https://github.com/mkrd/Swift-Big-Integer.git'
 ```
 
 ## Compatibility
@@ -36,6 +36,7 @@ This subsection explains the usage of BInt and BDouble
 BInt(Int)
 BInt(UInt)
 BInt(String)?
+BInt(String, radix: Int)?
 ```
 
 #### Examples:
@@ -153,6 +154,7 @@ BDouble(Double)
 BDouble(String)?
 BDouble(Int, over: Int)
 BDouble(String, over: String)?
+BDouble(String, radix: Int)?
 ```
 
 #### Examples:
