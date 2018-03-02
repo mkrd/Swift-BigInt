@@ -331,8 +331,6 @@ public struct BInt:
 			
 		}
 		
-		print(total)
-		
 		self.init(total)
 	}
 
