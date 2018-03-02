@@ -312,14 +312,33 @@ public struct BInt:
 	
 	/// Create an instance initialized to a string with the value of mathematical numerical system of the specified radix (base).
 	/// So for example, to get the value of hexadecimal string radix value must be set to 16.
-	public init?(_ str: String, radix: Int)
+	public init?(_ nStr: String, radix: Int)
 	{
+		var useString = nStr
+		if radix == 16 {
+			if useString.hasPrefix("0x") {
+				useString = String(nStr.dropFirst(2))
+			}
+		}
+		
+		if radix == 8 {
+			if useString.hasPrefix("0o") {
+				useString = String(nStr.dropFirst(2))
+			}
+		}
+		
+		if radix == 2 {
+			if useString.hasPrefix("0b") {
+				useString = String(nStr.dropFirst(2))
+			}
+		}
+		
 		let bint16 = BInt(radix)
 		
 		var total = BInt(0)
 		var exp = BInt(1)
 		
-		for c in str.reversed() {
+		for c in useString.reversed() {
 			let int = Int(String(c), radix: radix)
 			if int != nil {
 				let value =  BInt(int!)
@@ -2329,12 +2348,31 @@ public struct BDouble:
 	/// So for example, to get the value of hexadecimal string radix value must be set to 16.
 	public init?(_ nStr: String, radix: Int)
 	{
+		var useString = nStr
+		if radix == 16 {
+			if useString.hasPrefix("0x") {
+				useString = String(nStr.dropFirst(2))
+			}
+		}
+		
+		if radix == 8 {
+			if useString.hasPrefix("0o") {
+				useString = String(nStr.dropFirst(2))
+			}
+		}
+		
+		if radix == 2 {
+			if useString.hasPrefix("0b") {
+				useString = String(nStr.dropFirst(2))
+			}
+		}
+		
 		let bint16 = BDouble(radix)
 		
 		var total = BDouble(0)
 		var exp = BDouble(1)
 		
-		for c in nStr.reversed() {
+		for c in useString.reversed() {
 			let int = Int(String(c), radix: radix)
 			if int != nil {
 				let value =  BDouble(int!)
