@@ -314,6 +314,13 @@ public struct BInt:
 	/// So for example, to get the value of hexadecimal string radix value must be set to 16.
 	public init?(_ nStr: String, radix: Int)
 	{
+		if radix == 10 {
+			// regular string init is faster
+			// see metrics
+			self.init(nStr)
+			return
+		}
+		
 		var useString = nStr
 		if radix == 16 {
 			if useString.hasPrefix("0x") {
@@ -2348,6 +2355,13 @@ public struct BDouble:
 	/// So for example, to get the value of hexadecimal string radix value must be set to 16.
 	public init?(_ nStr: String, radix: Int)
 	{
+		if radix == 10 {
+			// regular string init is faster
+			// see metrics
+			self.init(nStr)
+			return
+		}
+		
 		var useString = nStr
 		if radix == 16 {
 			if useString.hasPrefix("0x") {
@@ -2507,8 +2521,6 @@ public struct BDouble:
 
 		var res = BInt(limbs: rawRes).description // just the BInt
 		
-		print("before", res)
-		
 		if digits > 0 && digits < res.count {
 			res.insert(".", at: String.Index(encodedOffset: res.count - digits))
 		} else if res.count <= digits {
@@ -2517,13 +2529,11 @@ public struct BDouble:
 			res = "0." + String((BInt(limbs: w).description as String).reversed())
 			if res.count < digits + 2
 			{
-				print("adding padding")
 				let pad = String(repeating: "0", count: max(digits, 1))
 				res = res.padding(toLength: digits+2-origRes.count, withPad: pad, startingAt: res.count)
 			}
 			res = res + origRes
 			res = res.prefix(max(3, digits+2)).description
-			print("warning!", res, digits, w)
 		}
 		
 		if res == "0"
@@ -2534,9 +2544,7 @@ public struct BDouble:
 		if self.isNegative() {
 			res = "-" + res
 		}
-		
-		print("after", res, self.numerator, self.denominator)
-		
+				
 		return res
 	}
 
@@ -2830,6 +2838,29 @@ public struct BDouble:
 	//
 	//
 
+	/**
+	* An == comparison with an epsilon (fixed then a calculated "ULPs")
+	 * Reference: http://floating-point-gui.de/errors/comparison/
+	 * Reference: https://bitbashing.io/comparing-floats.html
+	 */
+	public static func nearlyEqual(_ lhs: BDouble, _ rhs: BDouble, epsilon: Double = 0.00001) -> Bool {
+		let absLhs = abs(lhs)
+		let absRhs = abs(rhs);
+		let diff = abs(lhs - rhs);
+		
+		if (lhs == rhs) { // shortcut, handles infinities
+			return true;
+		} else if diff <= epsilon {
+			return true // shortcut
+		} else if (lhs == 0 || rhs == 0 || diff < Double.leastNormalMagnitude) {
+			// lhs or rhs is zero or both are extremely close to it
+			// relative error is less meaningful here
+			return diff < (epsilon * Double.leastNormalMagnitude);
+		} else { // use relative error
+			return diff / min((absLhs + absRhs), BDouble(Double.greatestFiniteMagnitude)) < epsilon;
+		}
+	}
+	
 	public static func ==(lhs: BDouble, rhs: BDouble) -> Bool
 	{
 		if lhs.sign != rhs.sign { return false }
@@ -2971,4 +3002,24 @@ public func ceil(_ base: BDouble) -> BInt
  */
 public func pow(_ base : BDouble, _ exp : Int) -> BDouble {
 	return base**exp
+}
+
+/**
+ * Returns the BDouble that is the smallest
+ */
+public func min(_ lhs: BDouble, _ rhs: BDouble) -> BDouble {
+	if lhs <= rhs {
+		return lhs
+	}
+	return rhs
+}
+
+/**
+ * Returns the BDouble that is largest
+ */
+public func max(_ lhs: BDouble, _ rhs: BDouble) -> BDouble {
+	if lhs >= rhs {
+		return lhs
+	}
+	return rhs
 }
