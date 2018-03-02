@@ -171,6 +171,109 @@ class BDoubleTests : XCTestCase {
 		XCTAssert(bigD?.decimalDescription == "0.00000", (bigD?.decimalDescription)!)
 	}
 	
+	func testNearlyEqual() {
+		//BDouble.precision = 50
+		let BDMax = BDouble(Double.greatestFiniteMagnitude)
+		let BDMin = BDouble(Double.leastNormalMagnitude)
+		let eFourty = BDouble("0.00000 00000 00000 00000 00000 00000 00000 00001".replacingOccurrences(of: " ", with: ""))!
+		
+		//print(BDMax.decimalDescription, BDMin.decimalDescription, eFourty.decimalDescription)
+		
+		XCTAssert(BDouble.nearlyEqual(BDouble(100), BDouble(100), epsilon: 0.00001))
+		XCTAssert(BDouble.nearlyEqual(BDouble(100), BDouble(100.00000001), epsilon: 0.00001))
+		XCTAssert(BDouble.nearlyEqual(BDouble(100), BDouble(100.0000001), epsilon: 0.00001))
+		XCTAssert(BDouble.nearlyEqual(BDouble(100), BDouble(100.000001), epsilon: 0.00001))
+		XCTAssert(BDouble.nearlyEqual(BDouble(100), BDouble(100.0001), epsilon: 0.00001))
+		XCTAssert(BDouble.nearlyEqual(BDouble(100), BDouble(100.001), epsilon: 0.00001))
+		XCTAssert(false == BDouble.nearlyEqual(BDouble(100), BDouble(100.01), epsilon: 0.00001))
+		XCTAssert(false == BDouble.nearlyEqual(BDouble(100), BDouble(100.1), epsilon: 0.00001))
+		XCTAssert(false == BDouble.nearlyEqual(BDouble(100), BDouble(101), epsilon: 0.00001))
+		XCTAssert(false == BDouble.nearlyEqual(BDouble(100), BDouble(11), epsilon: 0.00001))
+		XCTAssert(false == BDouble.nearlyEqual(BDouble(100), BDouble(1), epsilon: 0.00001))
+		
+		// Regular large numbers - generally not problematic
+		XCTAssert(BDouble.nearlyEqual(BDouble(1000000), BDouble(1000001)));
+		XCTAssert(BDouble.nearlyEqual(BDouble(1000001), BDouble(1000000)));
+		XCTAssert(false == BDouble.nearlyEqual(BDouble(10000), BDouble(10001)));
+		XCTAssert(false == BDouble.nearlyEqual(BDouble(10001), BDouble(10000)));
+		
+		// Negative large numbers
+		XCTAssert(BDouble.nearlyEqual(BDouble(-1000000), BDouble(-1000001)));
+		XCTAssert(BDouble.nearlyEqual(BDouble(-1000001), BDouble(-1000000)));
+		XCTAssert(false == BDouble.nearlyEqual(BDouble(-10000), BDouble(-10001)));
+		XCTAssert(false == BDouble.nearlyEqual(BDouble(-10001), BDouble(-10000)));
+		
+		// Numbers around 1
+		XCTAssert(BDouble.nearlyEqual(BDouble(1.0000001), BDouble(1.0000002)));
+		XCTAssert(BDouble.nearlyEqual(BDouble(1.0000002), BDouble(1.0000001)));
+		XCTAssert(false == BDouble.nearlyEqual(BDouble(1.0002), BDouble(1.0001)));
+		XCTAssert(false == BDouble.nearlyEqual(BDouble(1.0001), BDouble(1.0002)));
+		
+		// Number around -1
+		XCTAssert(BDouble.nearlyEqual(BDouble(-1.000001), BDouble(-1.000002)));
+		XCTAssert(BDouble.nearlyEqual(BDouble(-1.000002), BDouble(-1.000001)));
+		XCTAssert(false == BDouble.nearlyEqual(BDouble(-1.0001), BDouble(-1.0002)));
+		XCTAssert(false == BDouble.nearlyEqual(BDouble(-1.0002), BDouble(-1.0001)));
+		
+		// Numbers between 0 and 1
+		XCTAssert(BDouble.nearlyEqual(BDouble(0.000000001000001), BDouble(0.000000001000002)));
+		XCTAssert(BDouble.nearlyEqual(BDouble(0.000000001000002), BDouble(0.000000001000001)));
+		XCTAssert(BDouble.nearlyEqual(BDouble(0.000000000001002), BDouble(0.000000000001001)));
+		XCTAssert( BDouble.nearlyEqual(BDouble(0.000000000001001), BDouble(0.000000000001002)));
+		
+		// Numbers between -1 and 0
+		XCTAssert(BDouble.nearlyEqual(BDouble(-0.000000001000001), BDouble(-0.000000001000002)));
+		XCTAssert(BDouble.nearlyEqual(BDouble(-0.000000001000002), BDouble(-0.000000001000001)));
+		XCTAssert(BDouble.nearlyEqual(BDouble(-0.000000000001002), BDouble(-0.000000000001001)));
+		XCTAssert(BDouble.nearlyEqual(BDouble(-0.000000000001001), BDouble(-0.000000000001002)));
+		
+		// small difference away from zero
+		XCTAssert(BDouble.nearlyEqual(BDouble(0.3), BDouble(0.30000003)));
+		XCTAssert(BDouble.nearlyEqual(BDouble(-0.3), BDouble(-0.30000003)));
+		
+		// comparisons involving zero
+		XCTAssert(BDouble.nearlyEqual(BDouble(0.0), BDouble(0.0)));
+		XCTAssert(BDouble.nearlyEqual(BDouble(0.0), BDouble(-0.0)));
+		XCTAssert(BDouble.nearlyEqual(BDouble(-0.0), BDouble(-0.0)));
+		XCTAssert(BDouble.nearlyEqual(BDouble(0.00000001), BDouble(0.0)));
+		XCTAssert(BDouble.nearlyEqual(BDouble(0.0), BDouble(0.00000001)));
+		XCTAssert(BDouble.nearlyEqual(BDouble(-0.00000001), BDouble(0.0)));
+		XCTAssert(BDouble.nearlyEqual(BDouble(0.0), BDouble(-0.00000001)));
+		
+		XCTAssert(BDouble(0.0) != eFourty)
+		XCTAssert(BDouble.nearlyEqual(BDouble(0.0), eFourty, epsilon: 0.01));
+		XCTAssert(BDouble.nearlyEqual(eFourty, BDouble(0.0), epsilon: 0.01));
+		XCTAssert(BDouble.nearlyEqual(eFourty, BDouble(0.0), epsilon: 0.000001));
+		XCTAssert(BDouble.nearlyEqual(BDouble(0.0), eFourty, epsilon: 0.000001));
+		
+		XCTAssert(BDouble.nearlyEqual(BDouble(0.0), -eFourty, epsilon:0.1));
+		XCTAssert(BDouble.nearlyEqual(-eFourty, BDouble(0.0), epsilon:0.1));
+		XCTAssert(BDouble.nearlyEqual(-eFourty, BDouble(0.0), epsilon: 0.00000001));
+		XCTAssert(BDouble.nearlyEqual(BDouble(0.0), -eFourty, epsilon:0.00000001));
+		
+		// comparisons involving "extreme" values
+		XCTAssert(BDouble.nearlyEqual(BDMax, BDMax));
+		XCTAssert(false == BDouble.nearlyEqual(BDMax, -BDMax));
+		XCTAssert(false == BDouble.nearlyEqual(-BDMax, BDMax));
+		XCTAssert(false == BDouble.nearlyEqual(BDMax, BDMax / 2));
+		XCTAssert(false == BDouble.nearlyEqual(BDMax, -BDMax / 2));
+		XCTAssert(false == BDouble.nearlyEqual(-BDMax, BDMax / 2));
+		
+		// comparions very close to zero
+		XCTAssert(BDouble.nearlyEqual(BDMin, BDMin));
+		XCTAssert(BDouble.nearlyEqual(BDMin, -BDMin));
+		XCTAssert(BDouble.nearlyEqual(-BDMin, BDMin));
+		XCTAssert(BDouble.nearlyEqual(BDMin, BDouble(0.0)));
+		XCTAssert(BDouble.nearlyEqual(BDouble(0.0), BDMin));
+		XCTAssert(BDouble.nearlyEqual(-BDMin, BDouble(0.0)));
+		XCTAssert(BDouble.nearlyEqual(BDouble(0.0), -BDMin));
+		
+		XCTAssert(BDouble.nearlyEqual(BDouble(0.000000001), -BDMin));
+		XCTAssert(BDouble.nearlyEqual(BDouble(0.000000001), BDMin));
+		XCTAssert(BDouble.nearlyEqual(BDMin, BDouble(0.000000001)));
+		XCTAssert(BDouble.nearlyEqual(-BDMin, BDouble(0.000000001)));
+	}
+	
 	func testRadix() {
 		XCTAssert(BDouble("aa", radix: 16) == 170)
 		XCTAssert(BDouble("0xaa", radix: 16) == 170)
@@ -213,11 +316,22 @@ class BDoubleTests : XCTestCase {
 		testPow()
 	}
 
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
+    func testPerformanceStringInit() {
         self.measure {
-            // Put the code you want to measure the time of here.
+			for _ in (0...1000) {
+				let _ = BDouble(String(arc4random()))
+				let _ = BDouble(String(arc4random())+"."+String(arc4random()))
+			}
         }
     }
+	
+	func testPerformanceStringRadixInit() {
+		self.measure {
+			for _ in (0...1000) {
+				let _ = BDouble(String(arc4random()), radix: 10)
+				let _ = BDouble(String(arc4random())+"."+String(arc4random()), radix: 10)
+			}
+		}
+	}
 
 }
