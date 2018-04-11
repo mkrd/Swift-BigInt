@@ -8,8 +8,26 @@
 
 import Foundation
 
+
 public struct Storage
 {
+	static func readResource(_ key: String) -> String
+	{
+		if let path = Bundle.main.path(forResource: "longNumbers", ofType: "json", inDirectory: "Resources")
+		{
+			let data = try! Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
+			let jsonResult = try? JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
+			if let jsonResult = jsonResult as? Dictionary<String, String>
+			{
+				if let res = jsonResult[key]
+				{
+					return res
+				}
+			}
+		}
+		return ""
+	}
+
 	/// Write a datapoint to UserDefaults for the key "key".
 	static func write(_ value: Any, forKey key: String)
 	{

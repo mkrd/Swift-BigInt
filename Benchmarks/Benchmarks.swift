@@ -22,7 +22,7 @@ public class Benchmarks
 			[0.8,	-0.6,	0.0],
 			[0.6,	0.8,	0.0],
 			[0.0,	0.0,	1.0]
-			])
+		])
 
 
 		let al = Matrix<BDouble>([4, -3, 1])

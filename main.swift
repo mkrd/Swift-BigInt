@@ -21,16 +21,24 @@ func iterateByLowestSumOfComponents(_ imax: Int, _ jmax: Int) -> [(Int, Int)]
 }
 
 
+print("Run Started.")
 
-benchmarkPrint(title: "All tests passed, duration")
-{
-    SMP_Tests.testBaseConversionRandom()
-    SMP_Tests.testBIntRandom()
-    SMP_Tests.testBInt()
-	SMP_Tests.testSteinGcd()
 
-    MG_Matrix_Tests.testSparseMatrix()
-}
+
+print(Storage.readResource("gcdTest1"))
+
+
+
+
+//benchmarkPrint(title: "All tests passed, duration")
+//{
+//    SMP_Tests.testBaseConversionRandom()
+//    SMP_Tests.testBIntRandom()
+//    SMP_Tests.testBInt()
+//	SMP_Tests.testSteinGcd()
+//
+//    MG_Matrix_Tests.testSparseMatrix()
+//}
 
 //Benchmarks.BDoubleConverging()
 //Benchmarks.exponentiation()
