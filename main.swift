@@ -25,7 +25,21 @@ print("Run Started.")
 
 
 
-print(Storage.readResource("gcdTest1"))
+// print(Storage.readResource("gcdTest1"))
+
+
+
+benchmarkPrint(title: "Radix test")
+{
+	let x = BInt("abcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdef00", radix: 16)!
+	print(x.description)
+	print(x.asString(radix: 62))
+
+
+	let y = BInt("-abcdef00", radix: 16)!
+	print(y)
+	print(y.asString(radix: 16))
+}
 
 
 
