@@ -8,7 +8,7 @@ Some benchmarks are located in Benchmarks.swift, note that these are more than 1
 ## Installation
 
 ### Manual
-Simply drag the SMP.swift file from the sources folder into your project!
+Simply drag the Swift-Big-Number-Core.swift file from the sources folder into your project!
 Yes, it's that easy :)
 
 ### Swift Package Manager
