@@ -43,12 +43,12 @@ BInt(String, radix: Int)?
 
 #### Examples:
 ```swift
-let i = BInt(12)
-let i = BInt(-9234)
-let i = BInt("-2343241765837645983267582365876326491813491053680428560284652986203287826526")!
+let integer = BInt(12)
+let hexadecimal = BInt("fff", radix: 16)
+let string = BInt("-23432417658376459832675823658763264918134910536804285602846529862032878265262343241765837645983267582365876326491813491053680428560284652986203287826526")!
 ```
 
-#### BInt offers 7 struct methods:
+#### BInt offers these struct methods:
 ```swift
 let big = BInt("-143141341")!
 
@@ -82,8 +82,8 @@ BIntOrInt  -= BIntOrInt
 BIntOrInt  *  BIntOrInt // Returns BInt
 BIntOrInt  *= BIntOrInt
 
-// Powering
-BInt       ^  Int       // Retuns BInt to the power of Int
+// Exponentiation
+BInt       **  Int       // Retuns BInt to the power of Int
 
 // Modulo
 BIntOrInt  %  BIntOrInt // Returns BInt
