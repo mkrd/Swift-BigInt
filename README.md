@@ -161,10 +161,10 @@ BDouble(String, radix: Int)?
 
 #### Examples:
 ```swift
-let d = BDouble(221)
-let d = BDouble(1.192)
-let d = BDouble(3, over: 4)
-let d = BDouble("1" over: "3421342675925672365438867862653658268376582356831563158967")!
+let integer = BDouble(221)
+let double = BDouble(1.192)
+let fraction = BDouble(3, over: 4)
+let stringFraction = BDouble("1" over: "3421342675925672365438867862653658268376582356831563158967")!
 ```
 
 #### BDouble offers these struct methods:
@@ -213,7 +213,7 @@ a <= b <==> !(a > b)
 
 
 ## About performance
-BInt about twice as fast as mini-gmp, as of now (not counting the normal gmp, because it needs to be installed and is not portable). For example, BInt can add numbers about 2 times faster than GMP (272ms vs 530ms for fib(100,000)), and multiply more than 2 times faster. When given the task of calculating and printing factorials successively, BInt performs significantly better than GMP. In addition, GMP is significantly harder to use, especially in combination with Swift, while BInt offers an intuitive interface.
+BInt about twice as fast as mini-gmp, as of now (not counting the normal gmp, because it needs to be installed and is not portable). For example, BInt can add numbers about 2 times faster than GMP (272ms vs 530ms for fib(100,000)), and multiplication is more than twice as fast. When given the task of calculating and printing factorials successively, BInt performs significantly better than GMP. In addition, GMP is significantly harder to use, while BInt offers an intuitive interface.
 
 
 
