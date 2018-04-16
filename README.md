@@ -1,5 +1,5 @@
 # BInt and BDouble
-BInt and BDouble is a lightweight, and easy-to-use, arbitrary precision arithmetric library for Swift 3. It supports whole Numbers (BInt) and Fractions (BDouble) with most of the common math operators like addition, subtraction, multiplication, exponentiation, modulus and division. Some optimized math functions like factorial or gcd are also implemented. So more details, please continue reading.
+BInt and BDouble is a lightweight, and easy-to-use, arbitrary precision arithmetric library for Swift 4. It supports whole Numbers (BInt) and Fractions (BDouble) with most of the common math operators like addition, subtraction, multiplication, exponentiation, modulus and division. Some optimized math functions like factorial or gcd are also implemented. So more details, please continue reading.
 
 Some benchmarks are located in Benchmarks.swift, note that these are more than 10 times faster in release mode.
 
