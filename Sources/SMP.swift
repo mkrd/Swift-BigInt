@@ -2300,6 +2300,10 @@ public struct BDouble:
 			{
 				let beforeExp = String(Array(nStr)[..<exp].filter{ $0 != "." })
 				var afterExp = String(Array(nStr)[(exp + 1)...])
+        var existingE = 0
+        if let decimalPosition = Array(nStr).index(of: ".") {
+          existingE = Array(nStr)[decimalPosition+1..<exp].count
+        }
 				var sign = false
 
 				if let neg = afterExp.index(of: "-")?.encodedOffset
@@ -2311,7 +2315,7 @@ public struct BDouble:
 				if sign
 				{
 					if let safeAfterExp = Int(afterExp) {
-						let den = ["1"] + [Character](repeating: "0", count: safeAfterExp)
+						let den = ["1"] + [Character](repeating: "0", count: safeAfterExp - existingE)
 						self.init(beforeExp, over: String(den))
 						return
 					}
@@ -2320,7 +2324,7 @@ public struct BDouble:
 				else
 				{
 					if let safeAfterExp = Int(afterExp) {
-						let num = beforeExp + String([Character](repeating: "0", count: safeAfterExp))
+            let num = beforeExp + String([Character](repeating: "0", count: safeAfterExp - existingE))
 						self.init(num, over: "1")
 						return
 					}
