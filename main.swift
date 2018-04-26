@@ -25,7 +25,81 @@ print("Run Started.")
 
 
 
-// print(Storage.readResource("gcdTest1"))
+
+func generateDoubleString(preDecimalCount: Int, postDecimalCount: Int) -> String
+{
+	var numStr = ""
+
+	if preDecimalCount == 0 && postDecimalCount == 0
+	{
+		return math.random(0...1) == 1 ? "0" : "0.0"
+	}
+
+	if preDecimalCount == 0
+	{
+		numStr = "0."
+	}
+
+	if postDecimalCount == 0
+	{
+		numStr = math.random(0...1) == 1 ? "" : ".0"
+	}
+
+
+	for i in 0..<preDecimalCount
+	{
+		if i == (preDecimalCount - 1) && preDecimalCount > 1
+		{
+			numStr = math.random(1...9).description + numStr
+		}
+		else
+		{
+			numStr = math.random(0...9).description + numStr
+		}
+	}
+
+	if postDecimalCount != 0 && preDecimalCount != 0
+	{
+		numStr += "."
+	}
+
+	for _ in 0..<postDecimalCount
+	{
+		numStr = numStr + math.random(0...9).description
+	}
+
+	return math.random(0...1) == 1 ? numStr : "-" + numStr
+}
+
+
+
+
+for _ in 0..<200000
+{
+	let preDecimalCount = math.random(0...4)
+	let postDecimalCount = math.random(0...4)
+	let doubleString = generateDoubleString(
+		preDecimalCount: preDecimalCount,
+		postDecimalCount: postDecimalCount
+	)
+
+	let toBDoubleAndBack = BDouble(doubleString)!.decimalExpansion(precisionAfterComma: postDecimalCount)
+
+	if toBDoubleAndBack != doubleString
+	{
+		if doubleString == "0" && toBDoubleAndBack == "0.0" { continue }
+		if doubleString == "-0" && toBDoubleAndBack == "0.0" { continue }
+		if doubleString == "-0.0" && toBDoubleAndBack == "0.0" { continue }
+		if doubleString == "-0.00" && toBDoubleAndBack == "0.00" { continue }
+		if doubleString == "-0.000" && toBDoubleAndBack == "0.000" { continue }
+		if doubleString.count > 2 && doubleString[..<doubleString.index(doubleString.endIndex, offsetBy: -2)] == toBDoubleAndBack { continue }
+
+		print("\nError: PreDecCount: \(preDecimalCount) PostDecCount: \(postDecimalCount)")
+		print("Previ: \(doubleString)")
+		print("After: \(toBDoubleAndBack)")
+	}
+}
+
 
 
 

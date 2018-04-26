@@ -168,7 +168,6 @@
 			children = (
 				F64629241FF016070074A180 /* BDoubleTests.swift */,
 				F6632C4C20499FE300B73607 /* BIntTests.swift */,
-				C26D70B81F62A6230012AA54 /* SMP Tests.swift */,
 				C2BCD1831FA13F1E002F6986 /* MG Math Tests.swift */,
 				C2BCD1851FA14252002F6986 /* MG Matrix Tests.swift */,
 				F64629631FF017EA0074A180 /* Info.plist */,
@@ -219,6 +218,7 @@
 			isa = PBXGroup;
 			children = (
 				C2F92B3B1D0F7421003CDF7D /* main.swift */,
+				C26D70B81F62A6230012AA54 /* SMP Tests.swift */,
 				C29F6AE71FEB1C5100AD0478 /* Benchmarks */,
 				C29F6AE61FEB1C2B00AD0478 /* Tools */,
 				C29F6AE51FEB1BE900AD0478 /* Sources */,

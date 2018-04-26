@@ -23,7 +23,7 @@ public class SMP_Tests
 	//
 
 
-	static func testSteinGcd()
+	public static func testSteinGcd()
 	{
 		for a in 0...100
 		{

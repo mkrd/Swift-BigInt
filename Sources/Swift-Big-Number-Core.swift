@@ -2491,44 +2491,44 @@ public struct BDouble:
 	}
 
 	/**
-	 * returns the current value in decimal format
+		returns the current value in decimal format
 	 */
-	public func decimalExpansion(precisionAfterComma digits: Int) -> String
+	public func decimalExpansion(precisionAfterComma precision: Int) -> String
 	{
-		if self.isZero() {
-			return "0." + String(repeating: "0", count: max(digits, 1))
-		}
-		
-		let multiplier = [10].exponentiating(digits)
+		/*
+		Example for better understanding:
+		slef = 12.345 (2469 / 200)
+		digits = 3
+		multiplier = 10 ** 3 = 1000
 
-		let rawRes = abs(self).numerator.multiplyingBy(multiplier).divMod(self.denominator).quotient
 
-		var res = BInt(limbs: rawRes).description // just the BInt
+		res = (2469 * 1000) / 200
+		res = 12345
+		=> res = 12.345
+		*/
 		
-		if digits > 0 && digits < res.count {
-			res.insert(".", at: String.Index(encodedOffset: res.count - digits))
-		} else if res.count <= digits {
-			let origRes = res
-			let w = abs(self).numerator.multiplyingBy(multiplier).divMod(self.denominator).remainder
-			res = "0." + String((BInt(limbs: w).description as String).reversed())
-			if res.count < digits + 2
-			{
-				let pad = String(repeating: "0", count: max(digits, 1))
-				res = res.padding(toLength: digits+2-origRes.count, withPad: pad, startingAt: res.count)
-			}
-			res = res + origRes
-			res = res.prefix(max(3, digits+2)).description
-		}
-		
-		if res == "0"
+		if self.isZero()
 		{
-			res = "0." + String(repeating: "0", count: max(digits, 1))
+			return "0." + String(repeating: "0", count: max(precision, 1))
 		}
-		
-		if self.isNegative() {
-			res = "-" + res
+
+		let multiplier = [10].exponentiating(precision)
+		let limbs = self.numerator.multiplyingBy(multiplier).divMod(self.denominator).quotient
+
+		var res = BInt(limbs: limbs).description
+
+		if precision > 0 && precision <= res.count
+		{
+			res.insert(".", at: String.Index(encodedOffset: res.count - precision))
 		}
-				
+
+		if res.count < precision
+		{
+			res = "0." + String(repeating: "0", count: precision - res.count) + res
+		}
+
+		if res.first! == "." { res = "0" + res }
+		if self.isNegative() { res = "-" + res }
 		return res
 	}
 
