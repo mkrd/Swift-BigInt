@@ -10,7 +10,7 @@
 
 import Foundation
 
-public class SMP_Tests
+public struct SMPTests
 {
 	//
 	//
@@ -21,8 +21,6 @@ public class SMP_Tests
 	//
 	//
 	//
-
-
 	public static func testSteinGcd()
 	{
 		for a in 0...100
@@ -41,58 +39,6 @@ public class SMP_Tests
 		)
 
 		precondition(bigGCD == BInt(66))
-	}
-
-
-	static func testBaseConversionRandom()
-	{
-		let iterations = 100
-		let maxStringSize = 9
-
-		let chars = [
-			"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b",
-			"c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n",
-			"o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",
-			"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L",
-			"M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X",
-			"Y", "Z"
-		]
-
-		var run = 1
-
-		while run <= iterations
-		{
-			let fromBase = math.random(2..<chars.count)
-			let   toBase = math.random(2..<chars.count)
-
-			// Generate a random number with a start base
-			var randNum = ""
-
-			for _ in 0..<math.random(1...maxStringSize)
-			{
-				randNum.append(chars[math.random(0..<fromBase)])
-			}
-
-			// Trim zeros
-			while randNum[0] == "0" && randNum.count > 1
-			{
-				randNum = randNum[1..<randNum.count]
-			}
-
-			// Convert the random number to a BInt type
-			let b1 = BInt(number: randNum, withBase: fromBase)
-			// Get the number as a string with the second base
-			let s1 = b1!.asString(withBase: toBase)
-			// Convert that number to a BInt type
-			let b2 = BInt(number: s1, withBase: toBase)
-			// Get the number back as as string in the start base
-			let s2 = b2!.asString(withBase: fromBase)
-
-			precondition(b1 == b2)
-			precondition(s2 == randNum)
-
-			run += 1
-		}
 	}
 
 	static func testBIntRandom()

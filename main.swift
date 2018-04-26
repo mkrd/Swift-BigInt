@@ -1,144 +1,29 @@
 import Foundation
 
 
-func iterateByLowestSumOfComponents(_ imax: Int, _ jmax: Int) -> [(Int, Int)]
+
+
+
+
+benchmarkPrint(title: "All tests passed, duration")
 {
-	var i, j: Int
-	var grid = [(Int, Int)]()
-
-	for sum in 0...(imax + jmax)
-	{
-		if sum < imax { (i, j) = (sum, 0) }
-		else { (i, j) = (imax, sum - imax) }
-
-		while j <= jmax && i >= 0
-		{
-			grid.append((i, j))
-			(i, j) = (i - 1, j + 1)
-		}
-	}
-	return grid
-}
-
-
-print("Run Started.")
-
-
-
-
-func generateDoubleString(preDecimalCount: Int, postDecimalCount: Int) -> String
-{
-	var numStr = ""
-
-	if preDecimalCount == 0 && postDecimalCount == 0
-	{
-		return math.random(0...1) == 1 ? "0" : "0.0"
-	}
-
-	if preDecimalCount == 0
-	{
-		numStr = "0."
-	}
-
-	if postDecimalCount == 0
-	{
-		numStr = math.random(0...1) == 1 ? "" : ".0"
-	}
-
-
-	for i in 0..<preDecimalCount
-	{
-		if i == (preDecimalCount - 1) && preDecimalCount > 1
-		{
-			numStr = math.random(1...9).description + numStr
-		}
-		else
-		{
-			numStr = math.random(0...9).description + numStr
-		}
-	}
-
-	if postDecimalCount != 0 && preDecimalCount != 0
-	{
-		numStr += "."
-	}
-
-	for _ in 0..<postDecimalCount
-	{
-		numStr = numStr + math.random(0...9).description
-	}
-
-	return math.random(0...1) == 1 ? numStr : "-" + numStr
-}
-
-
-
-
-for _ in 0..<200000
-{
-	let preDecimalCount = math.random(0...4)
-	let postDecimalCount = math.random(0...4)
-	let doubleString = generateDoubleString(
-		preDecimalCount: preDecimalCount,
-		postDecimalCount: postDecimalCount
-	)
-
-	let toBDoubleAndBack = BDouble(doubleString)!.decimalExpansion(precisionAfterComma: postDecimalCount)
-
-	if toBDoubleAndBack != doubleString
-	{
-		if doubleString == "0" && toBDoubleAndBack == "0.0" { continue }
-		if doubleString == "-0" && toBDoubleAndBack == "0.0" { continue }
-		if doubleString == "-0.0" && toBDoubleAndBack == "0.0" { continue }
-		if doubleString == "-0.00" && toBDoubleAndBack == "0.00" { continue }
-		if doubleString == "-0.000" && toBDoubleAndBack == "0.000" { continue }
-		if doubleString.count > 2 && doubleString[..<doubleString.index(doubleString.endIndex, offsetBy: -2)] == toBDoubleAndBack { continue }
-
-		print("\nError: PreDecCount: \(preDecimalCount) PostDecCount: \(postDecimalCount)")
-		print("Previ: \(doubleString)")
-		print("After: \(toBDoubleAndBack)")
-	}
-}
-
-
-
-
-benchmarkPrint(title: "Radix test")
-{
-	let x = BInt("abcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdef00", radix: 16)!
-	print(x.description)
-	print(x.asString(radix: 62))
-
-
-	let y = BInt("-abcdef00", radix: 16)!
-	print(y)
-	print(y.asString(radix: 16))
-}
-
-
-
-
-//benchmarkPrint(title: "All tests passed, duration")
-//{
-//    SMP_Tests.testBaseConversionRandom()
-//    SMP_Tests.testBIntRandom()
-//    SMP_Tests.testBInt()
-//	SMP_Tests.testSteinGcd()
-//
+    SMPTests.testBIntRandom()
+    SMPTests.testBInt()
+	SMPTests.testSteinGcd()
 //    MG_Matrix_Tests.testSparseMatrix()
-//}
+}
 
-//Benchmarks.BDoubleConverging()
-//Benchmarks.exponentiation()
-//Benchmarks.factorial()
-//Benchmarks.fibonacci()
-//Benchmarks.Matrix1()
-//Benchmarks.mersennes()
-//Benchmarks.BIntToString()
-//Benchmarks.StringToBInt()
-////Benchmarks.permutationsAndCombinations()
-//Benchmarks.multiplicationBalanced()
-//Benchmarks.multiplicationUnbalanced()
+Benchmarks.BDoubleConverging()
+Benchmarks.exponentiation()
+Benchmarks.factorial()
+Benchmarks.fibonacci()
+Benchmarks.Matrix1()
+Benchmarks.mersennes()
+Benchmarks.BIntToString()
+Benchmarks.StringToBInt()
+//Benchmarks.permutationsAndCombinations()
+Benchmarks.multiplicationBalanced()
+Benchmarks.multiplicationUnbalanced()
 
 
 

@@ -29,9 +29,9 @@ public class MG_Math_Tests
 			}
 		}
 
-		benchmarkPrint(title: "primes") {
-			let n = math.primesThrough(150_000_000)
-			print("\(Double(n.count) / 1_000_000.0) Million")
-		}
+//		benchmarkPrint(title: "primes") {
+//			let n = math.primesThrough(150_000_000)
+//			print("\(Double(n.count) / 1_000_000.0) Million")
+//		}
 	}
 }

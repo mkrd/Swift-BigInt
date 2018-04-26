@@ -19,7 +19,55 @@ class BIntTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
-    
+
+	func testRadixInitializerAndGetter()
+	{
+		let chars: [Character] = [
+			"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f", "g",
+			"h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x",
+			"y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O",
+			"P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"
+		]
+
+		for _ in 0..<1000
+		{
+			let fromBase = math.random(2...62)
+			let toBase = math.random(2...62)
+			let numLength = math.random(1...10)
+
+			var num = math.random(0...1) == 1 ? "-" : ""
+
+			for i in 0..<numLength
+			{
+				if i == 0
+				{
+					num.append(chars[math.random(1..<fromBase)])
+				}
+				else
+				{
+					num.append(chars[math.random(0..<fromBase)])
+				}
+			}
+
+			// Convert the random number to a BInt type
+			let b1 = BInt(num, radix: fromBase)
+			// Get the number as a string with the second base
+			let s1 = b1!.asString(radix: toBase)
+			// Convert that number to a BInt type
+			let b2 = BInt(s1, radix: toBase)
+			// Get the number back as as string in the start base
+			let s2 = b2!.asString(radix: fromBase)
+
+			XCTAssert(b1 == b2)
+			XCTAssert(s2 == num)
+		}
+
+		let bigHex = "abcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdef00"
+		let x = BInt(bigHex, radix: 16)!
+		XCTAssert(x.asString(radix: 16) == bigHex)
+	}
+
+
 	func testRadix() {
 		XCTAssert(BInt("ffff",radix:16) == 65535)
 		XCTAssert(BInt("ff",radix:16) == 255.0)

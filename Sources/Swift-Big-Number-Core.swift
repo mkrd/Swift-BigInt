@@ -2487,49 +2487,30 @@ public struct BDouble:
 	 */
 	public var decimalDescription : String
 	{
-		return self.decimalExpansion(precisionAfterComma: self.precision)
+		return self.decimalExpansion(precisionAfterDecimalPoint: self.precision)
 	}
 
 	/**
-		returns the current value in decimal format
+	 * Returns the current value in decimal format (always with a decimal point).
 	 */
-	public func decimalExpansion(precisionAfterComma precision: Int) -> String
+	public func decimalExpansion(precisionAfterDecimalPoint precision: Int) -> String
 	{
-		/*
-		Example for better understanding:
-		slef = 12.345 (2469 / 200)
-		digits = 3
-		multiplier = 10 ** 3 = 1000
-
-
-		res = (2469 * 1000) / 200
-		res = 12345
-		=> res = 12.345
-		*/
-		
-		if self.isZero()
-		{
-			return "0." + String(repeating: "0", count: max(precision, 1))
-		}
-
 		let multiplier = [10].exponentiating(precision)
 		let limbs = self.numerator.multiplyingBy(multiplier).divMod(self.denominator).quotient
-
 		var res = BInt(limbs: limbs).description
 
-		if precision > 0 && precision <= res.count
+		if precision <= res.count
 		{
 			res.insert(".", at: String.Index(encodedOffset: res.count - precision))
+			if res.hasPrefix(".") { res = "0" + res }
+			else if res.hasSuffix(".") { res += "0" }
 		}
-
-		if res.count < precision
+		else
 		{
 			res = "0." + String(repeating: "0", count: precision - res.count) + res
 		}
 
-		if res.first! == "." { res = "0" + res }
-		if self.isNegative() { res = "-" + res }
-		return res
+		return self.isNegative() && !limbs.equalTo(0) ? "-" + res : res
 	}
 
 	public var hashValue: Int

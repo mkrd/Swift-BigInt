@@ -34,6 +34,8 @@
 		C26B2789207E836A008FA649 /* Resources in Resources */ = {isa = PBXBuildFile; fileRef = C26B2785207E8369008FA649 /* Resources */; };
 		C26B278A207E8382008FA649 /* Resources in CopyFiles */ = {isa = PBXBuildFile; fileRef = C26B2785207E8369008FA649 /* Resources */; };
 		C26B278B207E85D3008FA649 /* MG Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A53BF21DAA8A7300AD08E4 /* MG Storage.swift */; };
+		C2D93A842092485D00438D2A /* SMP Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26D70B81F62A6230012AA54 /* SMP Tests.swift */; };
+		C2D93A85209272CD00438D2A /* MG SuperSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24E721A1E58D69F008AD14D /* MG SuperSwift.swift */; };
 		F646295D1FF017EA0074A180 /* BigNumber.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F64629541FF017E90074A180 /* BigNumber.framework */; };
 		F646296C1FF018540074A180 /* BDoubleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64629241FF016070074A180 /* BDoubleTests.swift */; };
 		F646296D1FF019F40074A180 /* Swift-Big-Number-Core.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F92B421D0F7452003CDF7D /* Swift-Big-Number-Core.swift */; };
@@ -471,6 +473,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C2D93A842092485D00438D2A /* SMP Tests.swift in Sources */,
 				C26B2728207E5C29008FA649 /* MG Benchmark Tools.swift in Sources */,
 				C26B2729207E5C29008FA649 /* MG Math.swift in Sources */,
 				C26B272A207E5C29008FA649 /* MG SuperSwift.swift in Sources */,
@@ -497,6 +500,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C2D93A85209272CD00438D2A /* MG SuperSwift.swift in Sources */,
 				C26B278B207E85D3008FA649 /* MG Storage.swift in Sources */,
 				C26B273A207E5E4F008FA649 /* MG Matrix.swift in Sources */,
 				C26B2739207E5E35008FA649 /* MG Math.swift in Sources */,

@@ -235,7 +235,7 @@ public class Benchmarks
 
 			// BInt from String, 60320 digits (16000!) Debug Mode
 			// 07.09.17: 2857ms
-
+			// 26.04.18: 1081ms
 
 			res = BInt(asStr)!
 		}
@@ -268,6 +268,9 @@ public class Benchmarks
 	{
 		benchmarkPrint(title: "Multiply two random BInts with size of 270_000 and 270_000 bits")
 		{
+			// Multiply two random BInts with size of 270_000 and 270_000 bits
+			// 26.04.18: 2427ms
+
 			let b1 = BIntMath.randomBInt(bits: 270_000)
 			let b2 = BIntMath.randomBInt(bits: 270_000)
 
@@ -279,6 +282,9 @@ public class Benchmarks
 	{
 		benchmarkPrint(title: "Multiply two random BInts with size of 70_000_000 and 1_000 bits")
 		{
+			// Multiply two random BInts with size of 70_000_000 and 1_000 bits
+			// 26.04.18: 2467ms
+
 			let b1 = BIntMath.randomBInt(bits: 70_000_000)
 			let b2 = BIntMath.randomBInt(bits: 1_000)
 
