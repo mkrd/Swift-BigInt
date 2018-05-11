@@ -98,7 +98,7 @@ class BDoubleTests : XCTestCase {
 
 	func testDecimalExpansion()
 	{
-		let testValues = [
+		var testValues = [
 			("0", "0.0", 0),
 			("0", "0.0", 1),
 			("0", "0.00", 2),
@@ -115,8 +115,30 @@ class BDoubleTests : XCTestCase {
 
 		for (original, test, precision) in testValues
 		{
-			let result = BDouble(original)!.decimalExpansion(precisionAfterDecimalPoint: precision)
-			XCTAssert(result == test)
+			let result = BDouble(original)!.decimalExpansion(precisionAfterDecimalPoint: precision, rounded: false)
+			XCTAssertEqual(result, test)
+		}
+		
+		testValues = [
+			("0", "0.0", 0),
+			("0", "0.0", 1),
+			("0", "0.00", 2),
+			("0", "0.000", 3),
+			("12.345", "12.0", 0),
+			("12.345", "12.3", 1),
+			("12.345", "12.35", 2),
+			("12.345", "12.345", 3),
+			("12.345", "12.3450", 4),
+			("-0.00009", "0.000", 3),
+			("-0.00009", "-0.0001", 4),
+			("-0.00009", "-0.00009", 5),
+			("-0.00009", "-0.000090", 6),
+		]
+		
+		for (original, test, precision) in testValues
+		{
+			let result = BDouble(original)!.decimalExpansion(precisionAfterDecimalPoint: precision, rounded: true)
+			XCTAssertEqual(result, test)
 		}
 	}
 
@@ -233,7 +255,7 @@ class BDoubleTests : XCTestCase {
 		bigD?.precision = 2
 		XCTAssert(bigD?.decimalDescription == "123456789.12")
 		bigD?.precision = 4
-		XCTAssert(bigD?.decimalDescription == "123456789.1234")
+		XCTAssert(bigD?.decimalDescription == "123456789.1235")
 		bigD?.precision = 10
 		XCTAssert(bigD?.decimalDescription == "123456789.1234567890")
 		bigD?.precision = 20
@@ -246,7 +268,7 @@ class BDoubleTests : XCTestCase {
 		bigD?.precision = 2
 		XCTAssert(bigD?.decimalDescription == "-123456789.12", (bigD?.decimalDescription)!)
 		bigD?.precision = 4
-		XCTAssert(bigD?.decimalDescription == "-123456789.1234", (bigD?.decimalDescription)!)
+		XCTAssert(bigD?.decimalDescription == "-123456789.1235", (bigD?.decimalDescription)!)
 		bigD?.precision = 10
 		XCTAssert(bigD?.decimalDescription == "-123456789.1234567890", (bigD?.decimalDescription)!)
 		bigD?.precision = 20
