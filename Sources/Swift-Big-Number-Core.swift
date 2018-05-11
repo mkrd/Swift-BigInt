@@ -2520,14 +2520,10 @@ public struct BDouble:
 
 		var retVal = self.isNegative() && !limbs.equalTo(0) ? "-" + res : res
 		
-		print("retVal = ",retVal, precision, cur_precision)
-		
 		if(rounded && precision > 0) {
 		
 			let lastdigit = Int(retVal.suffix(1))! // this should always be a number
 			let seconddigit = retVal.suffix(2).prefix(1) // this could be a decimal
-			
-			print(lastdigit, seconddigit)
 			
 			retVal = String(retVal.prefix(retVal.count-2))
 			if (seconddigit != ".") {
@@ -2540,8 +2536,6 @@ public struct BDouble:
 				retVal = retVal + "." + String(lastdigit)
 			}
 		}
-		
-		print("Final: ", retVal)
 		
 		return retVal
 	}
