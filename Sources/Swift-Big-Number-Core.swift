@@ -2497,43 +2497,43 @@ public struct BDouble:
 	 */
 	public func decimalExpansion(precisionAfterDecimalPoint precision: Int, rounded : Bool = true) -> String
 	{
-		var cur_precision = precision
+		var currentPrecision = precision
 		
 		if(rounded && precision > 0) {
-			cur_precision = cur_precision + 1
+			currentPrecision = currentPrecision + 1
 		}
 		
-		let multiplier = [10].exponentiating(cur_precision)
+		let multiplier = [10].exponentiating(currentPrecision)
 		let limbs = self.numerator.multiplyingBy(multiplier).divMod(self.denominator).quotient
 		var res = BInt(limbs: limbs).description
 
-		if cur_precision <= res.count
+		if currentPrecision <= res.count
 		{
-			res.insert(".", at: String.Index(encodedOffset: res.count - cur_precision))
+			res.insert(".", at: String.Index(encodedOffset: res.count - currentPrecision))
 			if res.hasPrefix(".") { res = "0" + res }
 			else if res.hasSuffix(".") { res += "0" }
 		}
 		else
 		{
-			res = "0." + String(repeating: "0", count: cur_precision - res.count) + res
+			res = "0." + String(repeating: "0", count: currentPrecision - res.count) + res
 		}
 
 		var retVal = self.isNegative() && !limbs.equalTo(0) ? "-" + res : res
 		
 		if(rounded && precision > 0) {
 		
-			let lastdigit = Int(retVal.suffix(1))! // this should always be a number
-			let seconddigit = retVal.suffix(2).prefix(1) // this could be a decimal
+			let lastDigit = Int(retVal.suffix(1))! // this should always be a number
+			let secondDigit = retVal.suffix(2).prefix(1) // this could be a decimal
 			
 			retVal = String(retVal.prefix(retVal.count-2))
-			if (seconddigit != ".") {
-				if lastdigit >= 5 {
-					retVal = retVal + String(Int(seconddigit)! + 1)
+			if (secondDigit != ".") {
+				if lastDigit >= 5 {
+					retVal = retVal + String(Int(secondDigit)! + 1)
 				} else {
-					retVal = retVal + String(Int(seconddigit)!)
+					retVal = retVal + String(Int(secondDigit)!)
 				}
 			} else {
-				retVal = retVal + "." + String(lastdigit)
+				retVal = retVal + "." + String(lastDigit)
 			}
 		}
 		

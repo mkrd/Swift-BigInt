@@ -96,9 +96,9 @@ class BDoubleTests : XCTestCase {
 	}
 
 
-	func testDecimalExpansion()
+	func testDecimalExpansionWithoutRounding()
 	{
-		var testValues = [
+		let testValues = [
 			("0", "0.0", 0),
 			("0", "0.0", 1),
 			("0", "0.00", 2),
@@ -118,8 +118,11 @@ class BDoubleTests : XCTestCase {
 			let result = BDouble(original)!.decimalExpansion(precisionAfterDecimalPoint: precision, rounded: false)
 			XCTAssertEqual(result, test)
 		}
-		
-		testValues = [
+	}
+
+	func testDecimalExpansionWithRounding()
+	{
+		let testValues = [
 			("0", "0.0", 0),
 			("0", "0.0", 1),
 			("0", "0.00", 2),
