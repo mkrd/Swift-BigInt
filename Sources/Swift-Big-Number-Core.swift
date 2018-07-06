@@ -2491,26 +2491,53 @@ public struct BDouble:
 	}
 
 	/**
-	 * Returns the current value in decimal format (always with a decimal point).
+	 Returns the current value in decimal format (always with a decimal point).
+	 - parameter precision: the precision after the decimal point
+	 - parameter rounded: whether or not the return value's last digit will be rounded up
 	 */
-	public func decimalExpansion(precisionAfterDecimalPoint precision: Int) -> String
+	public func decimalExpansion(precisionAfterDecimalPoint precision: Int, rounded : Bool = true) -> String
 	{
-		let multiplier = [10].exponentiating(precision)
+		var currentPrecision = precision
+		
+		if(rounded && precision > 0) {
+			currentPrecision = currentPrecision + 1
+		}
+		
+		let multiplier = [10].exponentiating(currentPrecision)
 		let limbs = self.numerator.multiplyingBy(multiplier).divMod(self.denominator).quotient
 		var res = BInt(limbs: limbs).description
 
-		if precision <= res.count
+		if currentPrecision <= res.count
 		{
-			res.insert(".", at: String.Index(encodedOffset: res.count - precision))
+			res.insert(".", at: String.Index(encodedOffset: res.count - currentPrecision))
 			if res.hasPrefix(".") { res = "0" + res }
 			else if res.hasSuffix(".") { res += "0" }
 		}
 		else
 		{
-			res = "0." + String(repeating: "0", count: precision - res.count) + res
+			res = "0." + String(repeating: "0", count: currentPrecision - res.count) + res
 		}
 
-		return self.isNegative() && !limbs.equalTo(0) ? "-" + res : res
+		var retVal = self.isNegative() && !limbs.equalTo(0) ? "-" + res : res
+		
+		if(rounded && precision > 0) {
+		
+			let lastDigit = Int(retVal.suffix(1))! // this should always be a number
+			let secondDigit = retVal.suffix(2).prefix(1) // this could be a decimal
+			
+			retVal = String(retVal.prefix(retVal.count-2))
+			if (secondDigit != ".") {
+				if lastDigit >= 5 {
+					retVal = retVal + String(Int(secondDigit)! + 1)
+				} else {
+					retVal = retVal + String(Int(secondDigit)!)
+				}
+			} else {
+				retVal = retVal + "." + String(lastDigit)
+			}
+		}
+		
+		return retVal
 	}
 
 	public var hashValue: Int

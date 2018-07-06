@@ -25,13 +25,13 @@ class BDoubleTests : XCTestCase {
 		XCTAssertNotNil(BDouble("1.2e+123"))
 		XCTAssertNotNil(BDouble("-1.2e+123"))
 		XCTAssertNotNil(BDouble("+1.2e-123"))
-		XCTAssert(BDouble("0") == 0.0)
-		XCTAssert(BDouble("10") == 10.0)
-		XCTAssert(BDouble("1.2e10")?.fractionDescription == "120000000000")
-		XCTAssert(BDouble("1.2e+10")?.fractionDescription == "120000000000")
-		XCTAssert(BDouble("+1.2e+10")?.fractionDescription == "120000000000")
-		XCTAssert(BDouble("-1.2e10")?.fractionDescription == "-120000000000")
-		XCTAssert(BDouble("1.2")?.fractionDescription == "6/5")
+		XCTAssertEqual(BDouble("0"), 0.0)
+		XCTAssertEqual(BDouble("10"), 10.0)
+		XCTAssertEqual(BDouble("1.2e10")?.fractionDescription, "120000000000")
+		XCTAssertEqual(BDouble("1.2e+10")?.fractionDescription, "120000000000")
+		XCTAssertEqual(BDouble("+1.2e+10")?.fractionDescription, "120000000000")
+		XCTAssertEqual(BDouble("-1.2e10")?.fractionDescription, "-120000000000")
+		XCTAssertEqual(BDouble("1.2")?.fractionDescription, "6/5")
 		
 		for _ in 0..<100 {
 			let rn = Double(Double(arc4random()) / Double(UINT32_MAX))
@@ -43,21 +43,21 @@ class BDoubleTests : XCTestCase {
     }
 	
 	func testCompare() {
-		XCTAssert(BDouble(1.0) == BDouble(1.0))
+		XCTAssertEqual(BDouble(1.0), BDouble(1.0))
 		XCTAssert(BDouble(1.1) != BDouble(1.0))
 		XCTAssert(BDouble(2.0) > BDouble(1.0))
 		XCTAssert(BDouble(-1) < BDouble(1.0))
 		XCTAssert(BDouble(0.0) <= BDouble(1.0))
 		XCTAssert(BDouble(1.1) >= BDouble(1.0))
 		
-		XCTAssert(1.0 == BDouble(1.0))
+		XCTAssertEqual(1.0, BDouble(1.0))
 		XCTAssert(1.1 != BDouble(1.0))
 		XCTAssert(2.0 > BDouble(1.0))
 		XCTAssert(0.0 < BDouble(1.0))
 		XCTAssert(-1.0 <= BDouble(1.0))
 		XCTAssert(1.1 >= BDouble(1.0))
 		
-		XCTAssert(BDouble(1.0) == 1.0)
+		XCTAssertEqual(BDouble(1.0), 1.0)
 		XCTAssert(BDouble(1.1) != 1.0)
 		XCTAssert(BDouble(2.0) > 1.0)
 		XCTAssert(BDouble(-1) < 1.0)
@@ -72,7 +72,7 @@ class BDoubleTests : XCTestCase {
 			XCTAssert(BDouble(rn) <= BDouble(rn2))
 			XCTAssert(BDouble(rn2) > BDouble(rn))
 			XCTAssert(BDouble(rn2) >= BDouble(rn))
-			XCTAssert(BDouble(rn) == BDouble(rn))
+			XCTAssertEqual(BDouble(rn), BDouble(rn))
 			XCTAssert(BDouble(rn2) != BDouble(rn))
 		}
 	}
@@ -80,7 +80,7 @@ class BDoubleTests : XCTestCase {
 	func testPow() {
 		// Test that a number to the zero power is 1
 		for i in 0..<100 {
-			XCTAssert(pow(BDouble(Double(i)), 0) == 1.0)
+			XCTAssertEqual(pow(BDouble(Double(i)), 0), 1.0)
 			
 			let rn = Double(Double(arc4random()) / Double(UINT32_MAX))
 			XCTAssert(pow(BDouble(rn), 0) == 1.0)
@@ -88,15 +88,15 @@ class BDoubleTests : XCTestCase {
 		
 		// Test that a number to the one power is itself
 		for i in 0..<100 {
-			XCTAssert(pow(BDouble(Double(i)), 1) == Double(i))
+			XCTAssertEqual(pow(BDouble(Double(i)), 1), BDouble(Double(i)))
 			
 			let rn = Double(Double(arc4random()) / Double(UINT32_MAX))
-			XCTAssert(pow(BDouble(rn), 1) == rn)
+			XCTAssertEqual(pow(BDouble(rn), 1), BDouble(rn))
 		}
 	}
 
 
-	func testDecimalExpansion()
+	func testDecimalExpansionWithoutRounding()
 	{
 		let testValues = [
 			("0", "0.0", 0),
@@ -115,8 +115,33 @@ class BDoubleTests : XCTestCase {
 
 		for (original, test, precision) in testValues
 		{
-			let result = BDouble(original)!.decimalExpansion(precisionAfterDecimalPoint: precision)
-			XCTAssert(result == test)
+			let result = BDouble(original)!.decimalExpansion(precisionAfterDecimalPoint: precision, rounded: false)
+			XCTAssertEqual(result, test)
+		}
+	}
+
+	func testDecimalExpansionWithRounding()
+	{
+		let testValues = [
+			("0", "0.0", 0),
+			("0", "0.0", 1),
+			("0", "0.00", 2),
+			("0", "0.000", 3),
+			("12.345", "12.0", 0),
+			("12.345", "12.3", 1),
+			("12.345", "12.35", 2),
+			("12.345", "12.345", 3),
+			("12.345", "12.3450", 4),
+			("-0.00009", "0.000", 3),
+			("-0.00009", "-0.0001", 4),
+			("-0.00009", "-0.00009", 5),
+			("-0.00009", "-0.000090", 6),
+		]
+		
+		for (original, test, precision) in testValues
+		{
+			let result = BDouble(original)!.decimalExpansion(precisionAfterDecimalPoint: precision, rounded: true)
+			XCTAssertEqual(result, test)
 		}
 	}
 
@@ -197,72 +222,72 @@ class BDoubleTests : XCTestCase {
 	}
 
 	func testRounding() {
-		XCTAssert(BDouble("-1.0")?.rounded() == BInt("-1"))
-		XCTAssert(BDouble("-1.1")?.rounded() == BInt("-1"))
-		XCTAssert(BDouble("-1.5")?.rounded() == BInt("-1"))
-		XCTAssert(BDouble("-1.6")?.rounded() == BInt("-2"))
-		XCTAssert(BDouble("0")?.rounded() == BInt("0"))
-		XCTAssert(BDouble("1.0")?.rounded() == BInt("1"))
-		XCTAssert(BDouble("1.1")?.rounded() == BInt("1"))
-		XCTAssert(BDouble("1.5")?.rounded() == BInt("1"))
-		XCTAssert(BDouble("1.6")?.rounded() == BInt("2"))
+		XCTAssertEqual(BDouble("-1.0")?.rounded(), BInt("-1"))
+		XCTAssertEqual(BDouble("-1.1")?.rounded(), BInt("-1"))
+		XCTAssertEqual(BDouble("-1.5")?.rounded(), BInt("-1"))
+		XCTAssertEqual(BDouble("-1.6")?.rounded(), BInt("-2"))
+		XCTAssertEqual(BDouble("0")?.rounded(), BInt("0"))
+		XCTAssertEqual(BDouble("1.0")?.rounded(), BInt("1"))
+		XCTAssertEqual(BDouble("1.1")?.rounded(), BInt("1"))
+		XCTAssertEqual(BDouble("1.5")?.rounded(), BInt("1"))
+		XCTAssertEqual(BDouble("1.6")?.rounded(), BInt("2"))
 		
-		XCTAssert(floor(BDouble(-1.0)) == BInt("-1"))
-		XCTAssert(floor(BDouble(-1.1)) == BInt("-2"))
-		XCTAssert(floor(BDouble(-1.5)) == BInt("-2"))
-		XCTAssert(floor(BDouble(-1.6)) == BInt("-2"))
-		XCTAssert(floor(BDouble(0)) == BInt("0"))
-		XCTAssert(floor(BDouble(1.0)) == BInt("1"))
-		XCTAssert(floor(BDouble(1.1)) == BInt("1"))
-		XCTAssert(floor(BDouble(1.5)) == BInt("1"))
-		XCTAssert(floor(BDouble(1.6)) == BInt("1"))
+		XCTAssertEqual(floor(BDouble(-1.0)), BInt("-1"))
+		XCTAssertEqual(floor(BDouble(-1.1)), BInt("-2"))
+		XCTAssertEqual(floor(BDouble(-1.5)), BInt("-2"))
+		XCTAssertEqual(floor(BDouble(-1.6)), BInt("-2"))
+		XCTAssertEqual(floor(BDouble(0)), BInt("0"))
+		XCTAssertEqual(floor(BDouble(1.0)), BInt("1"))
+		XCTAssertEqual(floor(BDouble(1.1)), BInt("1"))
+		XCTAssertEqual(floor(BDouble(1.5)), BInt("1"))
+		XCTAssertEqual(floor(BDouble(1.6)), BInt("1"))
 		
-		XCTAssert(ceil(BDouble(-1.0)) == BInt("-1"))
-		XCTAssert(ceil(BDouble(-1.1)) == BInt("-1"))
-		XCTAssert(ceil(BDouble(-1.5)) == BInt("-1"))
-		XCTAssert(ceil(BDouble(-1.6)) == BInt("-1"))
-		XCTAssert(ceil(BDouble(0)) == BInt("0"))
-		XCTAssert(ceil(BDouble(1.0)) == BInt("1"))
-		XCTAssert(ceil(BDouble(1.1)) == BInt("2"))
-		XCTAssert(ceil(BDouble(1.5)) == BInt("2"))
-		XCTAssert(ceil(BDouble(1.6)) == BInt("2"))
+		XCTAssertEqual(ceil(BDouble(-1.0)), BInt("-1"))
+		XCTAssertEqual(ceil(BDouble(-1.1)), BInt("-1"))
+		XCTAssertEqual(ceil(BDouble(-1.5)), BInt("-1"))
+		XCTAssertEqual(ceil(BDouble(-1.6)), BInt("-1"))
+		XCTAssertEqual(ceil(BDouble(0)), BInt("0"))
+		XCTAssertEqual(ceil(BDouble(1.0)), BInt("1"))
+		XCTAssertEqual(ceil(BDouble(1.1)), BInt("2"))
+		XCTAssertEqual(ceil(BDouble(1.5)), BInt("2"))
+		XCTAssertEqual(ceil(BDouble(1.6)), BInt("2"))
 	}
 	
 	func testPrecision() {
 		var bigD = BDouble("123456789.123456789")
 		bigD?.precision = 2
-		XCTAssert(bigD?.decimalDescription == "123456789.12")
+		XCTAssertEqual(bigD?.decimalDescription, "123456789.12")
 		bigD?.precision = 4
-		XCTAssert(bigD?.decimalDescription == "123456789.1234")
+		XCTAssertEqual(bigD?.decimalDescription, "123456789.1235")
 		bigD?.precision = 10
-		XCTAssert(bigD?.decimalDescription == "123456789.1234567890")
+		XCTAssertEqual(bigD?.decimalDescription, "123456789.1234567890")
 		bigD?.precision = 20
-		XCTAssert(bigD?.decimalDescription == "123456789.12345678900000000000")
+		XCTAssertEqual(bigD?.decimalDescription, "123456789.12345678900000000000")
 		bigD?.precision = 0
-		XCTAssert(bigD?.decimalDescription == "123456789.0")
+		XCTAssertEqual(bigD?.decimalDescription, "123456789.0")
 
 		
 		bigD = BDouble("-123456789.123456789")
 		bigD?.precision = 2
-		XCTAssert(bigD?.decimalDescription == "-123456789.12", (bigD?.decimalDescription)!)
+		XCTAssertEqual(bigD?.decimalDescription, "-123456789.12")
 		bigD?.precision = 4
-		XCTAssert(bigD?.decimalDescription == "-123456789.1234", (bigD?.decimalDescription)!)
+		XCTAssertEqual(bigD?.decimalDescription, "-123456789.1235")
 		bigD?.precision = 10
-		XCTAssert(bigD?.decimalDescription == "-123456789.1234567890", (bigD?.decimalDescription)!)
+		XCTAssertEqual(bigD?.decimalDescription, "-123456789.1234567890")
 		bigD?.precision = 20
-		XCTAssert(bigD?.decimalDescription == "-123456789.12345678900000000000")
+		XCTAssertEqual(bigD?.decimalDescription, "-123456789.12345678900000000000")
 		bigD?.precision = 0
-		XCTAssert(bigD?.decimalDescription == "-123456789.0")
+		XCTAssertEqual(bigD?.decimalDescription, "-123456789.0")
 		
 		bigD = BDouble("0.0000000003") // nine zeroes
 		bigD?.precision = 0
-		XCTAssert(bigD?.decimalDescription == "0.0", (bigD?.decimalDescription)!)
+		XCTAssertEqual(bigD?.decimalDescription, "0.0")
 		bigD?.precision = 10
-		XCTAssert(bigD?.decimalDescription == "0.0000000003", (bigD?.decimalDescription)!)
+		XCTAssertEqual(bigD?.decimalDescription, "0.0000000003")
 		bigD?.precision = 15
-		XCTAssert(bigD?.decimalDescription == "0.000000000300000", (bigD?.decimalDescription)!)
+		XCTAssertEqual(bigD?.decimalDescription, "0.000000000300000")
 		bigD?.precision = 5
-		XCTAssert(bigD?.decimalDescription == "0.00000", (bigD?.decimalDescription)!)
+		XCTAssertEqual(bigD?.decimalDescription, "0.00000")
 	}
 	
 	func testNearlyEqual() {
@@ -369,44 +394,44 @@ class BDoubleTests : XCTestCase {
 	}
 	
 	func testRadix() {
-		XCTAssert(BDouble("aa", radix: 16) == 170)
-		XCTAssert(BDouble("0xaa", radix: 16) == 170)
-		XCTAssert(BDouble("invalid", radix: 16) == nil)
+		XCTAssertEqual(BDouble("aa", radix: 16), 170)
+		XCTAssertEqual(BDouble("0xaa", radix: 16), 170)
+		XCTAssertEqual(BDouble("invalid", radix: 16), nil)
 		
-		XCTAssert(BDouble("252", radix: 8) == 170)
-		XCTAssert(BDouble("0o252", radix: 8) == 170)
-		XCTAssert(BDouble("invalid", radix: 8) == nil)
+		XCTAssertEqual(BDouble("252", radix: 8), 170)
+		XCTAssertEqual(BDouble("0o252", radix: 8), 170)
+		XCTAssertEqual(BDouble("invalid", radix: 8), nil)
 		
-		XCTAssert(BDouble("11", radix: 2) == 3)
-		XCTAssert(BDouble("0b11", radix: 2) == 3)
-		XCTAssert(BDouble("invalid", radix: 2) == nil)
+		XCTAssertEqual(BDouble("11", radix: 2), 3)
+		XCTAssertEqual(BDouble("0b11", radix: 2), 3)
+		XCTAssertEqual(BDouble("invalid", radix: 2), nil)
 		
-		XCTAssert(BDouble("ffff",radix:16) == 65535)
-		XCTAssert(BDouble("rfff",radix:16) == nil)
-		XCTAssert(BDouble("ff",radix:10) == nil)
-		XCTAssert(BDouble("255",radix:6) == 107)
-		XCTAssert(BDouble("999",radix:10) == 999)
-		XCTAssert(BDouble("ff",radix:16) == 255.0)
+		XCTAssertEqual(BDouble("ffff",radix:16), 65535)
+		XCTAssertEqual(BDouble("rfff",radix:16), nil)
+		XCTAssertEqual(BDouble("ff",radix:10), nil)
+		XCTAssertEqual(BDouble("255",radix:6), 107)
+		XCTAssertEqual(BDouble("999",radix:10), 999)
+		XCTAssertEqual(BDouble("ff",radix:16), 255.0)
 		XCTAssert(BDouble("ff",radix:16) != 100.0)
 		XCTAssert(BDouble("ffff",radix:16)! > 255.0)
 		XCTAssert(BDouble("f",radix:16)! < 255.0)
 		XCTAssert(BDouble("0",radix:16)! <= 1.0)
 		XCTAssert(BDouble("f",radix:16)! >= 1.0)
-		XCTAssert(BDouble("44",radix:5) == 24)
+		XCTAssertEqual(BDouble("44",radix:5), 24)
 		XCTAssert(BDouble("44",radix:5) != 100.0)
-		XCTAssert(BDouble("321",radix:5)! == 86)
+		XCTAssertEqual(BDouble("321",radix:5)!, 86)
 		XCTAssert(BDouble("3",radix:5)! < 255.0)
 		XCTAssert(BDouble("0",radix:5)! <= 1.0)
 		XCTAssert(BDouble("4",radix:5)! >= 1.0)
-		XCTAssert(BDouble("923492349",radix:32)! == 9967689075849)
+		XCTAssertEqual(BDouble("923492349",radix:32)!, 9967689075849)
 	}
 	
 	func testOperations() {
-		XCTAssert(BDouble(1.5) + BDouble(2.0) == BDouble(3.5))
-		XCTAssert(BDouble(1.5) - BDouble(2.0) == BDouble(-0.5))
-		XCTAssert(BDouble(1.5) * BDouble(2.0) == BDouble(3.0))
+		XCTAssertEqual(BDouble(1.5) + BDouble(2.0), BDouble(3.5))
+		XCTAssertEqual(BDouble(1.5) - BDouble(2.0), BDouble(-0.5))
+		XCTAssertEqual(BDouble(1.5) * BDouble(2.0), BDouble(3.0))
 		XCTAssert(BDouble(1.0) / BDouble(2.0) == BDouble(0.5))
-		XCTAssert(-BDouble(6.54) == BDouble(-6.54))
+		XCTAssertEqual(-BDouble(6.54), BDouble(-6.54))
 		testPow()
 	}
 
