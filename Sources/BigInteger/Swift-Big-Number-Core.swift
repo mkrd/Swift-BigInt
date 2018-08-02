@@ -245,14 +245,14 @@ public struct BInt:
 
 	///	Root initializer for all other initializers. Because no sign is provided, the new
 	///	instance is positive by definition.
-	internal init(limbs: Limbs)
+	public init(limbs: Limbs)
 	{
 		precondition(limbs != [], "BInt can't be initialized with limbs == []")
 		self.limbs = limbs
 	}
 
 	/// Create an instance initialized with a sign and a limbs array.
-	internal init(sign: Bool, limbs: Limbs)
+	public init(sign: Bool, limbs: Limbs)
 	{
 		self.init(limbs: limbs)
 		self.sign = sign
@@ -501,7 +501,7 @@ public struct BInt:
 		return nil
 	}
 
-	var rawValue: (sign: Bool, limbs: [UInt64])
+	public var rawValue: (sign: Bool, limbs: [UInt64])
 	{
 		return (self.sign, self.limbs)
 	}
@@ -751,11 +751,11 @@ public struct BInt:
 		return lhs
 	}
 
-	static func +(lhs:  Int, rhs: BInt) -> BInt { return BInt(lhs) + rhs }
-	static func +(lhs: BInt, rhs:  Int) -> BInt { return lhs + BInt(rhs) }
+	public static func +(lhs:  Int, rhs: BInt) -> BInt { return BInt(lhs) + rhs }
+	public static func +(lhs: BInt, rhs:  Int) -> BInt { return lhs + BInt(rhs) }
 
-	static func +=(lhs: inout  Int, rhs: BInt) { lhs += (BInt(lhs) + rhs).asInt()! }
-	static func +=(lhs: inout BInt, rhs:  Int) { lhs +=  BInt(rhs)                 }
+	public static func +=(lhs: inout  Int, rhs: BInt) { lhs += (BInt(lhs) + rhs).asInt()! }
+	public static func +=(lhs: inout BInt, rhs:  Int) { lhs +=  BInt(rhs)                 }
 
 	//
 	//
@@ -797,13 +797,13 @@ public struct BInt:
 		return lhs + -rhs
 	}
 
-	static func -(lhs:  Int, rhs: BInt) -> BInt { return BInt(lhs) - rhs }
-	static func -(lhs: BInt, rhs:  Int) -> BInt { return lhs - BInt(rhs) }
+	public static func -(lhs:  Int, rhs: BInt) -> BInt { return BInt(lhs) - rhs }
+	public static func -(lhs: BInt, rhs:  Int) -> BInt { return lhs - BInt(rhs) }
 
 	// Required by protocol Numeric
 	public static func -=(lhs: inout BInt, rhs: BInt) { lhs += -rhs                        }
-	static func -=(lhs: inout  Int, rhs: BInt)  { lhs  = (BInt(lhs) - rhs).asInt()! }
-	static func -=(lhs: inout BInt, rhs:  Int)  { lhs -= BInt(rhs)                  }
+	public static func -=(lhs: inout  Int, rhs: BInt)  { lhs  = (BInt(lhs) - rhs).asInt()! }
+	public static func -=(lhs: inout BInt, rhs:  Int)  { lhs -= BInt(rhs)                  }
 
 	//
 	//
@@ -822,13 +822,13 @@ public struct BInt:
 		return BInt(sign: sign, limbs: lhs.limbs.multiplyingBy(rhs.limbs))
 	}
 
-	static func *(lhs: Int, rhs: BInt) -> BInt { return BInt(lhs) * rhs }
-	static func *(lhs: BInt, rhs: Int) -> BInt { return lhs * BInt(rhs) }
+	public static func *(lhs: Int, rhs: BInt) -> BInt { return BInt(lhs) * rhs }
+	public static func *(lhs: BInt, rhs: Int) -> BInt { return lhs * BInt(rhs) }
 
 	// Required by protocol SignedNumeric
 	public static func *=(lhs: inout BInt, rhs: BInt) { lhs = lhs * rhs                  }
-	static func *=(lhs: inout  Int, rhs: BInt) { lhs = (BInt(lhs) * rhs).asInt()! }
-	static func *=(lhs: inout BInt, rhs:  Int) { lhs = lhs * BInt(rhs)            }
+	public static func *=(lhs: inout  Int, rhs: BInt) { lhs = (BInt(lhs) * rhs).asInt()! }
+	public static func *=(lhs: inout BInt, rhs:  Int) { lhs = lhs * BInt(rhs)            }
 
 	//
 	//
@@ -840,13 +840,13 @@ public struct BInt:
 	//
 	//
 
-	static func **(lhs: BInt, rhs: Int) -> BInt
+	public static func **(lhs: BInt, rhs: Int) -> BInt
 	{
 		precondition(rhs >= 0, "BInts can't be exponentiated with exponents < 0")
 		return BInt(sign: lhs.sign && (rhs % 2 != 0), limbs: lhs.limbs.exponentiating(rhs))
 	}
 
-	func factorial() -> BInt
+	public func factorial() -> BInt
 	{
 		precondition(!self.sign, "Can't calculate the factorial of an negative number")
 
@@ -1966,7 +1966,7 @@ public class BIntMath
 		return (lhs.divMod(gcd).quotient, rhs.divMod(gcd).quotient)
 	}
 
-	static func steinGcd(_ a: Limbs, _ b: Limbs) -> Limbs
+	public static func steinGcd(_ a: Limbs, _ b: Limbs) -> Limbs
 	{
 		if a == [0] { return b }
 		if b == [0] { return a }
@@ -1998,14 +1998,14 @@ public class BIntMath
 		return a.shiftingUp(k)
 	}
 
-	static func gcd(_ a: BInt, _ b: BInt) -> BInt
+	public static func gcd(_ a: BInt, _ b: BInt) -> BInt
 	{
 		let limbRes = steinGcd(a.limbs, b.limbs)
 		return BInt(sign: a.sign && !limbRes.equalTo(0), limbs: limbRes)
 	}
 
 	/// Do not use this, extremely slow. Only for testing purposes.
-	static func gcdEuclid(_ a: BInt, _ b: BInt) -> BInt
+	public static func gcdEuclid(_ a: BInt, _ b: BInt) -> BInt
 	{
 		let limbRes = euclid(a.limbs, b.limbs)
 		return BInt(sign: a.sign && !limbRes.equalTo(0), limbs: limbRes)
@@ -2201,9 +2201,9 @@ public struct BDouble:
 	//
 	//
 
-	var sign = Bool()
-	var numerator = Limbs()
-	var denominator = Limbs()
+	public var sign = Bool()
+	public var numerator = Limbs()
+	public var denominator = Limbs()
 
 	public typealias Magnitude = Double
 	public var magnitude: Double = 0.0

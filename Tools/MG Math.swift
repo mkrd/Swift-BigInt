@@ -13,15 +13,11 @@
 
 import Foundation
 
-func **(lhs: Double, rhs: Double) -> Double { return pow(lhs, rhs) }
-func **(lhs: Int, rhs: Double) -> Double { return pow(Double(lhs), rhs) }
-func **(lhs: Double, rhs: Int) -> Double { return pow(lhs, Double(rhs)) }
-func **(lhs: Int, rhs: Int) -> Int
-{
-	var res = 1
-	for _ in 0..<rhs { res *= lhs }
-	return res
-}
+//{
+//    var res = 1
+//    for _ in 0..<rhs { res *= lhs }
+//    return res
+//}
 
 /*	Automatic type inference for operators that operate on Int and Double,
  *	use Double as the resulting type.

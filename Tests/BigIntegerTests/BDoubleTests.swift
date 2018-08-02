@@ -1,6 +1,7 @@
 import XCTest
 import Foundation
-@testable import BigNumber
+import BigInteger
+import Tools
 
 class BDoubleTests : XCTestCase {
 

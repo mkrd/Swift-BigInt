@@ -7,10 +7,13 @@
 */
 
 import Foundation
+import Tools
+import XCTest
 
-public class MG_Matrix_Tests
+
+public class MG_Matrix_Tests: XCTestCase
 {
-	static func testSparseMatrix()
+    func testSparseMatrix()
 	{
 		// Make a random sparse matrix
 
@@ -36,7 +39,7 @@ public class MG_Matrix_Tests
 
 		for (i, j) in M
 		{
-			precondition(M[i, j] == S[i, j], "Error: A[\(i), \(j)] != S[\(i), \(j)])")
+			XCTAssert(M[i, j] == S[i, j], "Error: A[\(i), \(j)] != S[\(i), \(j)])")
 		}
 	}
 }

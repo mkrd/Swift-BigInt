@@ -11,9 +11,9 @@ import Foundation
 
 public struct Storage
 {
-	static func readResource(_ key: String) -> String
+	public static func readResource(_ key: String) -> String
 	{
-		if let path = Bundle.main.path(forResource: "longNumbers", ofType: "json", inDirectory: "Resources")
+        if let path = Bundle.main.path(forResource: "longNumbers", ofType: "json", inDirectory: "Tools/Resources")
 		{
 			let data = try! Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
 			let jsonResult = try? JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
@@ -29,26 +29,26 @@ public struct Storage
 	}
 
 	/// Write a datapoint to UserDefaults for the key "key".
-	static func write(_ value: Any, forKey key: String)
+	public static func write(_ value: Any, forKey key: String)
 	{
 		UserDefaults.standard.set(value, forKey: key)
 		UserDefaults.standard.synchronize()
 	}
 
 	/// Read a datapoint from UserDefaults with the key key.
-	static func read(forkey key: String) -> Any?
+	public static func read(forkey key: String) -> Any?
 	{
 		return UserDefaults.standard.object(forKey: key)
 	}
 
 	/// Remove a datapoint from UserDefaults for the key key.
-	static func remove(forKey key: String)
+	public static func remove(forKey key: String)
 	{
 		UserDefaults.standard.removeObject(forKey: key)
 	}
 
 	/// Print all data stored in the UserDefaults.
-	static func printData()
+	public static func printData()
 	{
 		print(UserDefaults.standard.dictionaryRepresentation())
 	}
@@ -56,7 +56,7 @@ public struct Storage
 	///	Load the contents of a txt file from a specified directory, like downloadsDirectory.
 	///
 	///		loadFileContent(from: .downloadsDirectory, name: "kittens.txt")
-	static func loadFileContent(from: FileManager.SearchPathDirectory, name: String) -> String
+	public static func loadFileContent(from: FileManager.SearchPathDirectory, name: String) -> String
 	{
 		let dir = FileManager.default.urls(for: from, in: .userDomainMask).first!
 		let path = dir.appendingPathComponent(name)
@@ -68,7 +68,7 @@ public struct Storage
 	///	downloadsDirectory.
 	///
 	///		loadFileContent(from: .downloadsDirectory, name: "kittens.txt")
-	static func saveTxtFile(content: String, to: FileManager.SearchPathDirectory, name: String)
+	public static func saveTxtFile(content: String, to: FileManager.SearchPathDirectory, name: String)
 	{
 		do
 		{
@@ -89,7 +89,7 @@ public struct Storage
 	///	downloadsDirectory.
 	///
 	///		loadFileContent(from: .downloadsDirectory, name: "kittens.txt")
-	static func appendToTxtFile(content: String, to: FileManager.SearchPathDirectory, name: String)
+	public static func appendToTxtFile(content: String, to: FileManager.SearchPathDirectory, name: String)
 	{
 		let dir = FileManager.default.urls(for: to, in: .userDomainMask).first!
 		let path = dir.appendingPathComponent(name)

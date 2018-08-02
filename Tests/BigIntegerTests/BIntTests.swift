@@ -7,6 +7,8 @@
 //
 
 import XCTest
+import Tools
+import BigInteger
 
 class BIntTests: XCTestCase {
     

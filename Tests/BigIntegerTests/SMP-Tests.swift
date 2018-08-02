@@ -9,8 +9,11 @@
 
 
 import Foundation
+import BigInteger
+import Tools
+import XCTest
 
-public struct SMPTests
+public class SMPTests: XCTestCase
 {
 	//
 	//
@@ -21,7 +24,7 @@ public struct SMPTests
 	//
 	//
 	//
-	public static func testSteinGcd()
+    func testSteinGcd()
 	{
 		for a in 0...100
 		{
@@ -29,7 +32,7 @@ public struct SMPTests
 			{
 				let steinGCD = BIntMath.gcd(BInt(a), BInt(b))
 				let euclidGCD = BIntMath.gcdEuclid(BInt(a), BInt(b))
-				precondition(steinGCD == euclidGCD, "SteinGcd does not work")
+				XCTAssert(steinGCD == euclidGCD, "SteinGcd does not work")
 			}
 		}
 
@@ -38,10 +41,10 @@ public struct SMPTests
 			BInt(Storage.readResource("gcdTest2"))!
 		)
 
-		precondition(bigGCD == BInt(66))
+		XCTAssert(bigGCD == BInt(66))
 	}
 
-	static func testBIntRandom()
+    func testBIntRandom()
 	{
 		let iterations = 1_000
 
@@ -99,7 +102,7 @@ public struct SMPTests
 
 	}
 
-	static func testBInt()
+    func testBInt()
 	{
 		//
 		////
@@ -110,12 +113,12 @@ public struct SMPTests
 		//
 
 		// Test if BInt stores limbs correctly
-		precondition(BInt(limbs: [0]).rawValue.limbs == [0])
+		XCTAssert(BInt(limbs: [0]).rawValue.limbs == [0])
 
 		// Test some interesting edge cases
 		for n in [0,1,-1, Int.max, Int.min]
 		{
-			precondition(n.description == BInt(n).description)
+			XCTAssert(n.description == BInt(n).description)
 		}
 
 		//
@@ -128,7 +131,7 @@ public struct SMPTests
 
 		for n in -4...4
 		{
-			precondition((-n).description == (-BInt(n)).description)
+			XCTAssert((-n).description == (-BInt(n)).description)
 		}
 
 		//
@@ -142,7 +145,7 @@ public struct SMPTests
 		// Get string representation and init with string
 		for n in -4...4
 		{
-			precondition(
+			XCTAssert(
 				n.description == BInt(n).description &&
 				n.description == BInt(n.description)!.description
 			)

@@ -7,8 +7,9 @@
 */
 
 import Foundation
+import BigInteger
 
-protocol NumericType:
+public protocol NumericType:
 	SignedNumeric,
 	Comparable
 {
@@ -36,24 +37,24 @@ extension BInt: NumericType {}
 
 
 
-struct Vector<T: NumericType>: CustomStringConvertible, Sequence, IteratorProtocol
+public struct Vector<T: NumericType>: CustomStringConvertible, Sequence, IteratorProtocol
 {
 	var data: Matrix<T>
 	var nextR = 0
 
-	mutating func next() -> T?
+	public mutating func next() -> T?
 	{
 		if nextR >= data.rows { return nil }
 
 		return data[nextR, 0]
 	}
 
-	init(_ data: [T])
+	public init(_ data: [T])
 	{
 		self.data = Matrix<T>(data)
 	}
 
-	init(_ data: Matrix<T>)
+	public init(_ data: Matrix<T>)
 	{
 		if data.cols != 1 { fatalError() }
 		self.data = data
@@ -64,7 +65,7 @@ struct Vector<T: NumericType>: CustomStringConvertible, Sequence, IteratorProtoc
 		return self.data.rows
 	}
 
-	var description: String
+	public var description: String
 	{
 		return String(describing: self.data)
 	}
@@ -106,7 +107,7 @@ func +<T>(lhs: Vector<T>, rhs: Vector<T>) -> Vector<T>
 
 
 
-struct SparseMatrix<T: NumericType>//: CustomStringConvertible, Sequence, IteratorProtocol
+public struct SparseMatrix<T: NumericType>//: CustomStringConvertible, Sequence, IteratorProtocol
 {
 	var val: [T]
 	var colInd: [Int]
@@ -117,7 +118,7 @@ struct SparseMatrix<T: NumericType>//: CustomStringConvertible, Sequence, Iterat
 		return 64 * (val.count + colInd.count + rowPtr.count)
 	}
 
-	init(_ M: Matrix<T>)
+	public init(_ M: Matrix<T>)
 	{
 		val = [T]()
 		colInd = [Int]()
@@ -145,7 +146,7 @@ struct SparseMatrix<T: NumericType>//: CustomStringConvertible, Sequence, Iterat
 	}
 
 
-	subscript(r: Int, c: Int) -> T
+	public subscript(r: Int, c: Int) -> T
 		{
 		get
 		{
@@ -180,7 +181,7 @@ struct SparseMatrix<T: NumericType>//: CustomStringConvertible, Sequence, Iterat
 }
 
 
-struct Matrix<T: NumericType>: CustomStringConvertible, Sequence, IteratorProtocol
+public struct Matrix<T: NumericType>: CustomStringConvertible, Sequence, IteratorProtocol
 {
 	var data: [[T]]
 	var nextR = 0
@@ -191,7 +192,7 @@ struct Matrix<T: NumericType>: CustomStringConvertible, Sequence, IteratorProtoc
 		return 64 * data.count * data[0].count
 	}
 
-	mutating func next() -> (Int, Int)?
+	public mutating func next() -> (Int, Int)?
 	{
 		if nextC >= self.cols { return nil }
 
@@ -218,7 +219,7 @@ struct Matrix<T: NumericType>: CustomStringConvertible, Sequence, IteratorProtoc
 		return self.data[0].count
 	}
 
-	init(_ data: [[T]])
+	public init(_ data: [[T]])
 	{
 		precondition(!data.isEmpty, "Matrix cannot be empty")
 
@@ -233,17 +234,17 @@ struct Matrix<T: NumericType>: CustomStringConvertible, Sequence, IteratorProtoc
 		self.data = data
 	}
 
-	init(_ vector: Vector<T>)
+	public init(_ vector: Vector<T>)
 	{
 		self = vector.data
 	}
 
-	init(_ vector: [T])
+	public init(_ vector: [T])
 	{
 		self.data = vector.map{ [$0] }
 	}
 
-	init(repeating: T, rows: Int, cols: Int)
+	public init(repeating: T, rows: Int, cols: Int)
 	{
 		let data = [[T]](
 			repeating: [T](repeating: repeating, count: cols),
@@ -253,7 +254,7 @@ struct Matrix<T: NumericType>: CustomStringConvertible, Sequence, IteratorProtoc
 		self.init(data)
 	}
 
-	init(identity size: Int)
+	public init(identity size: Int)
 	{
 		self.init(repeating: 0, rows: size, cols: size)
 
@@ -263,7 +264,7 @@ struct Matrix<T: NumericType>: CustomStringConvertible, Sequence, IteratorProtoc
 		}
 	}
 
-	var description: String
+	public var description: String
 	{
 		var res = ""
 
@@ -304,7 +305,7 @@ struct Matrix<T: NumericType>: CustomStringConvertible, Sequence, IteratorProtoc
 		return String(res[..<res.endIndex])
 	}
 
-	subscript(r: Int, c: Int) -> T
+	public subscript(r: Int, c: Int) -> T
 	{
 		get
 		{
@@ -318,7 +319,7 @@ struct Matrix<T: NumericType>: CustomStringConvertible, Sequence, IteratorProtoc
 		}
 	}
 
-	subscript(r: Int) -> [T]
+	public subscript(r: Int) -> [T]
 	{
 		get
 		{
@@ -332,7 +333,7 @@ struct Matrix<T: NumericType>: CustomStringConvertible, Sequence, IteratorProtoc
 		}
 	}
 
-	subscript(col c: Int) -> [T]
+	public subscript(col c: Int) -> [T]
 	{
 		get
 		{
@@ -362,7 +363,7 @@ struct Matrix<T: NumericType>: CustomStringConvertible, Sequence, IteratorProtoc
 		self.data.swapAt(i, j)
 	}
 
-	func transposed() -> Matrix<T>
+	public func transposed() -> Matrix<T>
 	{
 		var res = Matrix<T>(repeating: 0, rows: self.cols, cols: self.rows)
 

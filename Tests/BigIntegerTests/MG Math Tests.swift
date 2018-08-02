@@ -7,10 +7,13 @@
 */
 
 import Foundation
+import Tools
+import XCTest
 
-public class MG_Math_Tests
+
+public class MG_Math_Tests: XCTestCase
 {
-	static func test_primesTo()
+    func test_primesTo()
 	{
 		for i in 2...200
 		{
@@ -20,11 +23,11 @@ public class MG_Math_Tests
 			{
 				if math.isPrime(j)
 				{
-					precondition(primes.contains(j), "\(j) is prime but not in \(primes), i = \(i)")
+					XCTAssert(primes.contains(j), "\(j) is prime but not in \(primes), i = \(i)")
 				}
 				else
 				{
-					precondition(!primes.contains(j), "\(j) is not prime but in \(primes), i = \(i)")
+					XCTAssert(!primes.contains(j), "\(j) is not prime but in \(primes), i = \(i)")
 				}
 			}
 		}
