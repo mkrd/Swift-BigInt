@@ -685,7 +685,7 @@ public struct BInt:
 
 	public static func ^=(lhs: inout BInt, rhs: BInt)
 	{
-		let res = lhs | rhs
+		let res = lhs ^ rhs
 		lhs = res
 	}
 
