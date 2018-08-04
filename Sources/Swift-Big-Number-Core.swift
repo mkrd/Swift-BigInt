@@ -605,7 +605,7 @@ public struct BInt:
 
 		for i in 0..<(64 * Swift.max(lhs.limbs.count, rhs.limbs.count))
 		{
-			let newBit = lhs.limbs.getBit(at: i) && lhs.limbs.getBit(at: i)
+			let newBit = lhs.limbs.getBit(at: i) && rhs.limbs.getBit(at: i)
 			res.setBit(at: i, to: newBit)
 		}
 
@@ -642,7 +642,7 @@ public struct BInt:
 
 		for i in 0..<(64 * Swift.max(lhs.limbs.count, rhs.limbs.count))
 		{
-			let newBit = lhs.limbs.getBit(at: i) || lhs.limbs.getBit(at: i)
+			let newBit = lhs.limbs.getBit(at: i) || rhs.limbs.getBit(at: i)
 			res.setBit(at: i, to: newBit)
 		}
 
@@ -676,7 +676,7 @@ public struct BInt:
 
 		for i in 0..<(64 * Swift.max(lhs.limbs.count, rhs.limbs.count))
 		{
-			let newBit = lhs.limbs.getBit(at: i) != lhs.limbs.getBit(at: i)
+			let newBit = lhs.limbs.getBit(at: i) != rhs.limbs.getBit(at: i)
 			res.setBit(at: i, to: newBit)
 		}
 
@@ -685,7 +685,7 @@ public struct BInt:
 
 	public static func ^=(lhs: inout BInt, rhs: BInt)
 	{
-		let res = lhs | rhs
+		let res = lhs ^ rhs
 		lhs = res
 	}
 
