@@ -365,7 +365,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0920;
-				LastUpgradeCheck = 0930;
+				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = "Marcel Kröker";
 				TargetAttributes = {
 					AE8388A5203F1CAF00FAC88F = {
@@ -375,7 +375,7 @@
 					};
 					AE8388AD203F1CB000FAC88F = {
 						CreatedOnToolsVersion = 9.2;
-						DevelopmentTeam = WB24NP9E4V;
+						DevelopmentTeam = C6L3992RFB;
 						ProvisioningStyle = Automatic;
 					};
 					C2F92B371D0F7421003CDF7D = {
@@ -386,12 +386,12 @@
 					};
 					F64629531FF017E90074A180 = {
 						CreatedOnToolsVersion = 9.2;
-						DevelopmentTeam = WB24NP9E4V;
+						DevelopmentTeam = C6L3992RFB;
 						ProvisioningStyle = Automatic;
 					};
 					F646295B1FF017EA0074A180 = {
 						CreatedOnToolsVersion = 9.2;
-						DevelopmentTeam = WB24NP9E4V;
+						DevelopmentTeam = C6L3992RFB;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -535,7 +535,7 @@
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -600,7 +600,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = WB24NP9E4V;
+				DEVELOPMENT_TEAM = C6L3992RFB;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "BigNumber-iOSTests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
@@ -623,7 +623,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = WB24NP9E4V;
+				DEVELOPMENT_TEAM = C6L3992RFB;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "BigNumber-iOSTests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
@@ -797,7 +797,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = WB24NP9E4V;
+				DEVELOPMENT_TEAM = C6L3992RFB;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -828,7 +828,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = WB24NP9E4V;
+				DEVELOPMENT_TEAM = C6L3992RFB;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -857,7 +857,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = WB24NP9E4V;
+				DEVELOPMENT_TEAM = C6L3992RFB;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
@@ -879,7 +879,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = WB24NP9E4V;
+				DEVELOPMENT_TEAM = C6L3992RFB;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";

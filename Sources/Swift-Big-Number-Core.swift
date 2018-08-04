@@ -1928,7 +1928,7 @@ fileprivate extension Array where Element == Limb
 //
 //
 //
-public class BIntMath
+internal class BIntMath
 {
 	/// Returns true iff (2 ** exp) - 1 is a mersenne prime.
 	static func isMersenne(_ exp: Int) -> Bool
@@ -2901,7 +2901,7 @@ public struct BDouble:
 
 //
 //
-//	MARK: - BDouble more Operators
+//	MARK: - BDouble Operators
 //	————————————————————————————————————————————————————————————————————————————————————————————
 //	||||||||        BDouble more Operators        ||||||||||||||||||||||||||||||||||||||||||||||
 //	————————————————————————————————————————————————————————————————————————————————————————————
