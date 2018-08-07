@@ -1,6 +1,14 @@
 #!/bin/sh
 
-set -e
+command -v jazzy
+
+if [ $? != 0 ]; then
+    echo "jazzy not found. Install jazzy:"
+    echo "\t[sudo] gem install jazzy"
+    exit 1
+fi
+
+set -e # don't print
 
 module="BigNumber"
 github="mkrd/Swift-Big-Integer"
@@ -18,6 +26,9 @@ else
     # Otherwise, use the current commit.
     ref="$(git rev-parse HEAD)"
 fi
+
+# since tagging releases doesn't happen very much - let's just use head
+ref="master"
 
 jazzy \
     --clean \
