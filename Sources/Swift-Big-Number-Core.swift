@@ -226,7 +226,7 @@ public struct BInt:
 		{
 			return String(format: "%.1f kb", Double(bits) / 8_000.0)
 		}
-		if bits < 8_000_000_000
+		if UInt64(bits) < UInt64(8_000_000_000.0)
 		{
 			return String(format: "%.1f mb", Double(bits) / 8_000_000.0)
 		}
@@ -2294,7 +2294,12 @@ public struct BDouble:
 
 				if sign
 				{
-					if let safeAfterExp = Int(afterExp) {
+					if var safeAfterExp = Int(afterExp) {
+                        if beforeExp.starts(with: "+") || beforeExp.starts(with: "-") {
+                            safeAfterExp = safeAfterExp - beforeExp.count + 2
+                        } else {
+                            safeAfterExp = safeAfterExp - beforeExp.count + 1
+                        }
 						let den = ["1"] + [Character](repeating: "0", count: safeAfterExp)
 						self.init(beforeExp, over: String(den))
 						return
@@ -2303,7 +2308,12 @@ public struct BDouble:
 				}
 				else
 				{
-					if let safeAfterExp = Int(afterExp) {
+					if var safeAfterExp = Int(afterExp) {
+                        if beforeExp.starts(with: "+") || beforeExp.starts(with: "-") {
+                            safeAfterExp = safeAfterExp - beforeExp.count + 2
+                        } else {
+                            safeAfterExp = safeAfterExp - beforeExp.count + 1
+                        }
 						let num = beforeExp + String([Character](repeating: "0", count: safeAfterExp))
 						self.init(num, over: "1")
 						return
@@ -2570,7 +2580,7 @@ public struct BDouble:
 		{
 			return String(format: "%.1f kb", Double(bits) / 8_000.0)
 		}
-		if bits < 8_000_000_000
+		if UInt64(bits) < UInt64(8_000_000_000.0)
 		{
 			return String(format: "%.1f mb", Double(bits) / 8_000_000.0)
 		}
