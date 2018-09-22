@@ -3,20 +3,20 @@ import Foundation
 @testable import BigNumber
 
 class BDoubleTests : XCTestCase {
-
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
-
-    func testInitialization() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+	
+	override func setUp() {
+		super.setUp()
+		// Put setup code here. This method is called before the invocation of each test method in the class.
+	}
+	
+	override func tearDown() {
+		// Put teardown code here. This method is called after the invocation of each test method in the class.
+		super.tearDown()
+	}
+	
+	func testInitialization() {
+		// This is an example of a functional test case.
+		// Use XCTAssert and related functions to verify your tests produce the correct results.
 		XCTAssertNil(BDouble("alphabet"))
 		XCTAssertNil(BDouble("-0.123ad2e+123"))
 		XCTAssertNil(BDouble("0.123.ad2e123"))
@@ -31,7 +31,7 @@ class BDoubleTests : XCTestCase {
 		XCTAssertEqual(BDouble("1.2e+10")?.fractionDescription, "12000000000")
 		XCTAssertEqual(BDouble("+1.2e+10")?.fractionDescription, "12000000000")
 		XCTAssertEqual(BDouble("-1.2e10")?.fractionDescription, "-12000000000")
-        XCTAssertEqual(BDouble(123000000000000000000.0), 123000000000000000000.0)
+		XCTAssertEqual(BDouble(123000000000000000000.0), 123000000000000000000.0)
 		XCTAssertEqual(BDouble("1.2")?.fractionDescription, "6/5")
 		
 		for _ in 0..<100 {
@@ -41,7 +41,7 @@ class BDoubleTests : XCTestCase {
 			let rn2 = pow(rn * 100, 2.0)
 			XCTAssertNotNil(BDouble(rn2))
 		}
-    }
+	}
 	
 	func testCompare() {
 		XCTAssertEqual(BDouble(1.0), BDouble(1.0))
@@ -95,8 +95,8 @@ class BDoubleTests : XCTestCase {
 			XCTAssertEqual(pow(BDouble(rn), 1), BDouble(rn))
 		}
 	}
-
-
+	
+	
 	func testDecimalExpansionWithoutRounding()
 	{
 		let testValues = [
@@ -112,15 +112,15 @@ class BDoubleTests : XCTestCase {
 			("-0.00009", "0.0000", 4),
 			("-0.00009", "-0.00009", 5),
 			("-0.00009", "-0.000090", 6),
-		]
-
+			]
+		
 		for (original, test, precision) in testValues
 		{
 			let result = BDouble(original)!.decimalExpansion(precisionAfterDecimalPoint: precision, rounded: false)
 			XCTAssertEqual(result, test)
 		}
 	}
-
+	
 	func testDecimalExpansionWithRounding()
 	{
 		let testValues = [
@@ -137,7 +137,7 @@ class BDoubleTests : XCTestCase {
 			("-0.00009", "-0.0001", 4),
 			("-0.00009", "-0.00009", 5),
 			("-0.00009", "-0.000090", 6),
-		]
+			]
 		
 		for (original, test, precision) in testValues
 		{
@@ -145,29 +145,29 @@ class BDoubleTests : XCTestCase {
 			XCTAssertEqual(result, test)
 		}
 	}
-
+	
 	func test_decimalExpansionRandom()
 	{
 		func generateDoubleString(preDecimalCount: Int, postDecimalCount: Int) -> String
 		{
 			var numStr = ""
-
+			
 			if preDecimalCount == 0 && postDecimalCount == 0
 			{
 				return math.random(0...1) == 1 ? "0" : "0.0"
 			}
-
+			
 			if preDecimalCount == 0
 			{
 				numStr = "0."
 			}
-
+			
 			if postDecimalCount == 0
 			{
 				numStr = math.random(0...1) == 1 ? "" : ".0"
 			}
-
-
+			
+			
 			for i in 0..<preDecimalCount
 			{
 				if i == (preDecimalCount - 1) && preDecimalCount > 1
@@ -179,20 +179,20 @@ class BDoubleTests : XCTestCase {
 					numStr = math.random(0...9).description + numStr
 				}
 			}
-
+			
 			if postDecimalCount != 0 && preDecimalCount != 0
 			{
 				numStr += "."
 			}
-
+			
 			for _ in 0..<postDecimalCount
 			{
 				numStr = numStr + math.random(0...9).description
 			}
-
+			
 			return math.random(0...1) == 1 ? numStr : "-" + numStr
 		}
-
+		
 		for _ in 0..<2000
 		{
 			let preDecimalCount = math.random(0...4)
@@ -201,9 +201,9 @@ class BDoubleTests : XCTestCase {
 				preDecimalCount: preDecimalCount,
 				postDecimalCount: postDecimalCount
 			)
-
+			
 			let toBDoubleAndBack = BDouble(doubleString)!.decimalExpansion(precisionAfterDecimalPoint: postDecimalCount)
-
+			
 			if toBDoubleAndBack != doubleString
 			{
 				if toBDoubleAndBack == "0.0" && ["0", "-0"].contains(doubleString) { continue }
@@ -211,17 +211,17 @@ class BDoubleTests : XCTestCase {
 				if toBDoubleAndBack[0..<(toBDoubleAndBack.count - 2)] == doubleString && toBDoubleAndBack.hasSuffix(".0") { continue }
 				// For expmple, input: "13" and output "13.0" is okay
 				if doubleString[1..<doubleString.count] == toBDoubleAndBack && doubleString.hasPrefix("-0.") { continue }
-
+				
 				print("\nError: PreDecCount: \(preDecimalCount) PostDecCount: \(postDecimalCount)")
 				print("Previ: \(doubleString)")
 				print("After: \(toBDoubleAndBack)")
 				XCTAssert(false)
 			}
-
-
+			
+			
 		}
 	}
-
+	
 	func testRounding() {
 		XCTAssertEqual(BDouble("-1.0")?.rounded(), BInt("-1"))
 		XCTAssertEqual(BDouble("-1.1")?.rounded(), BInt("-1"))
@@ -266,7 +266,7 @@ class BDoubleTests : XCTestCase {
 		XCTAssertEqual(bigD?.decimalDescription, "123456789.12345678900000000000")
 		bigD?.precision = 0
 		XCTAssertEqual(bigD?.decimalDescription, "123456789.0")
-
+		
 		
 		bigD = BDouble("-123456789.123456789")
 		bigD?.precision = 2
@@ -435,15 +435,15 @@ class BDoubleTests : XCTestCase {
 		XCTAssertEqual(-BDouble(6.54), BDouble(-6.54))
 		testPow()
 	}
-
-    func testPerformanceStringInit() {
-        self.measure {
+	
+	func testPerformanceStringInit() {
+		self.measure {
 			for _ in (0...1000) {
 				let _ = BDouble(String(arc4random()))
 				let _ = BDouble(String(arc4random())+"."+String(arc4random()))
 			}
-        }
-    }
+		}
+	}
 	
 	func testPerformanceStringRadixInit() {
 		self.measure {
@@ -453,5 +453,5 @@ class BDoubleTests : XCTestCase {
 			}
 		}
 	}
-
+	
 }
