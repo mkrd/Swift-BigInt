@@ -27,10 +27,11 @@ class BDoubleTests : XCTestCase {
 		XCTAssertNotNil(BDouble("+1.2e-123"))
 		XCTAssertEqual(BDouble("0"), 0.0)
 		XCTAssertEqual(BDouble("10"), 10.0)
-		XCTAssertEqual(BDouble("1.2e10")?.fractionDescription, "120000000000")
-		XCTAssertEqual(BDouble("1.2e+10")?.fractionDescription, "120000000000")
-		XCTAssertEqual(BDouble("+1.2e+10")?.fractionDescription, "120000000000")
-		XCTAssertEqual(BDouble("-1.2e10")?.fractionDescription, "-120000000000")
+		XCTAssertEqual(BDouble("1.2e10")?.fractionDescription, "12000000000")
+		XCTAssertEqual(BDouble("1.2e+10")?.fractionDescription, "12000000000")
+		XCTAssertEqual(BDouble("+1.2e+10")?.fractionDescription, "12000000000")
+		XCTAssertEqual(BDouble("-1.2e10")?.fractionDescription, "-12000000000")
+        XCTAssertEqual(BDouble(123000000000000000000.0), 123000000000000000000.0)
 		XCTAssertEqual(BDouble("1.2")?.fractionDescription, "6/5")
 		
 		for _ in 0..<100 {
