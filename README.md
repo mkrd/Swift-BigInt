@@ -12,8 +12,10 @@ Some benchmarks are located in Benchmarks.swift, note that these are more than 1
 ## Drag and Drop
 One of the main goals of this library is to be lightweight and independent.
 
-Simply __drag and drop Swift-Big-Number-Core.swift__ from the __sources__ folder into your project!
+Simply drag and drop `Swift-Big-Number-Core.swift` from the `sources` folder into your project!
+
 Yes, it's that easy :)
+
 
 ## Swift Package Manager
 
@@ -22,6 +24,7 @@ You can use the [Swift Package Manager](https://swift.org/package-manager/) and 
 .Package(url: "https://github.com/mkrd/Swift-Big-Integer.git", majorVersion: 1)
 ```
 
+
 ## CocoaPods:
 
 Put the following in your Podfile:
@@ -29,8 +32,10 @@ Put the following in your Podfile:
 pod 'BigNumber', '~> 2.0', :git => 'https://github.com/mkrd/Swift-Big-Integer.git'
 ```
 
+
 # Compatibility
 It is recommended to use Xcode 9+ and Swift 4+. Issues have been reported with older versions, so you might want to use an older version of this library if you can't update.
+
 
 # Getting Started
 
