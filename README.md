@@ -1,16 +1,18 @@
 # Swift-BigInt
 Swift-BigInt is a lightweight, and easy-to-use, arbitrary precision arithmetric library for Swift 4. 
 
-It supports whole Numbers (BInt) and Fractions (BDouble) with most of the common math operators. Some optimized math functions like factorial or gcd are also implemented. For more details, please continue reading.
+It supports whole Numbers (BInt) and Fractions (BDouble) with most of the common math operators. Optimized mathematical functions like factorial or gcd are also implemented and are accessible through BIntMath. For more details, please continue reading.
 
-Some benchmarks are located in Benchmarks.swift, note that these are more than 10 times faster in release mode.
+Some benchmarks are located in Benchmarks.swift, note that these are more than 10 times faster in the release mode, compared to the debug mode of Xcode.
 
 
 
 ## Installation
 
-### Manual
-Simply drag the Swift-Big-Number-Core.swift file from the sources folder into your project!
+### Drag and Drop
+One of the main goals of this library is to be lightweight and independent.
+
+Simply __drag and drop Swift-Big-Number-Core.swift__ from the __sources__ folder into your project!
 Yes, it's that easy :)
 
 ### Swift Package Manager
