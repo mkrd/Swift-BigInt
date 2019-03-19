@@ -1,5 +1,7 @@
-# Swift-Big-Number
-Swift-Big-Number is a lightweight, and easy-to-use, arbitrary precision arithmetric library for Swift 4. It supports whole Numbers (BInt) and Fractions (BDouble) with most of the common math operators like addition, subtraction, multiplication, exponentiation, modulus and division. Some optimized math functions like factorial or gcd are also implemented. So more details, please continue reading.
+# Swift-BigInt
+Swift-BigInt is a lightweight, and easy-to-use, arbitrary precision arithmetric library for Swift 4. 
+
+It supports whole Numbers (BInt) and Fractions (BDouble) with most of the common math operators. Some optimized math functions like factorial or gcd are also implemented. For more details, please continue reading.
 
 Some benchmarks are located in Benchmarks.swift, note that these are more than 10 times faster in release mode.
 
