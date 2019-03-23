@@ -38,7 +38,7 @@ It is recommended to use Xcode 9+ and Swift 4+. Issues have been reported with o
 
 
 # Getting Started
-Here is a small example, to showcase some functionalities of this library. If you want to learn more, please continue reading the Useage section below.
+Here is a small example, to showcase some functionalities of this library. If you want to learn more, please continue reading the Usage section below.
 
 ```swift
 let a = BInt(12)
@@ -62,7 +62,7 @@ print(BInt(200).factorial())
 ## BInt
 
 ### Initialization
-You initialize BInt with `Int`, `UInt`, and `String`. If you use a `String`, the initialized `BInt` will an optional type, which will be empty if the `String` does not contain an valid number.
+You initialize BInt with `Int`, `UInt`, and `String`. If you use a `String`, the initialized `BInt` will be an optional type, which will be empty if the `String` does not contain an valid number.
 
 ```
 BInt(Int)
@@ -124,32 +124,32 @@ BIntOrInt  +  BIntOrInt // Returns BInt
 BIntOrInt  += BIntOrInt
 
 //Subtraction
-BIntOrInt  -  BIntOrInt // Returns BInt
-BIntOrInt  -= BIntOrInt
+BIntOrInt -  BIntOrInt // Returns BInt
+BIntOrInt -= BIntOrInt
 
 // Multiplication
-BIntOrInt  *  BIntOrInt // Returns BInt
-BIntOrInt  *= BIntOrInt
+BIntOrInt *  BIntOrInt // Returns BInt
+BIntOrInt *= BIntOrInt
 
 // Exponentiation
-BInt       **  Int       // Retuns BInt to the power of Int
+BInt ** Int       // Retuns BInt to the power of Int
 
 // Modulo
 BIntOrInt  %  BIntOrInt // Returns BInt
 BInt       %= BInt
 
 // Division
-BInt       /  BInt // Returns BInt
-BInt       /= BInt
+BInt /  BInt // Returns BInt
+BInt /= BInt
 
 
 // Comparing
-BInt       == BInt
-BInt       != BInt
-BInt       <  BInt
-BInt       <= BInt
-BInt       >  BInt
-BInt       >= BInt
+BInt == BInt
+BInt != BInt
+BInt <  BInt
+BInt <= BInt
+BInt >  BInt
+BInt >= BInt
 ```
 
 ### Implemented BInt math functions:
@@ -263,7 +263,6 @@ a <= b <==> !(a > b)
 
 # About performance
 BInt about twice as fast as mini-gmp, as of now (not counting the normal gmp, because it needs to be installed and is not portable). For example, BInt can add numbers about 2 times faster than GMP (272ms vs 530ms for fib(100,000)), and multiplication is more than twice as fast. When given the task of calculating and printing factorials successively, BInt performs significantly better than GMP. In addition, GMP is significantly harder to use, while BInt offers an intuitive interface.
-
 
 
 
