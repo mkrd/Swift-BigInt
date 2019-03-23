@@ -42,7 +42,9 @@ It is recommended to use Xcode 9+ and Swift 4+. Issues have been reported with o
 ## BInt
 
 ### You can initialize BInt with the following constructors:
-```swift
+You initialize BInt with `Int`, `UInt`, and `String`. If you use a `String`, the initialized `BInt` will an optional type, which will be empty if the `String` does not contain an valid number.
+
+```
 BInt(Int)
 BInt(UInt)
 BInt(String)?
@@ -51,9 +53,28 @@ BInt(String, radix: Int)?
 
 ### Examples:
 ```swift
-let integer = BInt(12)
-let hexadecimal = BInt("fff", radix: 16)
-let string = BInt("-234324176583764598326758236587632649181349105368042856028465298620328782652623")!
+let a = BInt(12)
+print(a)
+>>> 12
+
+
+let b = BInt("-234324176583764598326758236587632649181349105368042856028465298620328782652623")
+print(b!)
+>>> -234324176583764598326758236587632649181349105368042856028465298620328782652623
+
+
+let invalid = BInt("I'm not a number")
+if let c = invalid {
+  print(c)
+} else {
+  print("Not a valid number!")
+}
+>>> Not a valid number!
+
+
+let d = BInt("fff", radix: 16)
+print(d)
+>>> 4095
 ```
 
 ### BInt offers these struct methods:
