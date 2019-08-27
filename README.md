@@ -1,5 +1,5 @@
 # Swift-BigInt
-Swift-BigInt is a lightweight, and easy-to-use, arbitrary precision arithmetric library for Swift 4. 
+Swift-BigInt is a lightweight, and easy-to-use, arbitrary precision arithmetric library for Swift 5. 
 
 It supports whole Numbers (BInt) and Fractions (BDouble) with most of the common math operators. Optimized mathematical functions like factorial or gcd are also implemented and are accessible through BIntMath. For more details, please continue reading.
 
