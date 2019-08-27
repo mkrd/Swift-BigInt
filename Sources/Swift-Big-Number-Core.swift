@@ -344,7 +344,7 @@ public struct BInt:
 
 		for char in number.reversed()
 		{
-			if let digit = chars.index(of: char), digit < radix
+			if let digit = chars.firstIndex(of: char), digit < radix
 			{
 				limbs.addProductOf(multiplier: base, multiplicand: Limb(digit))
 				base = base.multiplyingBy([Limb(radix)])
@@ -506,9 +506,8 @@ public struct BInt:
 		return (self.sign, self.limbs)
 	}
 
-	public var hashValue: Int
-	{
-		return "\(self.sign)\(self.limbs)".hashValue
+	public func hash(into hasher: inout Hasher) {
+		hasher.combine("\(self.sign)\(self.limbs)")
 	}
 
 	// Required by the protocol "BinaryInteger". A Boolean value indicating whether this type is a
@@ -1718,7 +1717,7 @@ fileprivate extension Array where Element == Limb
 			(mulHi, mulLo) = l.multipliedFullWidth(by: multiplicand)
 
 			if mulHi != 0 { self.addTwoLimb(mulLo, mulHi, padding: i) }
-			else {          self.addOneLimb(mulLo,        padding: i) }
+			else          { self.addOneLimb(mulLo,        padding: i) }
 		}
 	}
 
@@ -2280,13 +2279,13 @@ public struct BDouble:
 		if let bi = BInt(nStr) {
 			self.init(bi, over: 1)
 		} else {
-			if let exp = nStr.index(of: "e")?.encodedOffset
+			if let exp = nStr.firstIndex(of: "e")?.encodedOffset
 			{
 				let beforeExp = String(Array(nStr)[..<exp].filter{ $0 != "." })
 				var afterExp = String(Array(nStr)[(exp + 1)...])
 				var sign = false
 
-				if let neg = afterExp.index(of: "-")?.encodedOffset
+				if let neg = afterExp.firstIndex(of: "-")?.encodedOffset
 				{
 					afterExp = String(Array(afterExp)[(neg + 1)...])
 					sign = true
@@ -2322,12 +2321,10 @@ public struct BDouble:
 				}
 			}
 
-			if let io = nStr.index(of: ".")
+			if let io = nStr.firstIndex(of: ".")
 			{
-				let i = io.encodedOffset
-
-				let beforePoint = String(Array(nStr)[..<i])
-				let afterPoint  = String(Array(nStr)[(i + 1)...])
+				let beforePoint = String(nStr[..<io])
+				let afterPoint  = String(nStr[nStr.index(io, offsetBy: 1)...])
 
 				if afterPoint == "0"
 				{
@@ -2338,7 +2335,8 @@ public struct BDouble:
 					let den = ["1"] + [Character](repeating: "0", count: afterPoint.count)
 					self.init(beforePoint + afterPoint, over: String(den))
 				}
-			} else
+			}
+			else
 			{
 				return nil
 			}
@@ -2519,7 +2517,7 @@ public struct BDouble:
         
         if currentPrecision <= res.count
         {
-            res.insert(".", at: String.Index(encodedOffset: res.count - currentPrecision))
+			res.insert(".", at: res.index(res.startIndex, offsetBy: res.count - currentPrecision))
             if res.hasPrefix(".") { res = "0" + res }
             else if res.hasSuffix(".") { res += "0" }
         }
@@ -2550,9 +2548,8 @@ public struct BDouble:
         return retVal
     }
 
-	public var hashValue: Int
-	{
-		return "\(self.sign)\(self.numerator)\(self.denominator)".hashValue
+	public func hash(into hasher: inout Hasher) {
+		hasher.combine("\(self.sign)\(self.numerator)\(self.denominator)")
 	}
 
 	/**

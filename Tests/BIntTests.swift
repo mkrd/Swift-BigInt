@@ -29,24 +29,20 @@ class BIntTests: XCTestCase {
 			"P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"
 		]
 
-		for _ in 0..<1000
+		// Randomly choose two bases and a number length, as well as a sign (+ or -)
+		for _ in 0..<100
 		{
 			let fromBase = math.random(2...62)
 			let toBase = math.random(2...62)
-			let numLength = math.random(1...10)
+			let numLength = math.random(1...100)
+			let sign = math.random(0...1) == 1 ? "-" : ""
 
-			var num = math.random(0...1) == 1 ? "-" : ""
+			// First digit should not be a 0.
+			var num = sign + String(chars[math.random(1..<fromBase)])
 
-			for i in 0..<numLength
+			for _ in 1..<numLength
 			{
-				if i == 0
-				{
-					num.append(chars[math.random(1..<fromBase)])
-				}
-				else
-				{
-					num.append(chars[math.random(0..<fromBase)])
-				}
+				num.append(chars[math.random(0..<fromBase)])
 			}
 
 			// Convert the random number to a BInt type

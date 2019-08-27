@@ -45,7 +45,7 @@ public class Benchmarks
 		print(P * D * A)
 
 
-		benchmarkPrint(title: "Matix ^ 100")
+		benchmarkAndPrint(title: "Matix ^ 100")
 		{
 			var R = A
 			for _ in 0...100
@@ -57,7 +57,7 @@ public class Benchmarks
 
 	static func BDoubleConverging()
 	{
-		benchmarkPrint(title: "BDouble converging to 2")
+		benchmarkAndPrint(title: "BDouble converging to 2")
 		{
 			// BDouble converging to 2 Debug Mode
 			// 06.02.16: 3351ms
@@ -77,7 +77,7 @@ public class Benchmarks
 	{
 		let n = 25_000
 
-		benchmarkPrint(title: "Factorial of 25000")
+		benchmarkAndPrint(title: "Factorial of 25000")
 		{
 			// Fkt 1000  Debug Mode
 			// 27.01.16: 2548ms
@@ -100,7 +100,7 @@ public class Benchmarks
 			// 07.03.16: 2221ms
 			// 16.08.16: 1759ms
 			// 20.08.16: 1367ms
-
+			// 23.08.19: 1075ms
 			_ = BInt(n).factorial()
 		}
 	}
@@ -110,7 +110,7 @@ public class Benchmarks
 		let n = 10
 		let pow = 120_000
 
-		benchmarkPrint(title: "10^120_000")
+		benchmarkAndPrint(title: "10^120_000")
 		{
 			// 10^14000 Debug Mode
 			// 06.02.16: 2668ms
@@ -124,6 +124,7 @@ public class Benchmarks
 			// 07.03.16: 1626ms
 			// 16.08.16: 1154ms
 			// 20.08.16: 922ms
+			// 23.08.19: 710ms
 
 			_ = BInt(n) ** pow
 		}
@@ -133,7 +134,7 @@ public class Benchmarks
 	{
 		let n = 100_000
 
-		benchmarkPrint(title: "Fib \(n)")
+		benchmarkAndPrint(title: "Fib \(n)")
 		{
 			// Fib 35.000 Debug Mode
 			// 27.01.16: 2488ms
@@ -146,6 +147,7 @@ public class Benchmarks
 			// 10.02.16: 1919ms
 			// 28.02.16: 1786ms
 			// 07.03.16: 1716ms
+			// 23.08.19: 1124ms
 
 			_ = BIntMath.fib(n)
 		}
@@ -155,7 +157,7 @@ public class Benchmarks
 	{
 		let n = 256
 
-		benchmarkPrint(title: "\nMersennes to 2^\(n)")
+		benchmarkAndPrint(title: "\nMersennes to 2^\(n)")
 		{
 			// Mersenne to exp 256 Debug Mode
 			// 02.10.16: 1814ms
@@ -175,7 +177,7 @@ public class Benchmarks
 	{
 		let factorialBase = 15_000
 		let n = BInt(factorialBase).factorial()
-		benchmarkPrint(title: "Get \(factorialBase)! as String")
+		benchmarkAndPrint(title: "Get \(factorialBase)! as String")
 		{
 			// Get 300! (615 decimal digits) as String Debug Mode
 			// 30.01.16: 2635ms
@@ -214,7 +216,7 @@ public class Benchmarks
 		let asStr = BInt(factorialBase).factorial().description
 		var res: BInt = 0
 
-		benchmarkPrint(title: "BInt from String, \(asStr.count) digits (\(factorialBase)!)")
+		benchmarkAndPrint(title: "BInt from String, \(asStr.count) digits (\(factorialBase)!)")
 		{
 			// BInt from String, 3026 digits (1151!) Debug Mode
 			// 07.02.16: 2780ms
@@ -245,7 +247,7 @@ public class Benchmarks
 
 	static func permutationsAndCombinations()
 	{
-		benchmarkPrint(title: "Perm and Comb")
+		benchmarkAndPrint(title: "Perm and Comb")
 		{
 			// Perm and Comb (2000, 1000) Debug Mode
 			// 04.02.16: 2561ms
@@ -266,13 +268,13 @@ public class Benchmarks
 
 	static func multiplicationBalanced()
 	{
-		benchmarkPrint(title: "Multiply two random BInts with size of 270_000 and 270_000 bits")
+		let b1 = BIntMath.randomBInt(bits: 270_000)
+		let b2 = BIntMath.randomBInt(bits: 270_000)
+
+		benchmarkAndPrint(title: "Multiply two random BInts with size of 270_000 and 270_000 bits")
 		{
 			// Multiply two random BInts with size of 270_000 and 270_000 bits
 			// 26.04.18: 2427ms
-
-			let b1 = BIntMath.randomBInt(bits: 270_000)
-			let b2 = BIntMath.randomBInt(bits: 270_000)
 
 			_ = b1 * b2
 		}
@@ -280,13 +282,13 @@ public class Benchmarks
 
 	static func multiplicationUnbalanced()
 	{
-		benchmarkPrint(title: "Multiply two random BInts with size of 70_000_000 and 1_000 bits")
+		let b1 = BIntMath.randomBInt(bits: 70_000_000)
+		let b2 = BIntMath.randomBInt(bits: 1_000)
+
+		benchmarkAndPrint(title: "Multiply two random BInts with size of 70_000_000 and 1_000 bits")
 		{
 			// Multiply two random BInts with size of 70_000_000 and 1_000 bits
 			// 26.04.18: 2467ms
-
-			let b1 = BIntMath.randomBInt(bits: 70_000_000)
-			let b2 = BIntMath.randomBInt(bits: 1_000)
 
 			_ = b1 * b2
 		}

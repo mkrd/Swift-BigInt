@@ -1,18 +1,6 @@
 import Foundation
 
-
-
-
-
-
-benchmarkPrint(title: "All tests passed, duration")
-{
-    SMPTests.testBIntRandom()
-    SMPTests.testBInt()
-	SMPTests.testSteinGcd()
-//    MG_Matrix_Tests.testSparseMatrix()
-}
-
+// Run Benchmarks
 Benchmarks.BDoubleConverging()
 Benchmarks.exponentiation()
 Benchmarks.factorial()
@@ -111,7 +99,7 @@ Benchmarks.multiplicationUnbalanced()
 //    writeCGImage(img, to: writeURL)
 //}
 //
-//benchmarkPrint(title: "")
+//benchmarkAndPrint(title: "")
 //{
 //    makeAndSave()
 //}

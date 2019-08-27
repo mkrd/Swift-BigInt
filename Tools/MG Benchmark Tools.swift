@@ -94,7 +94,7 @@ values:
 
 - Parameter title: Description of benchmark.
 */
-public func benchmarkPrint(_ precision: String = "ms", title: String, _ call: () -> ())
+public func benchmarkAndPrint(_ precision: String = "ms", title: String, _ call: () -> ())
 {
 	print("=> \(title): \(benchmark(precision, call))\(precision)")
 }

@@ -11,9 +11,9 @@ import Foundation
 
 public struct Storage
 {
-	static func readResource(_ key: String) -> String
+	static func readResource(_ key: String, inBundle: Bundle = Bundle.main) -> String
 	{
-		if let path = Bundle.main.path(forResource: "longNumbers", ofType: "json", inDirectory: "Resources")
+		if let path = inBundle.path(forResource: "longNumbers", ofType: "json", inDirectory: "Resources")
 		{
 			let data = try! Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
 			let jsonResult = try? JSONSerialization.jsonObject(with: data, options: .mutableLeaves)

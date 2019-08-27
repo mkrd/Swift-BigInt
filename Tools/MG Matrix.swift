@@ -18,7 +18,7 @@ protocol NumericType:
 extension Double: NumericType
 {
 	init<T: NumericType>(_ n: T) {
-		self = Double(n)
+		self.init(n)
 	}
 
 }

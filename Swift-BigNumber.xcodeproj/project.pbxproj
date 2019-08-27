@@ -21,7 +21,6 @@
 		C26B272E207E5C29008FA649 /* MG Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A53BF21DAA8A7300AD08E4 /* MG Storage.swift */; };
 		C26B272F207E5C29008FA649 /* MG Complex.swift in Sources */ = {isa = PBXBuildFile; fileRef = C224D2D41DCFBAFE006CD7C5 /* MG Complex.swift */; };
 		C26B2730207E5C29008FA649 /* Swift-Big-Number-Core.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F92B421D0F7452003CDF7D /* Swift-Big-Number-Core.swift */; };
-		C26B2736207E5DF3008FA649 /* SMP Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26D70B81F62A6230012AA54 /* SMP Tests.swift */; };
 		C26B2737207E5DF3008FA649 /* MG Math Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2BCD1831FA13F1E002F6986 /* MG Math Tests.swift */; };
 		C26B2738207E5DF3008FA649 /* MG Matrix Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2BCD1851FA14252002F6986 /* MG Matrix Tests.swift */; };
 		C26B2739207E5E35008FA649 /* MG Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F92B481D0F7468003CDF7D /* MG Math.swift */; };
@@ -29,12 +28,16 @@
 		C26B274F207E701B008FA649 /* BigNumber_iOS.h in Headers */ = {isa = PBXBuildFile; fileRef = C26B274E207E701B008FA649 /* BigNumber_iOS.h */; };
 		C26B2750207E701B008FA649 /* BigNumber_iOS.h in Headers */ = {isa = PBXBuildFile; fileRef = C26B274E207E701B008FA649 /* BigNumber_iOS.h */; };
 		C26B2786207E836A008FA649 /* Resources in Resources */ = {isa = PBXBuildFile; fileRef = C26B2785207E8369008FA649 /* Resources */; };
-		C26B2787207E836A008FA649 /* Resources in Resources */ = {isa = PBXBuildFile; fileRef = C26B2785207E8369008FA649 /* Resources */; };
 		C26B2788207E836A008FA649 /* Resources in Resources */ = {isa = PBXBuildFile; fileRef = C26B2785207E8369008FA649 /* Resources */; };
 		C26B2789207E836A008FA649 /* Resources in Resources */ = {isa = PBXBuildFile; fileRef = C26B2785207E8369008FA649 /* Resources */; };
 		C26B278A207E8382008FA649 /* Resources in CopyFiles */ = {isa = PBXBuildFile; fileRef = C26B2785207E8369008FA649 /* Resources */; };
 		C26B278B207E85D3008FA649 /* MG Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A53BF21DAA8A7300AD08E4 /* MG Storage.swift */; };
-		C2D93A842092485D00438D2A /* SMP Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C26D70B81F62A6230012AA54 /* SMP Tests.swift */; };
+		C28A8F552310160700C1C7D9 /* Test_Basic_Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28A8F542310160700C1C7D9 /* Test_Basic_Math.swift */; };
+		C28A8F57231016BC00C1C7D9 /* Test_Initialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28A8F56231016BC00C1C7D9 /* Test_Initialization.swift */; };
+		C28A8F592310184700C1C7D9 /* Test_BIntMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28A8F582310184700C1C7D9 /* Test_BIntMath.swift */; };
+		C28A8F5B23101C4800C1C7D9 /* Resources in Resources */ = {isa = PBXBuildFile; fileRef = C26B2785207E8369008FA649 /* Resources */; };
+		C28A8F5D231026F800C1C7D9 /* Test_String_Conversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28A8F5C231026F800C1C7D9 /* Test_String_Conversions.swift */; };
+		C28A8F5F2310282100C1C7D9 /* Test_Advanced_Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28A8F5E2310282100C1C7D9 /* Test_Advanced_Math.swift */; };
 		C2D93A85209272CD00438D2A /* MG SuperSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24E721A1E58D69F008AD14D /* MG SuperSwift.swift */; };
 		F646295D1FF017EA0074A180 /* BigNumber.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F64629541FF017E90074A180 /* BigNumber.framework */; };
 		F646296C1FF018540074A180 /* BDoubleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64629241FF016070074A180 /* BDoubleTests.swift */; };
@@ -82,9 +85,13 @@
 		C24E721A1E58D69F008AD14D /* MG SuperSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MG SuperSwift.swift"; sourceTree = "<group>"; };
 		C26B274E207E701B008FA649 /* BigNumber_iOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BigNumber_iOS.h; sourceTree = "<group>"; };
 		C26B2751207E701F008FA649 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C26B2785207E8369008FA649 /* Resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Resources; sourceTree = "<group>"; };
-		C26D70B81F62A6230012AA54 /* SMP Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SMP Tests.swift"; sourceTree = "<group>"; usesTabs = 1; };
+		C26B2785207E8369008FA649 /* Resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Resources; sourceTree = SOURCE_ROOT; };
 		C28710FC1F5ECFC400566A00 /* Benchmarks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Benchmarks.swift; sourceTree = "<group>"; usesTabs = 1; };
+		C28A8F542310160700C1C7D9 /* Test_Basic_Math.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test_Basic_Math.swift; sourceTree = "<group>"; };
+		C28A8F56231016BC00C1C7D9 /* Test_Initialization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test_Initialization.swift; sourceTree = "<group>"; };
+		C28A8F582310184700C1C7D9 /* Test_BIntMath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test_BIntMath.swift; sourceTree = "<group>"; };
+		C28A8F5C231026F800C1C7D9 /* Test_String_Conversions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test_String_Conversions.swift; sourceTree = "<group>"; };
+		C28A8F5E2310282100C1C7D9 /* Test_Advanced_Math.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test_Advanced_Math.swift; sourceTree = "<group>"; };
 		C28F71EE1DF0557800CE18C6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = Testing/Info.plist; sourceTree = "<group>"; };
 		C2A53BF21DAA8A7300AD08E4 /* MG Storage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MG Storage.swift"; sourceTree = "<group>"; };
 		C2BCD1831FA13F1E002F6986 /* MG Math Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MG Math Tests.swift"; sourceTree = "<group>"; };
@@ -173,6 +180,11 @@
 				C2BCD1831FA13F1E002F6986 /* MG Math Tests.swift */,
 				C2BCD1851FA14252002F6986 /* MG Matrix Tests.swift */,
 				F64629631FF017EA0074A180 /* Info.plist */,
+				C28A8F542310160700C1C7D9 /* Test_Basic_Math.swift */,
+				C28A8F56231016BC00C1C7D9 /* Test_Initialization.swift */,
+				C28A8F582310184700C1C7D9 /* Test_BIntMath.swift */,
+				C28A8F5C231026F800C1C7D9 /* Test_String_Conversions.swift */,
+				C28A8F5E2310282100C1C7D9 /* Test_Advanced_Math.swift */,
 			);
 			path = Tests;
 			sourceTree = "<group>";
@@ -220,7 +232,6 @@
 			isa = PBXGroup;
 			children = (
 				C2F92B3B1D0F7421003CDF7D /* main.swift */,
-				C26D70B81F62A6230012AA54 /* SMP Tests.swift */,
 				C29F6AE71FEB1C5100AD0478 /* Benchmarks */,
 				C29F6AE61FEB1C2B00AD0478 /* Tools */,
 				C29F6AE51FEB1BE900AD0478 /* Sources */,
@@ -375,35 +386,36 @@
 					};
 					AE8388AD203F1CB000FAC88F = {
 						CreatedOnToolsVersion = 9.2;
-						DevelopmentTeam = C6L3992RFB;
+						DevelopmentTeam = WB24NP9E4V;
 						ProvisioningStyle = Automatic;
 					};
 					C2F92B371D0F7421003CDF7D = {
 						CreatedOnToolsVersion = 8.0;
 						DevelopmentTeam = WB24NP9E4V;
-						LastSwiftMigration = 0900;
+						LastSwiftMigration = 1030;
 						ProvisioningStyle = Automatic;
 					};
 					F64629531FF017E90074A180 = {
 						CreatedOnToolsVersion = 9.2;
-						DevelopmentTeam = C6L3992RFB;
-						LastSwiftMigration = 1000;
+						DevelopmentTeam = WB24NP9E4V;
+						LastSwiftMigration = 1030;
 						ProvisioningStyle = Automatic;
 					};
 					F646295B1FF017EA0074A180 = {
 						CreatedOnToolsVersion = 9.2;
-						DevelopmentTeam = C6L3992RFB;
-						LastSwiftMigration = 1000;
+						DevelopmentTeam = WB24NP9E4V;
+						LastSwiftMigration = 1030;
 						ProvisioningStyle = Automatic;
 					};
 				};
 			};
 			buildConfigurationList = C2F92B331D0F7421003CDF7D /* Build configuration list for PBXProject "Swift-BigNumber" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = C2F92B2F1D0F7421003CDF7D;
 			productRefGroup = C2F92B2F1D0F7421003CDF7D;
@@ -448,7 +460,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C26B2787207E836A008FA649 /* Resources in Resources */,
+				C28A8F5B23101C4800C1C7D9 /* Resources in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -475,7 +487,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C2D93A842092485D00438D2A /* SMP Tests.swift in Sources */,
 				C26B2728207E5C29008FA649 /* MG Benchmark Tools.swift in Sources */,
 				C26B2729207E5C29008FA649 /* MG Math.swift in Sources */,
 				C26B272A207E5C29008FA649 /* MG SuperSwift.swift in Sources */,
@@ -503,15 +514,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				C2D93A85209272CD00438D2A /* MG SuperSwift.swift in Sources */,
+				C28A8F552310160700C1C7D9 /* Test_Basic_Math.swift in Sources */,
 				C26B278B207E85D3008FA649 /* MG Storage.swift in Sources */,
+				C28A8F592310184700C1C7D9 /* Test_BIntMath.swift in Sources */,
 				C26B273A207E5E4F008FA649 /* MG Matrix.swift in Sources */,
 				C26B2739207E5E35008FA649 /* MG Math.swift in Sources */,
-				C26B2736207E5DF3008FA649 /* SMP Tests.swift in Sources */,
+				C28A8F5F2310282100C1C7D9 /* Test_Advanced_Math.swift in Sources */,
 				C26B2737207E5DF3008FA649 /* MG Math Tests.swift in Sources */,
 				C26B2738207E5DF3008FA649 /* MG Matrix Tests.swift in Sources */,
 				F6632C4A204918BF00B73607 /* Swift-Big-Number-Core.swift in Sources */,
 				F6632C4D20499FE300B73607 /* BIntTests.swift in Sources */,
 				F646296C1FF018540074A180 /* BDoubleTests.swift in Sources */,
+				C28A8F5D231026F800C1C7D9 /* Test_String_Conversions.swift in Sources */,
+				C28A8F57231016BC00C1C7D9 /* Test_Initialization.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -602,7 +617,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = C6L3992RFB;
+				DEVELOPMENT_TEAM = WB24NP9E4V;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "BigNumber-iOSTests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
@@ -625,7 +640,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = C6L3992RFB;
+				DEVELOPMENT_TEAM = WB24NP9E4V;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = "BigNumber-iOSTests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
@@ -762,8 +777,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -783,8 +797,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -799,7 +812,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = C6L3992RFB;
+				DEVELOPMENT_TEAM = WB24NP9E4V;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -813,7 +826,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -830,7 +843,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = C6L3992RFB;
+				DEVELOPMENT_TEAM = WB24NP9E4V;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -843,7 +856,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.mkrd.BigNumber;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -859,7 +872,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = C6L3992RFB;
+				DEVELOPMENT_TEAM = WB24NP9E4V;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
@@ -867,7 +880,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.mkrd.BigNumberTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -881,14 +894,14 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = C6L3992RFB;
+				DEVELOPMENT_TEAM = WB24NP9E4V;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mkrd.BigNumberTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};

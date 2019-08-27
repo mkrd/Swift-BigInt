@@ -28,7 +28,7 @@ import Foundation
 
 // The cartesian product
 // Shortcut: $cp 
-// Operator: ×
+// Operator: ><
 
 // The dot product, or scalar product
 // Shortcut: $dot
@@ -82,12 +82,6 @@ public extension String
 		return String(self[start..<end])
 	}
 
-	/// If possible, returns index of first ocurrence of char.
-	subscript(char: Character) -> Int?
-	{
-		return self.index(of: char)?.encodedOffset
-	}
-
 	// Make this function work with normal ranges.
 	mutating func removeSubrange(_ bounds: CountableClosedRange<Int>)
 	{
@@ -119,14 +113,14 @@ precedencegroup CartesianProductPrecedence
 	lowerThan: RangeFormationPrecedence
 }
 
-infix operator × : CartesianProductPrecedence
+infix operator >< : CartesianProductPrecedence
 
 /**
 	Calculate the cartesian product of two sequences. With a left precedence you can iterate 
 	over the product:
 
 		// Will print all numbers from 0000 to 9999
-		for (((i, j), k), l) in 0...9 × 0...9 × 0...9 × 0...9
+		for (((i, j), k), l) in 0...9 >< 0...9 >< 0...9 >< 0...9
 		{
 			print("\(i)\(j)\(k)\(l)")
 		}
@@ -136,7 +130,7 @@ infix operator × : CartesianProductPrecedence
 	- Parameter rhs: An array.
 	- returns: [(l, r)] where l ∈ lhs and r ∈ rhs.
 */
-func ×<T1: Any, T2: Any>(lhs: [T1], rhs: [T2]) -> [(T1, T2)]
+func ><<T1: Any, T2: Any>(lhs: [T1], rhs: [T2]) -> [(T1, T2)]
 {
 	var res = [(T1, T2)]()
 
@@ -151,34 +145,34 @@ func ×<T1: Any, T2: Any>(lhs: [T1], rhs: [T2]) -> [(T1, T2)]
 	return res
 }
 
-func ×(lhs: CountableRange<Int>, rhs: CountableRange<Int>) -> [(Int, Int)]
+func ><(lhs: CountableRange<Int>, rhs: CountableRange<Int>) -> [(Int, Int)]
 {
-	return lhs.map{$0} × rhs.map{$0}
+	return lhs.map{$0} >< rhs.map{$0}
 }
 
-func ×(lhs: CountableRange<Int>, rhs: CountableClosedRange<Int>) -> [(Int, Int)]
+func ><(lhs: CountableRange<Int>, rhs: CountableClosedRange<Int>) -> [(Int, Int)]
 {
-	return lhs.map{$0} × rhs.map{$0}
+	return lhs.map{$0} >< rhs.map{$0}
 }
 
-func ×(lhs: CountableClosedRange<Int>, rhs: CountableRange<Int>) -> [(Int, Int)]
+func ><(lhs: CountableClosedRange<Int>, rhs: CountableRange<Int>) -> [(Int, Int)]
 {
-	return lhs.map{$0} × rhs.map{$0}
+	return lhs.map{$0} >< rhs.map{$0}
 }
 
-func ×(lhs: CountableClosedRange<Int>, rhs: CountableClosedRange<Int>) -> [(Int, Int)]
+func ><(lhs: CountableClosedRange<Int>, rhs: CountableClosedRange<Int>) -> [(Int, Int)]
 {
-	return lhs.map{$0} × rhs.map{$0}
+	return lhs.map{$0} >< rhs.map{$0}
 }
 
-func ×<T: Any>(lhs: [T], rhs: CountableRange<Int>) -> [(T, Int)]
+func ><<T: Any>(lhs: [T], rhs: CountableRange<Int>) -> [(T, Int)]
 {
-	return lhs × rhs.map{$0}
+	return lhs >< rhs.map{$0}
 }
 
-func ×<T: Any>(lhs: [T], rhs: CountableClosedRange<Int>) -> [(T, Int)]
+func ><<T: Any>(lhs: [T], rhs: CountableClosedRange<Int>) -> [(T, Int)]
 {
-	return lhs × rhs.map{$0}
+	return lhs >< rhs.map{$0}
 }
 
 
