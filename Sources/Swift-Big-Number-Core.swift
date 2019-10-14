@@ -2279,13 +2279,13 @@ public struct BDouble:
 		if let bi = BInt(nStr) {
 			self.init(bi, over: 1)
 		} else {
-			if let exp = nStr.firstIndex(of: "e")?.encodedOffset
+            if let exp = nStr.firstIndex(of: "e")?.utf16Offset(in: nStr)
 			{
 				let beforeExp = String(Array(nStr)[..<exp].filter{ $0 != "." })
 				var afterExp = String(Array(nStr)[(exp + 1)...])
 				var sign = false
 
-				if let neg = afterExp.firstIndex(of: "-")?.encodedOffset
+				if let neg = afterExp.firstIndex(of: "-")?.utf16Offset(in: afterExp)
 				{
 					afterExp = String(Array(afterExp)[(neg + 1)...])
 					sign = true
