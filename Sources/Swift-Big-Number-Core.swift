@@ -2219,7 +2219,12 @@ public struct BDouble:
 
 	public init?<T>(exactly source: T) where T : BinaryInteger
 	{
-		self.init(0.0)
+		let i = BInt(source)
+		self.init(i)
+	}
+	
+	 public init(_ src: BInt) {
+		self.init(src, over: BInt(1))
 	}
 
 	/**
@@ -2589,8 +2594,17 @@ public struct BDouble:
 		return (self.sign, self.numerator, self.denominator)
 	}
 
+	/**
+	 * - returns: `True` if positive, `False` otherwise
+	 */
 	public func isPositive() -> Bool { return !self.sign }
+	/**
+	 * - returns: `True` if negative, `False` otherwise
+	*/
 	public func isNegative() -> Bool { return self.sign }
+	/**
+	 * - returns: `True` if 0, `False` otherwise
+	*/
 	public func isZero() -> Bool { return self.numerator.equalTo(0) }
 
 	public mutating func minimize()
@@ -2647,12 +2661,25 @@ public struct BDouble:
 		return retVal
 	}
 
-	//	public func sqrt(precision digits: Int) -> BDouble
-	//	{
-	//		// let self = v
-	//		// Find x such that x*x=v <==> x = v/x
-	//
-	//	}
+	/**
+	 * The power of 1/root
+	 *
+	 * - warning: This may take a while. This is only precise up until precision. When comparing results after this function ` use` nearlyEqual`
+	 */
+	public func nthroot(_ root: Int) -> BDouble
+	{
+		return self ** BDouble(BInt(1), over: BInt(root))
+	}
+	
+	/**
+	 * The square root
+	 *
+	 * - warning: This may take a while. This is only precise up until precision. When comparing results after this function ` use` nearlyEqual`
+	 */
+	public func squareRoot() -> BDouble
+	{
+		return self ** BDouble(BInt(1), over: BInt(2))
+	}
 
 	//
 	//
@@ -2682,7 +2709,9 @@ public struct BDouble:
 
 	public static func +(lhs: BDouble, rhs: Double) -> BDouble { return lhs + BDouble(rhs) }
 	public static func +(lhs: Double, rhs: BDouble) -> BDouble { return BDouble(lhs) + rhs }
-
+	public static func +(lhs: BDouble, rhs: BInt) -> BDouble { return lhs + BDouble(rhs) }
+	public static func +(lhs: BInt, rhs: BDouble) -> BDouble { return BDouble(lhs) + rhs }
+	
 	public static func +=(lhs: inout BDouble, rhs: BDouble) {
 		let res = lhs + rhs
 		lhs = res
@@ -2735,7 +2764,7 @@ public struct BDouble:
 	}
 	public static func -(lhs: BDouble, rhs: Double) -> BDouble { return lhs - BDouble(rhs) }
 	public static func -(lhs: Double, rhs: BDouble) -> BDouble { return BDouble(lhs) - rhs }
-
+	public static func -(lhs: BDouble, rhs: BInt) -> BDouble { return lhs - BDouble(rhs) }
 	public static func -=(lhs: inout BDouble, rhs: BDouble) {
 		let res = lhs - rhs
 		lhs = res
@@ -2766,6 +2795,8 @@ public struct BDouble:
 	}
 	public static func *(lhs: BDouble, rhs: Double) -> BDouble { return lhs * BDouble(rhs) }
 	public static func *(lhs: Double, rhs: BDouble) -> BDouble { return BDouble(lhs) * rhs }
+	public static func *(lhs: BDouble, rhs: BInt) -> BDouble { return lhs * BDouble(rhs) }
+	public static func *(lhs: BInt, rhs: BDouble) -> BDouble { return BDouble(lhs) * rhs }
 
 	public static func *=(lhs: inout BDouble, rhs: BDouble) {
 		let res = lhs * rhs
@@ -2784,7 +2815,6 @@ public struct BDouble:
 	//
 	//
 
-	// TODO: Exponentiation function that supports Double/BDouble in the exponent
 	public static func **(_ base : BDouble, _ exponent : Int) -> BDouble
 	{
 		if exponent == 0
@@ -2801,6 +2831,64 @@ public struct BDouble:
 		}
 
 		return base * (base ** (exponent - 1))
+	}
+	
+	public static func **(_ base: BDouble, _ exponent: BInt) -> BDouble
+	{
+		if exponent == 0
+		{
+			return BDouble(1)
+		}
+		if exponent == 1
+		{
+			return base
+		}
+		if exponent < 0
+		{
+			return BDouble(1) / (base ** -exponent)
+		}
+
+		return base * (base ** (exponent - 1))
+	}
+	
+	/**
+	 * - reference: http://rosettacode.org/wiki/Nth_root
+	 */
+	public static func **(_ base: BDouble, _ exponent: BDouble) -> BDouble
+	{
+		var count = base.precision
+		
+		// something over 1
+		if BInt(limbs: exponent.denominator) == 1 {
+			return base**BInt(sign: exponent.sign, limbs: exponent.numerator)
+		}
+		
+		if BInt(limbs: exponent.numerator) != 1 {
+			return (base ** BInt(sign: exponent.sign, limbs: exponent.numerator)) ** BDouble(sign: false, numerator: BDouble(1).numerator, denominator: exponent.denominator)
+		}
+		
+		// we have 1/something
+		
+		var previous  = BDouble(1)
+		var ans = previous
+		let exp = BInt(sign: exponent.sign, limbs: exponent.denominator)
+		let prec = BDouble(0.1) ** (abs(base.precision) + 1)
+		
+		while(true) {
+			previous = ans
+			
+			let rlhs = BDouble(BInt(1), over:exp)
+			let rrhs = ((exp-1)*ans + (base / pow(ans, exp-1)))
+			ans = rlhs * rrhs
+
+			if abs(ans-previous) < prec {
+				break
+			}
+
+			count = count + 1
+		}
+		
+		return ans
 	}
 
 	//
@@ -2825,6 +2913,7 @@ public struct BDouble:
 		return res
 	}
 	public static func /(lhs: BDouble, rhs: Double) -> BDouble { return lhs / BDouble(rhs) }
+	public static func /(lhs: BDouble, rhs: BInt) -> BDouble { return lhs / BDouble(rhs) }
 	public static func /(lhs: Double, rhs: BDouble) -> BDouble { return BDouble(lhs) / rhs }
 
 	//
@@ -2998,8 +3087,24 @@ public func ceil(_ base: BDouble) -> BInt
 
 /**
  * Returns a BDouble number raised to a given power.
+ * - warning: This may take a while
  */
 public func pow(_ base : BDouble, _ exp : Int) -> BDouble {
+	return base**exp
+}
+
+/**
+ * Returns a BDouble number raised to a given power.
+ * - warning: This may take a while
+ */
+public func pow(_ base : BDouble, _ exp : BInt) -> BDouble {
+	return base**exp
+}
+
+/**
+ * - warning: This may take a while. This is only precise up until precision. When comparing results after `pow` or `** ` use` nearlyEqual`
+ */
+public func pow(_ base : BDouble, _ exp : BDouble) -> BDouble {
 	return base**exp
 }
 

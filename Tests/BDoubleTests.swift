@@ -79,6 +79,15 @@ class BDoubleTests : XCTestCase {
 	}
 	
 	func testPow() {
+		XCTAssertEqual((BDouble("27")!**3), BDouble("19683")!)
+		XCTAssertEqual(pow(BDouble("27")!,BInt("3")!), BDouble("19683")!)
+
+		XCTAssertEqual((BDouble("27")!**BInt("3")!), BDouble("19683")!)
+		XCTAssertEqual(pow(BDouble("27")!,BInt("3")!), BDouble("19683")!)
+		
+		XCTAssertTrue(BDouble.nearlyEqual(BDouble("-27")!**BDouble("1", over: "3")!, BDouble("-3")!))
+		
+		XCTAssertTrue(BDouble.nearlyEqual(BDouble("4")!.nthroot(2), BDouble(2.0)))
 		// Test that a number to the zero power is 1
 		for i in 0..<100 {
 			XCTAssertEqual(pow(BDouble(Double(i)), 0), 1.0)
@@ -453,5 +462,4 @@ class BDoubleTests : XCTestCase {
 			}
 		}
 	}
-	
 }
