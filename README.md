@@ -25,7 +25,7 @@ You can use the [Swift Package Manager](https://swift.org/package-manager/) and 
 ```
 
 
-## CocoaPods:
+## CocoaPods
 
 Put the following in your Podfile:
 ```
@@ -71,7 +71,7 @@ BInt(String)?
 BInt(String, radix: Int)?
 ```
 
-### Examples:
+### Examples
 ```swift
 let a = BInt(12)
 print(a)
@@ -97,7 +97,7 @@ print(d)
 >>> 4095
 ```
 
-### BInt offers these struct methods:
+### BInt offers these struct methods
 ```swift
 let big = BInt("-143141341")!
 
@@ -115,7 +115,7 @@ big.negate() // Returns noting, but negates the BInt (mutating func)
 big.rawData() // Returns internal structure
 ```
 
-## The following Operators work with BInt:
+## The following Operators work with BInt
 ```swift
 // Operating on Int and BInt result in a typecast to BInt
 
@@ -152,7 +152,7 @@ BInt >  BInt
 BInt >= BInt
 ```
 
-### Implemented BInt math functions:
+### Implemented BInt math functions
 ```swift
 fact(Int) // Returns factorial as BInt
 
@@ -198,7 +198,7 @@ public func nnmod(_ a: BInt, _ m: BInt) -> BInt
 
 ## BDouble
 
-### BDouble allows these constructors:
+### BDouble allows these constructors
 ```swift
 BDouble(Int)
 BDouble(Double)
@@ -208,7 +208,7 @@ BDouble(String, over: String)?
 BDouble(String, radix: Int)?
 ```
 
-### Examples:
+### Examples
 ```swift
 let integer = BDouble(221)
 let double = BDouble(1.192)
@@ -216,7 +216,7 @@ let fraction = BDouble(3, over: 4)
 let stringFraction = BDouble("1" over: "3421342675925672365438867862653658268376582356831563158967")!
 ```
 
-### BDouble offers these struct methods:
+### BDouble offers these struct methods
 ```swift
 let bigD = BDouble(-12.32)
 
@@ -229,7 +229,7 @@ bigD.minimize() // Divides numerator and denominator by their gcd for storage an
 bigD.rawData() // Returns internal structure
 ```
 
-## The following Operators work with BDouble:
+## The following Operators work with BDouble
 ```swift
 // Needs more operators, interoperability with BInt
 
