@@ -2094,8 +2094,7 @@ internal class BIntMath
 				last = Limb(arc4random_uniform(UInt32.max)) |
 					(Limb(arc4random_uniform(UInt32(2.0 ** (singleBits - 32)))) << 32)
 			}
-
-			res.append(last)
+			if last != 0 { res.append(last) }
 		}
 
 		return BInt(limbs: res)
