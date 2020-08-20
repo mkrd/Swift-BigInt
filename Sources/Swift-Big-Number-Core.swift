@@ -849,6 +849,10 @@ public struct BInt:
 	{
 		precondition(!self.sign, "Can't calculate the factorial of an negative number")
 
+		if(self.isZero()) {
+			return BInt(1)
+		}
+		
 		return BInt(limbs: Limbs.recursiveMul(0, Limb(self.asInt()!)))
 	}
 

@@ -150,6 +150,13 @@ class Test_Basic_Math: XCTestCase {
 			+ "566343305742064051019127525600"
 			+ "26159795933451040286452340924"
 			+ "018275123200000000000000000000")
+
+        XCTAssertEqual(BInt(0).factorial(), BInt(1))
+        XCTAssertEqual(BInt(1).factorial(), BInt(1))
+        XCTAssertEqual(BInt(2).factorial(), BInt(2))
+        XCTAssertEqual(BInt(3).factorial(), BInt(6))
+        XCTAssertEqual(BInt(4).factorial(), BInt(24))
+        XCTAssertEqual(BInt(99).factorial(), BInt("933262154439441526816992388562667004907159682643816214685929638952175999932299156089414639761565182862536979208272237582511852109168640000000000000000000000"))
 	}
 
 	func test_Arithmetric_Operators_BDouble()
