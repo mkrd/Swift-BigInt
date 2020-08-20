@@ -10,6 +10,7 @@
 		AE8388AF203F1CB000FAC88F /* BigNumber.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE8388A6203F1CAF00FAC88F /* BigNumber.framework */; };
 		AE8388B4203F1CB000FAC88F /* BigNumber_iOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE8388B3203F1CB000FAC88F /* BigNumber_iOSTests.swift */; };
 		AE8388BD203F1CC800FAC88F /* Swift-Big-Number-Core.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F92B421D0F7452003CDF7D /* Swift-Big-Number-Core.swift */; };
+		B7C37FE624EEE47E005B1987 /* MG Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F92B4C1D0F7468003CDF7D /* MG Matrix.swift */; };
 		C26B2726207E5C13008FA649 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F92B3B1D0F7421003CDF7D /* main.swift */; };
 		C26B2727207E5C17008FA649 /* Benchmarks.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28710FC1F5ECFC400566A00 /* Benchmarks.swift */; };
 		C26B2728207E5C29008FA649 /* MG Benchmark Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F92B491D0F7468003CDF7D /* MG Benchmark Tools.swift */; };
@@ -501,6 +502,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F646296D1FF019F40074A180 /* Swift-Big-Number-Core.swift in Sources */,
+				B7C37FE624EEE47E005B1987 /* MG Matrix.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

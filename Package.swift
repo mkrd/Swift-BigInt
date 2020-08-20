@@ -9,6 +9,17 @@ let deps: [Package.Dependency]
 #endif
 
 let package = Package(
-    name: "BigInteger",
-    dependencies: deps
+    name: "BigNumber",
+    products: [
+        .library(
+            name: "BigNumber",
+            targets: ["BigNumber"]),
+    ],
+    dependencies: deps,
+    targets: [
+        .target(
+            name: "BigNumber",
+            dependencies: [],
+            path: "Sources"),
+    ]
 )

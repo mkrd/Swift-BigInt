@@ -21,7 +21,11 @@ Yes, it's that easy :)
 
 You can use the [Swift Package Manager](https://swift.org/package-manager/) and specify the  package dependency in your `Package.swift` file by adding this:
 ```
-.Package(url: "https://github.com/mkrd/Swift-Big-Integer.git", majorVersion: 1)
+.Package(url: "https://github.com/mkrd/Swift-BigInt.git", branch: "master")
+```
+
+```
+import BigNumber
 ```
 
 
@@ -53,9 +57,6 @@ print(-a * b)
 print(BInt(200).factorial())
 >>> 788657867364790503552363213932185062295135977687173263294742533244359449963403342920304284011984623904177212138919638830257642790242637105061926624952829931113462857270763317237396988943922445621451664240254033291864131227428294853277524242407573903240321257405579568660226031904170324062351700858796178922222789623703897374720000000000000000000000000000000000000000000000000
 ```
-
-
-
 
 # Usage
 

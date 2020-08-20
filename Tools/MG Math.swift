@@ -13,6 +13,8 @@
 
 import Foundation
 
+infix operator **
+
 func **(lhs: Double, rhs: Double) -> Double { return pow(lhs, rhs) }
 func **(lhs: Int, rhs: Double) -> Double { return pow(Double(lhs), rhs) }
 func **(lhs: Double, rhs: Int) -> Double { return pow(lhs, Double(rhs)) }
