@@ -2312,7 +2312,7 @@ public struct BDouble:
 						// if safeAfterExp is negative this results in a crash
 						// more testing and test cases needed
 						if safeAfterExp < 0 {
-							return nil
+							safeAfterExp = abs(safeAfterExp)
 						}
 						
 						let den = ["1"] + [Character](repeating: "0", count: safeAfterExp)

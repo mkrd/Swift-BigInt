@@ -33,6 +33,7 @@ class BDoubleTests : XCTestCase {
 		XCTAssertEqual(BDouble("-1.2e10")?.fractionDescription, "-12000000000")
 		XCTAssertEqual(BDouble(123000000000000000000.0), 123000000000000000000.0)
 		XCTAssertEqual(BDouble("1.2")?.fractionDescription, "6/5")
+		XCTAssertEqual(BDouble("5.7156430570677954e-05"), 5.7156430570677954e-05)
 		
 		for _ in 0..<100 {
 			let rn = Double(Double(arc4random()) / Double(UINT32_MAX))
