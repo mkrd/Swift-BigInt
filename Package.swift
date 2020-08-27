@@ -1,11 +1,10 @@
 // swift-tools-version:4.2
 import PackageDescription
 
-let deps: [Package.Dependency]
 #if os(Linux)
-	deps = [.Package(url: "https://github.com/mdaxter/CBSD.git", majorVersion: 1)]
+let deps: [Package.Dependency] = [.package(url: "https://github.com/mdaxter/CBSD.git", from: "1.0.0")]
 #else
-	deps = []
+let deps: [Package.Dependency] = []
 #endif
 
 let package = Package(
