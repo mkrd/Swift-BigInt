@@ -14,5 +14,9 @@ let package = Package(
             name: "BigNumber",
             dependencies: [],
             path: "Sources"),
+        .testTarget(
+            name: "BigNumberTests",
+            dependencies: ["BigNumber"],
+            path: "Tests"),
     ]
 )
