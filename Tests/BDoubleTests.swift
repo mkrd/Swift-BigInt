@@ -467,12 +467,22 @@ class BDoubleTests : XCTestCase {
 	}
 	
 	func testCodable() {
-		let one = BDouble(1)
-		
-		let json = try! JSONEncoder().encode(one)
-		
-		let my_one = try! JSONDecoder().decode(BDouble.self, from: json)
-		
-		XCTAssertEqual(one, my_one)
+		for i in 0..<50 {
+			let one = BDouble(i)
+			
+			let json = try! JSONEncoder().encode(one)
+			
+			let my_one = try! JSONDecoder().decode(BDouble.self, from: json)
+			
+			XCTAssertEqual(one, my_one)
+			
+			let rand = BDouble(String(arc4random()), radix: 10)
+			
+			let rand_json = try! JSONEncoder().encode(rand)
+			
+			let my_rand = try! JSONDecoder().decode(BDouble.self, from: rand_json)
+			
+			XCTAssertEqual(rand, my_rand)
+		}
 	}
 }

@@ -35,13 +35,23 @@ class Test_Initialization: XCTestCase {
     }
     
     func testCodable() {
-        let one = BInt(1)
-        
-        let json = try! JSONEncoder().encode(one)
-        
-        let my_one = try! JSONDecoder().decode(BInt.self, from: json)
-        
-        XCTAssertEqual(one, my_one)
+        for i in 0..<50 {
+            let one = BInt(i)
+            
+            let json = try! JSONEncoder().encode(one)
+            
+            let my_one = try! JSONDecoder().decode(BInt.self, from: json)
+            
+            XCTAssertEqual(one, my_one)
+            
+            let rand = BInt(String(arc4random()), radix: 10)
+            
+            let rand_json = try! JSONEncoder().encode(rand)
+            
+            let my_rand = try! JSONDecoder().decode(BInt.self, from: rand_json)
+            
+            XCTAssertEqual(rand, my_rand)
+        }
     }
 
     func testPerformanceExample() {
