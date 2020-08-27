@@ -464,4 +464,14 @@ class BDoubleTests : XCTestCase {
 			}
 		}
 	}
+	
+	func testCodable() {
+		let one = BDouble(1)
+		
+		let json = try! JSONEncoder().encode(one)
+		
+		let my_one = try! JSONDecoder().decode(BDouble.self, from: json)
+		
+		XCTAssertEqual(one, my_one)
+	}
 }

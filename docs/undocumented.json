@@ -30,22 +30,15 @@
     },
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 504,
+      "line": 505,
       "symbol": "BInt.rawValue",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 724,
+      "line": 725,
       "symbol": "BInt.+(_:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.static",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 753,
-      "symbol": "BInt.+(_:_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     },
@@ -58,8 +51,8 @@
     },
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 756,
-      "symbol": "BInt.+=(_:_:)",
+      "line": 755,
+      "symbol": "BInt.+(_:_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     },
@@ -72,8 +65,8 @@
     },
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 799,
-      "symbol": "BInt.-(_:_:)",
+      "line": 758,
+      "symbol": "BInt.+=(_:_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     },
@@ -86,8 +79,8 @@
     },
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 804,
-      "symbol": "BInt.-=(_:_:)",
+      "line": 801,
+      "symbol": "BInt.-(_:_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     },
@@ -100,8 +93,8 @@
     },
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 824,
-      "symbol": "BInt.*(_:_:)",
+      "line": 806,
+      "symbol": "BInt.-=(_:_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     },
@@ -114,8 +107,8 @@
     },
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 829,
-      "symbol": "BInt.*=(_:_:)",
+      "line": 826,
+      "symbol": "BInt.*(_:_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     },
@@ -128,121 +121,114 @@
     },
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 842,
+      "line": 831,
+      "symbol": "BInt.*=(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
+      "line": 843,
       "symbol": "BInt.**(_:_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 848,
+      "line": 849,
       "symbol": "BInt.factorial()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 2188,
+      "line": 2189,
       "symbol": "BDouble",
       "symbol_kind": "source.lang.swift.decl.struct",
       "warning": "undocumented"
     },
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 2206,
+      "line": 2208,
       "symbol": "BDouble.sign",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 2207,
+      "line": 2209,
       "symbol": "BDouble.numerator",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 2208,
+      "line": 2210,
       "symbol": "BDouble.denominator",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 2229,
+      "line": 2231,
       "symbol": "BDouble.init(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 2256,
+      "line": 2258,
       "symbol": "BDouble.init(_:over:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 2265,
+      "line": 2267,
       "symbol": "BDouble.init(_:over:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 2274,
+      "line": 2276,
       "symbol": "BDouble.init(_:over:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 2285,
+      "line": 2287,
       "symbol": "BDouble.init(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 2410,
+      "line": 2412,
       "symbol": "BDouble.init(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 2415,
+      "line": 2417,
       "symbol": "BDouble.init(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 2601,
+      "line": 2603,
       "symbol": "BDouble.rawData()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 2619,
+      "line": 2621,
       "symbol": "BDouble.minimize()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 2719,
-      "symbol": "BDouble.+(_:_:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.static",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 2720,
-      "symbol": "BDouble.+(_:_:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     },
     {
@@ -261,22 +247,22 @@
     },
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 2729,
+      "line": 2723,
+      "symbol": "BDouble.+(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
+      "line": 2724,
+      "symbol": "BDouble.+(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
+      "line": 2731,
       "symbol": "BDouble.+=(_:_:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.static",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 2774,
-      "symbol": "BDouble.-(_:_:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.static",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 2775,
-      "symbol": "BDouble.-(_:_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     },
@@ -289,22 +275,22 @@
     },
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 2782,
+      "line": 2777,
+      "symbol": "BDouble.-(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
+      "line": 2778,
+      "symbol": "BDouble.-(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
+      "line": 2784,
       "symbol": "BDouble.-=(_:_:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.static",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 2805,
-      "symbol": "BDouble.*(_:_:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.static",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 2806,
-      "symbol": "BDouble.*(_:_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     },
@@ -324,42 +310,42 @@
     },
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 2815,
+      "line": 2809,
+      "symbol": "BDouble.*(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
+      "line": 2810,
+      "symbol": "BDouble.*(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
+      "line": 2817,
       "symbol": "BDouble.*=(_:_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 2827,
+      "line": 2829,
       "symbol": "BDouble.**(_:_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 2845,
+      "line": 2847,
       "symbol": "BDouble.**(_:_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 2913,
-      "symbol": "BDouble./(_:_:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.static",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 2924,
-      "symbol": "BDouble./(_:_:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.static",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 2925,
+      "line": 2915,
       "symbol": "BDouble./(_:_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
@@ -373,14 +359,21 @@
     },
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 2969,
-      "symbol": "BDouble.==(_:_:)",
+      "line": 2927,
+      "symbol": "BDouble./(_:_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 2970,
+      "line": 2928,
+      "symbol": "BDouble./(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
+      "line": 2971,
       "symbol": "BDouble.==(_:_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
@@ -388,76 +381,83 @@
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
       "line": 2972,
+      "symbol": "BDouble.==(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
+      "line": 2974,
       "symbol": "BDouble.!=(_:_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 2976,
+      "line": 2978,
       "symbol": "BDouble.!=(_:_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 2977,
+      "line": 2979,
       "symbol": "BDouble.!=(_:_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 2991,
+      "line": 2993,
       "symbol": "BDouble.<(_:_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 2992,
+      "line": 2994,
       "symbol": "BDouble.<(_:_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 2995,
+      "line": 2997,
       "symbol": "BDouble.>(_:_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 2996,
+      "line": 2998,
       "symbol": "BDouble.>(_:_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 2999,
+      "line": 3001,
       "symbol": "BDouble.<=(_:_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 3000,
+      "line": 3002,
       "symbol": "BDouble.<=(_:_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 3003,
+      "line": 3005,
       "symbol": "BDouble.>=(_:_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"
     },
     {
       "file": "/Users/twodayslate/Development/Swift-Big-Integer/Sources/Swift-Big-Number-Core.swift",
-      "line": 3004,
+      "line": 3006,
       "symbol": "BDouble.>=(_:_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.static",
       "warning": "undocumented"

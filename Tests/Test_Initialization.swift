@@ -33,6 +33,16 @@ class Test_Initialization: XCTestCase {
 		let b = BInt(1) + BInt(limbs: [UInt64.max, UInt64.max, UInt64.max, UInt64.max])
 		XCTAssert(b.rawValue.limbs == [0, 0, 0, 0, 1])
     }
+    
+    func testCodable() {
+        let one = BInt(1)
+        
+        let json = try! JSONEncoder().encode(one)
+        
+        let my_one = try! JSONDecoder().decode(BInt.self, from: json)
+        
+        XCTAssertEqual(one, my_one)
+    }
 
     func testPerformanceExample() {
         // This is an example of a performance test case.

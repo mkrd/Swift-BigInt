@@ -165,7 +165,8 @@ infix operator ** : ExponentiationPrecedence
 public struct BInt:
 	SignedNumeric, // Implies Numeric, Equatable, ExpressibleByIntegerLiteral
 	BinaryInteger, // Implies Hashable, CustomStringConvertible, Strideable, Comparable
-	ExpressibleByFloatLiteral
+	ExpressibleByFloatLiteral,
+	Codable
 {
 	//
 	//
@@ -2191,7 +2192,8 @@ public struct BDouble:
 	CustomStringConvertible,
 	SignedNumeric,
 	Comparable,
-	Hashable
+	Hashable,
+	Codable
 {
 	//
 	//
