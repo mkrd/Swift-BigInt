@@ -2307,6 +2307,12 @@ public struct BDouble:
                         } else {
                             safeAfterExp = safeAfterExp - beforeExp.count + 1
                         }
+						// if safeAfterExp is negative this results in a crash
+						// more testing and test cases needed
+						if safeAfterExp < 0 {
+							return nil
+						}
+						
 						let den = ["1"] + [Character](repeating: "0", count: safeAfterExp)
 						self.init(beforeExp, over: String(den))
 						return

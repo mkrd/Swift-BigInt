@@ -7,6 +7,7 @@
 //
 
 import XCTest
+@testable import BigNumber
 
 class Test_Advanced_Math: XCTestCase {
 

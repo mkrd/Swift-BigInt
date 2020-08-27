@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		AE8388AF203F1CB000FAC88F /* BigNumber.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE8388A6203F1CAF00FAC88F /* BigNumber.framework */; };
-		AE8388B4203F1CB000FAC88F /* BigNumber_iOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE8388B3203F1CB000FAC88F /* BigNumber_iOSTests.swift */; };
 		AE8388BD203F1CC800FAC88F /* Swift-Big-Number-Core.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F92B421D0F7452003CDF7D /* Swift-Big-Number-Core.swift */; };
 		B7C37FE624EEE47E005B1987 /* MG Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F92B4C1D0F7468003CDF7D /* MG Matrix.swift */; };
 		C26B2726207E5C13008FA649 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F92B3B1D0F7421003CDF7D /* main.swift */; };
@@ -80,8 +79,6 @@
 /* Begin PBXFileReference section */
 		AE8388A6203F1CAF00FAC88F /* BigNumber.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BigNumber.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE8388AE203F1CB000FAC88F /* BigNumber-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "BigNumber-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		AE8388B3203F1CB000FAC88F /* BigNumber_iOSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigNumber_iOSTests.swift; sourceTree = "<group>"; };
-		AE8388B5203F1CB000FAC88F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C224D2D41DCFBAFE006CD7C5 /* MG Complex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MG Complex.swift"; sourceTree = "<group>"; };
 		C24E721A1E58D69F008AD14D /* MG SuperSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MG SuperSwift.swift"; sourceTree = "<group>"; };
 		C26B274E207E701B008FA649 /* BigNumber_iOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BigNumber_iOS.h; sourceTree = "<group>"; };
@@ -155,15 +152,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		AE8388B2203F1CB000FAC88F /* BigNumber-iOSTests */ = {
-			isa = PBXGroup;
-			children = (
-				AE8388B3203F1CB000FAC88F /* BigNumber_iOSTests.swift */,
-				AE8388B5203F1CB000FAC88F /* Info.plist */,
-			);
-			path = "BigNumber-iOSTests";
-			sourceTree = "<group>";
-		};
 		C26B274D207E7004008FA649 /* BigNumber-iOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -239,7 +227,6 @@
 				C29F6AE41FEB1BD200AD0478 /* Tests */,
 				C28F71EE1DF0557800CE18C6 /* Info.plist */,
 				C26B274D207E7004008FA649 /* BigNumber-iOS */,
-				AE8388B2203F1CB000FAC88F /* BigNumber-iOSTests */,
 				C2A4928A1DF05294001992B1 /* Products */,
 				C26B2785207E8369008FA649 /* Resources */,
 				F64629231FF015E40074A180 /* MathGround */,
@@ -475,7 +462,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AE8388B4203F1CB000FAC88F /* BigNumber_iOSTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

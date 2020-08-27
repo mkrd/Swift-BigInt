@@ -7,6 +7,7 @@
 //
 
 import XCTest
+@testable import BigNumber
 
 class Test_Basic_Math: XCTestCase {
 
@@ -242,8 +243,7 @@ class Test_Basic_Math: XCTestCase {
         // Reference issue #41
         let TWO : BInt = 2
         let TWO_SIX_THREE : Int = 263
-        var TWO_POW_263 : BInt = TWO ** TWO_SIX_THREE
+        let TWO_POW_263 : BInt = TWO ** TWO_SIX_THREE
         XCTAssertEqual(TWO_POW_263, BInt("14821387422376473014217086081112052205218558037201992197050570753012880593911808"))
     }
-
 }
