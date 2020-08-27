@@ -7,6 +7,7 @@
 //
 
 import XCTest
+@testable import BigNumber
 
 class BIntTests: XCTestCase {
     
@@ -28,7 +29,8 @@ class BIntTests: XCTestCase {
 			"y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O",
 			"P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"
 		]
-
+        
+        #if !SWIFT_PACKAGE
 		// Randomly choose two bases and a number length, as well as a sign (+ or -)
 		for _ in 0..<100
 		{
@@ -57,6 +59,7 @@ class BIntTests: XCTestCase {
 			XCTAssert(b1 == b2)
 			XCTAssert(s2 == num)
 		}
+        #endif
 
 		let bigHex = "abcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdef00"
 		let x = BInt(bigHex, radix: 16)!

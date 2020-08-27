@@ -7,7 +7,7 @@
 */
 
 import Foundation
-
+#if !SWIFT_PACKAGE
 public class MG_Math_Tests
 {
 	static func test_primesTo()
@@ -35,3 +35,4 @@ public class MG_Math_Tests
 //		}
 	}
 }
+#endif

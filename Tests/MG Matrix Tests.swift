@@ -7,7 +7,7 @@
 */
 
 import Foundation
-
+#if !SWIFT_PACKAGE
 public class MG_Matrix_Tests
 {
 	static func testSparseMatrix()
@@ -40,4 +40,4 @@ public class MG_Matrix_Tests
 		}
 	}
 }
-
+#endif

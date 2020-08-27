@@ -7,6 +7,7 @@
 //
 
 import XCTest
+@testable import BigNumber
 
 class Test_BIntMath: XCTestCase {
 
@@ -20,16 +21,25 @@ class Test_BIntMath: XCTestCase {
 
 	func test_gcd()
 	{
+        #if !SWIFT_PACKAGE
 		for (a, b) in (0...50)><(0...50)
 		{
 			let steinGCD = BIntMath.gcd(BInt(a), BInt(b))
 			let euclidGCD = BIntMath.gcdEuclid(BInt(a), BInt(b))
 			XCTAssert(steinGCD == euclidGCD, "SteinGcd does not work")
 		}
-
-		let g1 = Storage.readResource("gcdTest1", inBundle: Bundle(for: type(of: self)))
-		let g2 = Storage.readResource("gcdTest2", inBundle: Bundle(for: type(of: self)))
-		XCTAssert(BIntMath.gcd(BInt(g1)!, BInt(g2)!) == 66)
+        let g1 = Storage.readResource("gcdTest1", inBundle: Bundle(for: type(of: self)))
+        let g2 = Storage.readResource("gcdTest2", inBundle: Bundle(for: type(of: self)))
+        XCTAssert(BIntMath.gcd(BInt(g1)!, BInt(g2)!) == 66)
+        #endif
+        
+        for a in 0..<50 {
+            for b in 0..<50 {
+                let steinGCD = BIntMath.gcd(BInt(a), BInt(b))
+                let euclidGCD = BIntMath.gcdEuclid(BInt(a), BInt(b))
+                XCTAssertEqual(steinGCD, euclidGCD)
+            }
+        }
 	}
 
 }
