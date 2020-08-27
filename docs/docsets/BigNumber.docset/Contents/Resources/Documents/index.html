@@ -20,7 +20,7 @@
     <header class="header">
       <p class="header-col header-col--primary">
         <a class="header-link" href="index.html">
-          BigNumber Docs
+          BigNumber 2.1.0 Docs
         </a>
         
       </p>
@@ -56,25 +56,42 @@
       <nav class="navigation">
         <ul class="nav-groups">
           <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/Double.html">Double</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Extensions/Int.html">Int</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
             <a class="nav-group-name-link" href="Functions.html">Functions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Functions.html#/s:9BigNumber3absAA7BDoubleVADF">abs(_:)</a>
+                <a class="nav-group-task-link" href="Functions.html#/s:9BigNumber3absyAA7BDoubleVADF">abs(_:)</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Functions.html#/s:9BigNumber4ceilAA4BIntVAA7BDoubleVF">ceil(_:)</a>
+                <a class="nav-group-task-link" href="Functions.html#/s:9BigNumber4ceilyAA4BIntVAA7BDoubleVF">ceil(_:)</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Functions.html#/s:9BigNumber5floorAA4BIntVAA7BDoubleVF">floor(_:)</a>
+                <a class="nav-group-task-link" href="Functions.html#/s:9BigNumber5flooryAA4BIntVAA7BDoubleVF">floor(_:)</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Functions.html#/s:9BigNumber3maxAA7BDoubleVAD_ADtF">max(_:_:)</a>
+                <a class="nav-group-task-link" href="Functions.html#/s:9BigNumber3maxyAA7BDoubleVAD_ADtF">max(_:_:)</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Functions.html#/s:9BigNumber3minAA7BDoubleVAD_ADtF">min(_:_:)</a>
+                <a class="nav-group-task-link" href="Functions.html#/s:9BigNumber3minyAA7BDoubleVAD_ADtF">min(_:_:)</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="Functions.html#/s:9BigNumber3powAA7BDoubleVAD_SitF">pow(_:_:)</a>
+                <a class="nav-group-task-link" href="Functions.html#/s:9BigNumber3powyAA7BDoubleVAD_AA4BIntVtF">pow(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Functions.html#/s:9BigNumber3powyAA7BDoubleVAD_ADtF">pow(_:_:)</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Functions.html#/s:9BigNumber3powyAA7BDoubleVAD_SitF">pow(_:_:)</a>
               </li>
             </ul>
           </li>
@@ -113,45 +130,86 @@
         <section class="section">
           <div class="section-content">
             
-            <h1 id='swift-big-number' class='heading'>Swift-Big-Number</h1>
+            <h1 id='swift-bigint' class='heading'>Swift-BigInt</h1>
 
-<p>Swift-Big-Number is a lightweight, and easy-to-use, arbitrary precision arithmetric library for Swift 4. It supports whole Numbers (BInt) and Fractions (BDouble) with most of the common math operators like addition, subtraction, multiplication, exponentiation, modulus and division. Some optimized math functions like factorial or gcd are also implemented. So more details, please continue reading.</p>
+<p>Swift-BigInt is a lightweight, and easy-to-use, arbitrary precision arithmetric library for Swift 5. </p>
 
-<p>Some benchmarks are located in Benchmarks.swift, note that these are more than 10 times faster in release mode.</p>
-<h2 id='installation' class='heading'>Installation</h2>
-<h3 id='manual' class='heading'>Manual</h3>
+<p>It supports whole Numbers (BInt) and Fractions (BDouble) with most of the common math operators. Optimized mathematical functions like factorial or gcd are also implemented and are accessible through BIntMath. For more details, please continue reading.</p>
 
-<p>Simply drag the Swift-Big-Number-Core.swift file from the sources folder into your project!
-Yes, it&rsquo;s that easy :)</p>
-<h3 id='swift-package-manager' class='heading'>Swift Package Manager</h3>
+<p>Some benchmarks are located in Benchmarks.swift, note that these are more than 10 times faster in the release mode, compared to the debug mode of Xcode.</p>
+<h1 id='installation' class='heading'>Installation</h1>
+<h2 id='drag-and-drop' class='heading'>Drag and Drop</h2>
+
+<p>One of the main goals of this library is to be lightweight and independent.</p>
+
+<p>Simply drag and drop <code>Swift-Big-Number-Core.swift</code> from the <code>sources</code> folder into your project!</p>
+
+<p>Yes, it&rsquo;s that easy :)</p>
+<h2 id='swift-package-manager' class='heading'>Swift Package Manager</h2>
 
 <p>You can use the <a href="https://swift.org/package-manager/">Swift Package Manager</a> and specify the  package dependency in your <code>Package.swift</code> file by adding this:</p>
-<pre class="highlight plaintext"><code>.Package(url: "https://github.com/mkrd/Swift-Big-Integer.git", majorVersion: 1)
+<pre class="highlight plaintext"><code>.Package(url: "https://github.com/mkrd/Swift-BigInt.git", branch: "master")
 </code></pre>
-<h3 id='cocoapods' class='heading'>CocoaPods:</h3>
+<pre class="highlight plaintext"><code>import BigNumber
+</code></pre>
+<h2 id='cocoapods' class='heading'>CocoaPods</h2>
 
 <p>Put the following in your Podfile:</p>
 <pre class="highlight plaintext"><code>pod 'BigNumber', '~&gt; 2.0', :git =&gt; 'https://github.com/mkrd/Swift-Big-Integer.git'
 </code></pre>
-<h2 id='compatibility' class='heading'>Compatibility</h2>
+<h1 id='compatibility' class='heading'>Compatibility</h1>
 
 <p>It is recommended to use Xcode 9+ and Swift 4+. Issues have been reported with older versions, so you might want to use an older version of this library if you can&rsquo;t update.</p>
-<h2 id='usage' class='heading'>Usage</h2>
+<h1 id='getting-started' class='heading'>Getting Started</h1>
 
-<p>This subsection explains the usage of BInt and BDouble</p>
-<h3 id='bint' class='heading'>BInt</h3>
-<h4 id='you-can-initialize-bint-with-the-following-constructors' class='heading'>You can initialize BInt with the following constructors:</h4>
-<pre class="highlight swift"><code><span class="kt">BInt</span><span class="p">(</span><span class="kt">Int</span><span class="p">)</span>
-<span class="kt">BInt</span><span class="p">(</span><span class="kt">UInt</span><span class="p">)</span>
-<span class="kt">BInt</span><span class="p">(</span><span class="kt">String</span><span class="p">)?</span>
-<span class="kt">BInt</span><span class="p">(</span><span class="kt">String</span><span class="p">,</span> <span class="nv">radix</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)?</span>
+<p>Here is a small example, to showcase some functionalities of this library. If you want to learn more, please continue reading the Usage section below.</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">a</span> <span class="o">=</span> <span class="kt">BInt</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+<span class="k">let</span> <span class="nv">b</span> <span class="o">=</span> <span class="kt">BInt</span><span class="p">(</span><span class="s">"-10000000000000000000000000000000000000000000000000000000000000000"</span><span class="p">)</span><span class="o">!</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="o">-</span><span class="mi">10000000000000000000000000000000000000000000000000000000000000000</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="o">-</span><span class="n">a</span> <span class="o">*</span> <span class="n">b</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">120000000000000000000000000000000000000000000000000000000000000000</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="kt">BInt</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span><span class="o">.</span><span class="nf">factorial</span><span class="p">())</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">788657867364790503552363213932185062295135977687173263294742533244359449963403342920304284011984623904177212138919638830257642790242637105061926624952829931113462857270763317237396988943922445621451664240254033291864131227428294853277524242407573903240321257405579568660226031904170324062351700858796178922222789623703897374720000000000000000000000000000000000000000000000000</span>
 </code></pre>
-<h4 id='examples' class='heading'>Examples:</h4>
-<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">integer</span> <span class="o">=</span> <span class="kt">BInt</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
-<span class="k">let</span> <span class="nv">hexadecimal</span> <span class="o">=</span> <span class="kt">BInt</span><span class="p">(</span><span class="s">"fff"</span><span class="p">,</span> <span class="nv">radix</span><span class="p">:</span> <span class="mi">16</span><span class="p">)</span>
-<span class="k">let</span> <span class="nv">string</span> <span class="o">=</span> <span class="kt">BInt</span><span class="p">(</span><span class="s">"-234324176583764598326758236587632649181349105368042856028465298620328782652623"</span><span class="p">)</span><span class="o">!</span>
+<h1 id='usage' class='heading'>Usage</h1>
+<h2 id='bint' class='heading'>BInt</h2>
+<h3 id='initialization' class='heading'>Initialization</h3>
+
+<p>You initialize BInt with <code>Int</code>, <code>UInt</code>, and <code>String</code>. If you use a <code>String</code>, the initialized <code><a href="Structs/BInt.html">BInt</a></code> will be an optional type, which will be empty if the <code>String</code> does not contain an valid number.</p>
+<pre class="highlight plaintext"><code>BInt(Int)
+BInt(UInt)
+BInt(String)?
+BInt(String, radix: Int)?
 </code></pre>
-<h4 id='bint-offers-these-struct-methods' class='heading'>BInt offers these struct methods:</h4>
+<h3 id='examples' class='heading'>Examples</h3>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">a</span> <span class="o">=</span> <span class="kt">BInt</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">12</span>
+
+
+<span class="k">let</span> <span class="nv">b</span> <span class="o">=</span> <span class="kt">BInt</span><span class="p">(</span><span class="s">"-234324176583764598326758236587632649181349105368042856028465298620328782652623"</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">b</span><span class="o">!</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="o">-</span><span class="mi">234324176583764598326758236587632649181349105368042856028465298620328782652623</span>
+
+
+<span class="k">let</span> <span class="nv">invalid</span> <span class="o">=</span> <span class="kt">BInt</span><span class="p">(</span><span class="s">"I'm not a number"</span><span class="p">)</span>
+<span class="k">if</span> <span class="k">let</span> <span class="nv">c</span> <span class="o">=</span> <span class="n">invalid</span> <span class="p">{</span>
+  <span class="nf">print</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+  <span class="nf">print</span><span class="p">(</span><span class="s">"Not a valid number!"</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kt">Not</span> <span class="n">a</span> <span class="n">valid</span> <span class="n">number</span><span class="o">!</span>
+
+
+<span class="k">let</span> <span class="nv">d</span> <span class="o">=</span> <span class="kt">BInt</span><span class="p">(</span><span class="s">"fff"</span><span class="p">,</span> <span class="nv">radix</span><span class="p">:</span> <span class="mi">16</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">4095</span>
+</code></pre>
+<h3 id='bint-offers-these-struct-methods' class='heading'>BInt offers these struct methods</h3>
 <pre class="highlight swift"><code><span class="k">let</span> <span class="nv">big</span> <span class="o">=</span> <span class="kt">BInt</span><span class="p">(</span><span class="s">"-143141341"</span><span class="p">)</span><span class="o">!</span>
 
 <span class="n">big</span><span class="o">.</span><span class="n">description</span> <span class="c1">// Returns "-143141341"</span>
@@ -167,7 +225,7 @@ Yes, it&rsquo;s that easy :)</p>
 
 <span class="n">big</span><span class="o">.</span><span class="nf">rawData</span><span class="p">()</span> <span class="c1">// Returns internal structure</span>
 </code></pre>
-<h3 id='the-following-operators-work-with-bint' class='heading'>The following Operators work with BInt:</h3>
+<h2 id='the-following-operators-work-with-bint' class='heading'>The following Operators work with BInt</h2>
 <pre class="highlight swift"><code><span class="c1">// Operating on Int and BInt result in a typecast to BInt</span>
 
 <span class="c1">// Addition</span>
@@ -175,34 +233,34 @@ Yes, it&rsquo;s that easy :)</p>
 <span class="kt">BIntOrInt</span>  <span class="o">+=</span> <span class="kt">BIntOrInt</span>
 
 <span class="c1">//Subtraction</span>
-<span class="kt">BIntOrInt</span>  <span class="o">-</span>  <span class="kt">BIntOrInt</span> <span class="c1">// Returns BInt</span>
-<span class="kt">BIntOrInt</span>  <span class="o">-=</span> <span class="kt">BIntOrInt</span>
+<span class="kt">BIntOrInt</span> <span class="o">-</span>  <span class="kt">BIntOrInt</span> <span class="c1">// Returns BInt</span>
+<span class="kt">BIntOrInt</span> <span class="o">-=</span> <span class="kt">BIntOrInt</span>
 
 <span class="c1">// Multiplication</span>
-<span class="kt">BIntOrInt</span>  <span class="o">*</span>  <span class="kt">BIntOrInt</span> <span class="c1">// Returns BInt</span>
-<span class="kt">BIntOrInt</span>  <span class="o">*=</span> <span class="kt">BIntOrInt</span>
+<span class="kt">BIntOrInt</span> <span class="o">*</span>  <span class="kt">BIntOrInt</span> <span class="c1">// Returns BInt</span>
+<span class="kt">BIntOrInt</span> <span class="o">*=</span> <span class="kt">BIntOrInt</span>
 
 <span class="c1">// Exponentiation</span>
-<span class="kt">BInt</span>       <span class="o">**</span>  <span class="kt">Int</span>       <span class="c1">// Retuns BInt to the power of Int</span>
+<span class="kt">BInt</span> <span class="o">**</span> <span class="kt">Int</span>       <span class="c1">// Retuns BInt to the power of Int</span>
 
 <span class="c1">// Modulo</span>
 <span class="kt">BIntOrInt</span>  <span class="o">%</span>  <span class="kt">BIntOrInt</span> <span class="c1">// Returns BInt</span>
 <span class="kt">BInt</span>       <span class="o">%=</span> <span class="kt">BInt</span>
 
 <span class="c1">// Division</span>
-<span class="kt">BInt</span>       <span class="o">/</span>  <span class="kt">BInt</span> <span class="c1">// Returns BInt</span>
-<span class="kt">BInt</span>       <span class="o">/=</span> <span class="kt">BInt</span>
+<span class="kt">BInt</span> <span class="o">/</span>  <span class="kt">BInt</span> <span class="c1">// Returns BInt</span>
+<span class="kt">BInt</span> <span class="o">/=</span> <span class="kt">BInt</span>
 
 
 <span class="c1">// Comparing</span>
-<span class="kt">BInt</span>       <span class="o">==</span> <span class="kt">BInt</span>
-<span class="kt">BInt</span>       <span class="o">!=</span> <span class="kt">BInt</span>
-<span class="kt">BInt</span>       <span class="o">&lt;</span>  <span class="kt">BInt</span>
-<span class="kt">BInt</span>       <span class="o">&lt;=</span> <span class="kt">BInt</span>
-<span class="kt">BInt</span>       <span class="o">&gt;</span>  <span class="kt">BInt</span>
-<span class="kt">BInt</span>       <span class="o">&gt;=</span> <span class="kt">BInt</span>
+<span class="kt">BInt</span> <span class="o">==</span> <span class="kt">BInt</span>
+<span class="kt">BInt</span> <span class="o">!=</span> <span class="kt">BInt</span>
+<span class="kt">BInt</span> <span class="o">&lt;</span>  <span class="kt">BInt</span>
+<span class="kt">BInt</span> <span class="o">&lt;=</span> <span class="kt">BInt</span>
+<span class="kt">BInt</span> <span class="o">&gt;</span>  <span class="kt">BInt</span>
+<span class="kt">BInt</span> <span class="o">&gt;=</span> <span class="kt">BInt</span>
 </code></pre>
-<h4 id='implemented-bint-math-functions' class='heading'>Implemented BInt math functions:</h4>
+<h3 id='implemented-bint-math-functions' class='heading'>Implemented BInt math functions</h3>
 <pre class="highlight swift"><code><span class="nf">fact</span><span class="p">(</span><span class="kt">Int</span><span class="p">)</span> <span class="c1">// Returns factorial as BInt</span>
 
 <span class="nf">gcd</span><span class="p">(</span><span class="kt">BInt</span><span class="p">,</span> <span class="kt">BInt</span><span class="p">)</span> <span class="c1">// Returns greatest common divisor as BInt</span>
@@ -213,7 +271,7 @@ Yes, it&rsquo;s that easy :)</p>
 
 <span class="nf">combinations</span><span class="p">(</span><span class="kt">BInt</span><span class="p">,</span> <span class="kt">BInt</span><span class="p">)</span> <span class="c1">// Returns BInt</span>
 </code></pre>
-<h4 id='compatibility-with-bignum' class='heading'>Compatibility with Bignum</h4>
+<h3 id='compatibility-with-bignum' class='heading'>Compatibility with Bignum</h3>
 
 <p><code><a href="Structs/BInt.html">BInt</a></code> has a typealias to <code>Bignum</code> that is largely drop-in compatible with the OpenSSL-based <a href="https://github.com/Bouke/Bignum">Swift big number library</a>.  The following properties and operations are available on <code>BInt</code>/<code>Bignum</code>:</p>
 <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">data</span><span class="p">:</span> <span class="kt">Data</span>               <span class="c1">/// Representation as big-endian Data</span>
@@ -241,8 +299,8 @@ Yes, it&rsquo;s that easy :)</p>
 <span class="c1">/// - Returns: r := a % b such that 0 &lt;= r &lt; abs(m)</span>
 <span class="kd">public</span> <span class="kd">func</span> <span class="nf">nnmod</span><span class="p">(</span><span class="n">_</span> <span class="nv">a</span><span class="p">:</span> <span class="kt">BInt</span><span class="p">,</span> <span class="n">_</span> <span class="nv">m</span><span class="p">:</span> <span class="kt">BInt</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">BInt</span>
 </code></pre>
-<h3 id='bdouble' class='heading'>BDouble</h3>
-<h4 id='bdouble-allows-these-constructors' class='heading'>BDouble allows these constructors:</h4>
+<h2 id='bdouble' class='heading'>BDouble</h2>
+<h3 id='bdouble-allows-these-constructors' class='heading'>BDouble allows these constructors</h3>
 <pre class="highlight swift"><code><span class="kt">BDouble</span><span class="p">(</span><span class="kt">Int</span><span class="p">)</span>
 <span class="kt">BDouble</span><span class="p">(</span><span class="kt">Double</span><span class="p">)</span>
 <span class="kt">BDouble</span><span class="p">(</span><span class="kt">String</span><span class="p">)?</span>
@@ -250,13 +308,13 @@ Yes, it&rsquo;s that easy :)</p>
 <span class="kt">BDouble</span><span class="p">(</span><span class="kt">String</span><span class="p">,</span> <span class="nv">over</span><span class="p">:</span> <span class="kt">String</span><span class="p">)?</span>
 <span class="kt">BDouble</span><span class="p">(</span><span class="kt">String</span><span class="p">,</span> <span class="nv">radix</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)?</span>
 </code></pre>
-<h4 id='examples' class='heading'>Examples:</h4>
+<h3 id='examples' class='heading'>Examples</h3>
 <pre class="highlight swift"><code><span class="k">let</span> <span class="nv">integer</span> <span class="o">=</span> <span class="kt">BDouble</span><span class="p">(</span><span class="mi">221</span><span class="p">)</span>
 <span class="k">let</span> <span class="nv">double</span> <span class="o">=</span> <span class="kt">BDouble</span><span class="p">(</span><span class="mf">1.192</span><span class="p">)</span>
 <span class="k">let</span> <span class="nv">fraction</span> <span class="o">=</span> <span class="kt">BDouble</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="nv">over</span><span class="p">:</span> <span class="mi">4</span><span class="p">)</span>
 <span class="k">let</span> <span class="nv">stringFraction</span> <span class="o">=</span> <span class="kt">BDouble</span><span class="p">(</span><span class="s">"1"</span> <span class="nv">over</span><span class="p">:</span> <span class="s">"3421342675925672365438867862653658268376582356831563158967"</span><span class="p">)</span><span class="o">!</span>
 </code></pre>
-<h4 id='bdouble-offers-these-struct-methods' class='heading'>BDouble offers these struct methods:</h4>
+<h3 id='bdouble-offers-these-struct-methods' class='heading'>BDouble offers these struct methods</h3>
 <pre class="highlight swift"><code><span class="k">let</span> <span class="nv">bigD</span> <span class="o">=</span> <span class="kt">BDouble</span><span class="p">(</span><span class="o">-</span><span class="mf">12.32</span><span class="p">)</span>
 
 <span class="n">bigD</span><span class="o">.</span><span class="n">description</span> <span class="c1">// Returns "-308/25"</span>
@@ -267,7 +325,7 @@ Yes, it&rsquo;s that easy :)</p>
 
 <span class="n">bigD</span><span class="o">.</span><span class="nf">rawData</span><span class="p">()</span> <span class="c1">// Returns internal structure</span>
 </code></pre>
-<h3 id='the-following-operators-work-with-bdouble' class='heading'>The following Operators work with BDouble:</h3>
+<h2 id='the-following-operators-work-with-bdouble' class='heading'>The following Operators work with BDouble</h2>
 <pre class="highlight swift"><code><span class="c1">// Needs more operators, interoperability with BInt</span>
 
 <span class="c1">// Addition</span>
@@ -295,10 +353,10 @@ a &lt;= b &lt;==&gt; !(a &gt; b)
 
 <span class="c1">// More will follow</span>
 </code></pre>
-<h2 id='about-performance' class='heading'>About performance</h2>
+<h1 id='about-performance' class='heading'>About performance</h1>
 
 <p>BInt about twice as fast as mini-gmp, as of now (not counting the normal gmp, because it needs to be installed and is not portable). For example, BInt can add numbers about 2 times faster than GMP (272ms vs 530ms for fib(100,000)), and multiplication is more than twice as fast. When given the task of calculating and printing factorials successively, BInt performs significantly better than GMP. In addition, GMP is significantly harder to use, while BInt offers an intuitive interface.</p>
-<h2 id='contributing' class='heading'>Contributing</h2>
+<h1 id='contributing' class='heading'>Contributing</h1>
 
 <ol>
 <li>Fork it!</li>
@@ -315,8 +373,8 @@ a &lt;= b &lt;==&gt; !(a &gt; b)
       </article>
     </div>
     <section class="footer">
-      <p><a class="link" href="https://github.com/mkrd/Swift-Big-Integer/blob/master/LICENSE" target="_blank" rel="external">© 2018 BigNumber</a>. (Last updated: 2018-08-06)</p>
-      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+      <p><a class="link" href="https://github.com/mkrd/Swift-Big-Integer/blob/master/LICENSE" target="_blank" rel="external">© 2018 BigNumber</a>. (Last updated: 2020-08-27)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.11.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>
 </div>

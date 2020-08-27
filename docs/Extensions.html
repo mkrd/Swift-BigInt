@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Structures  Reference</title>
+    <title>Extensions  Reference</title>
     <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="css/highlight.css" />
     <meta charset="utf-8">
@@ -14,9 +14,9 @@
   </head>
   <body>
 
-    <a name="//apple_ref/swift/Section/Structures" class="dashAnchor"></a>
+    <a name="//apple_ref/swift/Section/Extensions" class="dashAnchor"></a>
 
-    <a title="Structures  Reference"></a>
+    <a title="Extensions  Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -50,7 +50,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="index.html">BigNumber Reference</a>
       <img class="carat" src="img/carat.png" />
-      Structures  Reference
+      Extensions  Reference
     </p>
 
     <div class="content-wrapper">
@@ -130,8 +130,8 @@
 
         <section class="section">
           <div class="section-content">
-            <h1>Structures</h1>
-            <p>The following structures are available globally.</p>
+            <h1>Extensions</h1>
+            <p>The following extensions are available globally.</p>
 
           </div>
         </section>
@@ -139,20 +139,13 @@
         <section class="section">
           <div class="section-content">
             <div class="task-group">
-              <div class="task-name-container">
-                <a name="/BInt"></a>
-                <a name="//apple_ref/swift/Section/BInt" class="dashAnchor"></a>
-                <a href="#/BInt">
-                  <h3 class="section-name">BInt</h3>
-                </a>
-              </div>
               <ul class="item-container">
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9BigNumber4BIntV"></a>
-                    <a name="//apple_ref/swift/Struct/BInt" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9BigNumber4BIntV">BInt</a>
+                    <a name="/s:Sd"></a>
+                    <a name="//apple_ref/swift/Extension/Double" class="dashAnchor"></a>
+                    <a class="token" href="#/s:Sd">Double</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -160,61 +153,27 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>BInt is an arbitrary precision integer value type. It stores a number in base 2^64 notation
-as an array. Each element of the array is called a limb, which is of type UInt64, the whole
-array is called limbs and has the type [UInt64]. A boolean sign variable determines if the
-number is positive or negative. If sign == true, then the number is smaller than 0,
-otherwise it is greater or equal to 0. It stores the 64 bit digits in little endian, that
-is, the least significant digit is stored in the array index 0:</p>
-<pre class="highlight swift"><code><span class="n">limbs</span> <span class="o">==</span> <span class="p">[]</span> <span class="p">:</span><span class="o">=</span> <span class="n">undefined</span><span class="p">,</span> <span class="n">should</span> <span class="k">throw</span> <span class="n">an</span> <span class="n">error</span>
-<span class="n">limbs</span> <span class="o">==</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sign</span> <span class="o">==</span> <span class="nv">false</span> <span class="p">:</span><span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">defined</span> <span class="k">as</span> <span class="n">positive</span>
-<span class="n">limbs</span> <span class="o">==</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sign</span> <span class="o">==</span> <span class="nv">true</span> <span class="p">:</span><span class="o">=</span> <span class="n">undefined</span><span class="p">,</span> <span class="n">should</span> <span class="k">throw</span> <span class="n">an</span> <span class="n">error</span>
-<span class="n">limbs</span> <span class="o">==</span> <span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="p">:</span><span class="o">=</span> <span class="n">n</span> <span class="k">if</span> <span class="n">sign</span> <span class="o">==</span> <span class="kc">false</span><span class="p">,</span> <span class="n">otherwise</span> <span class="o">-</span><span class="n">n</span><span class="p">,</span> <span class="n">given</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="o">^</span><span class="mi">64</span>
-
-<span class="n">limbs</span> <span class="o">==</span> <span class="p">[</span><span class="n">l0</span><span class="p">,</span> <span class="n">l1</span><span class="p">,</span> <span class="n">l2</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="n">ln</span><span class="p">]</span> <span class="p">:</span><span class="o">=</span>
-<span class="p">(</span><span class="n">l0</span> <span class="o">*</span> <span class="mi">2</span><span class="o">^</span><span class="p">(</span><span class="mf">0*</span><span class="mi">64</span><span class="p">))</span> <span class="o">+</span>
-<span class="p">(</span><span class="mi">11</span> <span class="o">*</span> <span class="mi">2</span><span class="o">^</span><span class="p">(</span><span class="mf">1*</span><span class="mi">64</span><span class="p">))</span> <span class="o">+</span>
-<span class="p">(</span><span class="mi">12</span> <span class="o">*</span> <span class="mi">2</span><span class="o">^</span><span class="p">(</span><span class="mf">2*</span><span class="mi">64</span><span class="p">))</span> <span class="o">+</span>
-<span class="o">...</span> <span class="o">+</span>
-<span class="p">(</span><span class="n">ln</span> <span class="o">*</span> <span class="mi">2</span><span class="o">^</span><span class="p">(</span><span class="n">n</span><span class="o">*</span><span class="mi">64</span><span class="p">))</span>
-</code></pre>
-
-                        <a href="Structs/BInt.html" class="slightly-smaller">See more</a>
+                        
+                        <a href="Extensions/Double.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">BInt</span><span class="p">:</span>
-	<span class="kt">SignedNumeric</span><span class="p">,</span> <span class="c1">// Implies Numeric, Equatable, ExpressibleByIntegerLiteral</span>
-	<span class="kt">BinaryInteger</span><span class="p">,</span> <span class="c1">// Implies Hashable, CustomStringConvertible, Strideable, Comparable</span>
-	<span class="kt">ExpressibleByFloatLiteral</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">@frozen</span>
+<span class="kd">extension</span> <span class="kt">Double</span><span class="p">:</span> <span class="kt">NumericType</span></code></pre>
 
                         </div>
-                      </div>
-                      <div class="slightly-smaller">
-                        <a href="https://github.com/mkrd/Swift-Big-Integer/tree/master/Sources/Swift-Big-Number-Core.swift#L165-L996">Show on GitHub</a>
                       </div>
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <div class="task-name-container">
-                <a name="/BDouble"></a>
-                <a name="//apple_ref/swift/Section/BDouble" class="dashAnchor"></a>
-                <a href="#/BDouble">
-                  <h3 class="section-name">BDouble</h3>
-                </a>
-              </div>
-              <ul class="item-container">
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:9BigNumber7BDoubleV"></a>
-                    <a name="//apple_ref/swift/Struct/BDouble" class="dashAnchor"></a>
-                    <a class="token" href="#/s:9BigNumber7BDoubleV">BDouble</a>
+                    <a name="/s:Si"></a>
+                    <a name="//apple_ref/swift/Extension/Int" class="dashAnchor"></a>
+                    <a class="token" href="#/s:Si">Int</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -222,26 +181,17 @@ is, the least significant digit is stored in the array index 0:</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
-
-                        <a href="Structs/BDouble.html" class="slightly-smaller">See more</a>
+                        
+                        <a href="Extensions/Int.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">BDouble</span><span class="p">:</span>
-	<span class="kt">ExpressibleByIntegerLiteral</span><span class="p">,</span>
-	<span class="kt">ExpressibleByFloatLiteral</span><span class="p">,</span>
-	<span class="kt">CustomStringConvertible</span><span class="p">,</span>
-	<span class="kt">SignedNumeric</span><span class="p">,</span>
-	<span class="kt">Comparable</span><span class="p">,</span>
-	<span class="kt">Hashable</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">@frozen</span>
+<span class="kd">extension</span> <span class="kt">Int</span><span class="p">:</span> <span class="kt">NumericType</span></code></pre>
 
                         </div>
-                      </div>
-                      <div class="slightly-smaller">
-                        <a href="https://github.com/mkrd/Swift-Big-Integer/tree/master/Sources/Swift-Big-Number-Core.swift#L2188-L2999">Show on GitHub</a>
                       </div>
                     </section>
                   </div>
