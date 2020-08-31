@@ -165,7 +165,8 @@ infix operator ** : ExponentiationPrecedence
 public struct BInt:
 	SignedNumeric, // Implies Numeric, Equatable, ExpressibleByIntegerLiteral
 	BinaryInteger, // Implies Hashable, CustomStringConvertible, Strideable, Comparable
-	ExpressibleByFloatLiteral
+	ExpressibleByFloatLiteral,
+	Codable
 {
 	//
 	//
@@ -2191,7 +2192,8 @@ public struct BDouble:
 	CustomStringConvertible,
 	SignedNumeric,
 	Comparable,
-	Hashable
+	Hashable,
+	Codable
 {
 	//
 	//
@@ -2310,7 +2312,7 @@ public struct BDouble:
 						// if safeAfterExp is negative this results in a crash
 						// more testing and test cases needed
 						if safeAfterExp < 0 {
-							return nil
+							safeAfterExp = abs(safeAfterExp)
 						}
 						
 						let den = ["1"] + [Character](repeating: "0", count: safeAfterExp)

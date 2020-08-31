@@ -33,6 +33,26 @@ class Test_Initialization: XCTestCase {
 		let b = BInt(1) + BInt(limbs: [UInt64.max, UInt64.max, UInt64.max, UInt64.max])
 		XCTAssert(b.rawValue.limbs == [0, 0, 0, 0, 1])
     }
+    
+    func testCodable() {
+        for i in 0..<50 {
+            let one = BInt(i)
+            
+            let json = try! JSONEncoder().encode(one)
+            
+            let my_one = try! JSONDecoder().decode(BInt.self, from: json)
+            
+            XCTAssertEqual(one, my_one)
+            
+            let rand = BInt(String(arc4random()), radix: 10)
+            
+            let rand_json = try! JSONEncoder().encode(rand)
+            
+            let my_rand = try! JSONDecoder().decode(BInt.self, from: rand_json)
+            
+            XCTAssertEqual(rand, my_rand)
+        }
+    }
 
     func testPerformanceExample() {
         // This is an example of a performance test case.

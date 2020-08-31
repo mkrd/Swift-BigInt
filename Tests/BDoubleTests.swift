@@ -33,6 +33,7 @@ class BDoubleTests : XCTestCase {
 		XCTAssertEqual(BDouble("-1.2e10")?.fractionDescription, "-12000000000")
 		XCTAssertEqual(BDouble(123000000000000000000.0), 123000000000000000000.0)
 		XCTAssertEqual(BDouble("1.2")?.fractionDescription, "6/5")
+		XCTAssertEqual(BDouble("5.7156430570677954e-05"), 5.7156430570677954e-05)
 		
 		for _ in 0..<100 {
 			let rn = Double(Double(arc4random()) / Double(UINT32_MAX))
@@ -462,6 +463,26 @@ class BDoubleTests : XCTestCase {
 				let _ = BDouble(String(arc4random()), radix: 10)
 				let _ = BDouble(String(arc4random())+"."+String(arc4random()), radix: 10)
 			}
+		}
+	}
+	
+	func testCodable() {
+		for i in 0..<50 {
+			let one = BDouble(i)
+			
+			let json = try! JSONEncoder().encode(one)
+			
+			let my_one = try! JSONDecoder().decode(BDouble.self, from: json)
+			
+			XCTAssertEqual(one, my_one)
+			
+			let rand = BDouble(String(arc4random()), radix: 10)
+			
+			let rand_json = try! JSONEncoder().encode(rand)
+			
+			let my_rand = try! JSONDecoder().decode(BDouble.self, from: rand_json)
+			
+			XCTAssertEqual(rand, my_rand)
 		}
 	}
 }
