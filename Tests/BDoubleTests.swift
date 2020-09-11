@@ -106,6 +106,20 @@ class BDoubleTests : XCTestCase {
 		}
 	}
 	
+	func test_mod() {
+		let answers = [
+			("5.0", "2.6", "2.4"),
+			("10000.5234", "6.4774", "5.8952"),
+			("-108700.5234", "6.4774", "3.2034"),
+			("-1.5234", "6.4774", "4.954"),
+			("1.5234", "6.4774", "1.5234")
+		]
+
+		for ans in answers {
+			XCTAssertEqual(mod(BDouble(ans.0)!, BDouble(ans.1)!), BDouble(ans.2)!)
+			XCTAssertEqual(BDouble(ans.0)! % BDouble(ans.1)!, BDouble(ans.2)!)
+		}
+	}
 	
 	func testDecimalExpansionWithoutRounding()
 	{
