@@ -3148,6 +3148,7 @@ public func max(_ lhs: BDouble, _ rhs: BDouble) -> BDouble {
  * Returns the modulo (remainder)
  */
 public func mod(_ lhs: BDouble, _ rhs: BDouble) -> BDouble {
+	precondition(!rhs.isZero(), "Right hand side cannot be zero")
 	let inner_ceil: BDouble = -lhs/rhs
 	let _ceil: BDouble = BDouble(ceil(inner_ceil))
 	return lhs + (rhs*_ceil)
