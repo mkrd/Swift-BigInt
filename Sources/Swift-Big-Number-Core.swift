@@ -2414,6 +2414,7 @@ public struct BDouble:
 		self.init(z, over: 1)
 	}
 
+	/// Warning: Due to the inprecision of Double beware that this might effect the precision of your BDouble
 	public init(_ d: Double)
 	{
 		let nStr = String(d)
@@ -2926,6 +2927,10 @@ public struct BDouble:
 	public static func /(lhs: BDouble, rhs: Double) -> BDouble { return lhs / BDouble(rhs) }
 	public static func /(lhs: BDouble, rhs: BInt) -> BDouble { return lhs / BDouble(rhs) }
 	public static func /(lhs: Double, rhs: BDouble) -> BDouble { return BDouble(lhs) / rhs }
+	
+	public static func %(lhs: BDouble, rhs:BDouble) -> BDouble { return mod(lhs, rhs) }
+	public static func %(lhs: BDouble, rhs:Double) -> BDouble { return mod(lhs, BDouble(rhs)) }
+	public static func %(lhs: Double, rhs:BDouble) -> BDouble { return mod(BDouble(lhs), rhs) }
 
 	//
 	//
@@ -3137,4 +3142,14 @@ public func max(_ lhs: BDouble, _ rhs: BDouble) -> BDouble {
 		return lhs
 	}
 	return rhs
+}
+
+/**
+ * Returns the modulo (remainder)
+ */
+public func mod(_ lhs: BDouble, _ rhs: BDouble) -> BDouble {
+	precondition(!rhs.isZero(), "Right hand side cannot be zero")
+	let inner_ceil: BDouble = -lhs/rhs
+	let _ceil: BDouble = BDouble(ceil(inner_ceil))
+	return lhs + (rhs*_ceil)
 }
