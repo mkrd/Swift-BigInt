@@ -5,6 +5,13 @@ It supports whole Numbers (BInt) and Fractions (BDouble) with most of the common
 
 Some benchmarks are located in Benchmarks.swift, note that these are more than 10 times faster in the release mode, compared to the debug mode of Xcode.
 
+# Survey Time!
+
+[Survey Link](https://forms.gle/9ycR8eUEsCenvMUn7)
+
+We want to hear your opinion about Swift BigInt! If you have a few minutes, please help us with answering a few questions about how you use this project, and tell us your opinion about it. The survey is completely anonymous, and will be used to evaluate which features will be prioritized in the future.
+
+
 
 
 # Installation
