@@ -432,6 +432,19 @@ public struct BInt:
 	{
 		self.init(source)
 	}
+	
+	/// Creates a new instance from a `[UInt8]` array
+	public init(bytes: [UInt8])
+	{
+		var num = BInt()
+		
+		for byte in bytes
+		{
+			num = num << 8 | BInt(byte)
+		}
+		
+		self.init(sign: num.sign, limbs: num.limbs)
+	}
 
 	//
 	//
