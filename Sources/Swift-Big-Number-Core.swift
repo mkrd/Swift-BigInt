@@ -121,6 +121,11 @@ public typealias Limb   =  UInt64
 public typealias Digits = [UInt64]
 public typealias Digit  =  UInt64
 
+//	Bytes allow to initialize and export BInt for operations like network related ones.
+
+public typealias Bytes  = [UInt8]
+public typealias Byte   =  UInt8
+
 //	MARK: - Imports
 //	————————————————————————————————————————————————————————————————————————————————————————————
 //	||||||||        Operators        |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
@@ -434,7 +439,7 @@ public struct BInt:
 	}
 	
 	/// Creates a new instance from a `[UInt8]` array
-	public init(bytes: [UInt8])
+	public init(bytes: Bytes)
 	{
 		var num = BInt()
 		
@@ -566,13 +571,13 @@ public struct BInt:
 	}
 	
 	/// Bytes of the number
-	public func getBytes() -> [UInt8]
+	public func getBytes() -> Bytes
 	{
-		var bytes: [UInt8] = []
+		var bytes = Bytes()
 		var copy = self
 		
 		while copy != 0 {
-			bytes.append(UInt8(copy & 0xff))
+			bytes.append(Byte(copy & 0xff))
 			copy >>= 8
 		}
 		
