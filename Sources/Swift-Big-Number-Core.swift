@@ -564,6 +564,20 @@ public struct BInt:
 			i += 1
 		}
 	}
+	
+	/// Bytes of the number
+	public func getBytes() -> [UInt8]
+	{
+		var bytes: [UInt8] = []
+		var copy = self
+		
+		while copy != 0 {
+			bytes.append(UInt8(copy & 0xff))
+			copy >>= 8
+		}
+		
+		return bytes.reversed()
+	}
 
 	//
 	//
