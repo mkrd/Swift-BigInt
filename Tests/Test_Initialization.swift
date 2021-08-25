@@ -34,6 +34,22 @@ class Test_Initialization: XCTestCase {
 		XCTAssert(b.rawValue.limbs == [0, 0, 0, 0, 1])
     }
     
+    func testBytes()
+    {
+        // Bytes and expected number
+        // 0x0102030405 is 4328719365 in decimal
+        let array: Bytes = [0x01, 0x02, 0x03, 0x04, 0x05]
+        let expected: Int = 4328719365
+        
+        // Init from bytes (array)
+        let b = BInt(bytes: array)
+        XCTAssertEqual(b.description, expected.description)
+        
+        // Convert back to bytes
+        let bytes = b.getBytes()
+        XCTAssertEqual(bytes, array)
+    }
+    
     func testCodable() {
         for i in 0..<50 {
             let one = BInt(i)
