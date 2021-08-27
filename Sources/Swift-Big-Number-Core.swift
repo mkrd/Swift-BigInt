@@ -874,6 +874,11 @@ public struct BInt:
 
 	public static func **(lhs: BInt, rhs: Int) -> BInt
 	{
+		return lhs ** BInt(rhs)
+	}
+	
+	public static func **(lhs: BInt, rhs: BInt) -> BInt
+	{
 		precondition(rhs >= 0, "BInts can't be exponentiated with exponents < 0")
 		return BInt(sign: lhs.sign && (rhs % 2 != 0), limbs: lhs.limbs.exponentiating(rhs))
 	}
@@ -1812,7 +1817,7 @@ fileprivate extension Array where Element == Limb
 	//
 
 	// Exponentiation by squaring
-	func exponentiating(_ exponent: Int) -> Limbs
+	func exponentiating(_ exponent: BInt) -> Limbs
 	{
 		if exponent == 0 { return [1] }
 		if exponent == 1 { return self }
@@ -1829,6 +1834,12 @@ fileprivate extension Array where Element == Limb
 		}
 
 		return base.multiplyingBy(y)
+	}
+	
+	// Alias for Int exponentiation
+	func exponentiating(_ exponent: Int) -> Limbs
+	{
+		return exponentiating(BInt(exponent))
 	}
 
 	/// Calculate (n + 1) * (n + 2) * ... * (k - 1) * k
