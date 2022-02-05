@@ -306,11 +306,22 @@ public struct BInt:
 	{
 		self.init(limbs: [Limb(n)])
 	}
+    
+    private static let maxPowerOf10 = 19
+    private static var multipliers10:[Digit] = {
+        var multipliers = [Digit]()
+        var x = Digit(1)
+        for _ in 1...maxPowerOf10 {
+            x *= 10
+            multipliers.append(x)
+        }
+        return multipliers
+    }()
 
 	/// Create an instance initialized to a string value.
 	public init?(_ str: String)
 	{
-		var (str, sign, base, limbs) = (str, false, [Limb(1)], [Limb(0)])
+		var (str, sign, /*base,*/ limbs) = (str, false, /*[Limb(1)],*/ [Limb(0)])
 
 		limbs.reserveCapacity(Int(Double(str.count) / log10(pow(2.0, 64.0))))
 
@@ -320,12 +331,12 @@ public struct BInt:
 			sign = str != "0"
 		}
 
-        for chunk in str.split(19)
+        for chunk in str.split(BInt.maxPowerOf10)
 		{
 			if let num = Limb(chunk)
 			{
-				limbs.addProductOf(multiplier: base, multiplicand: num)
-				base = base.multiplyingBy([10_000_000_000_000_000_000])
+                limbs = limbs.multiplyingBy([BInt.multipliers10[chunk.count-1]])
+                limbs.addProductOf(multiplier: [1], multiplicand: num)
 			}
 			else
 			{
@@ -351,7 +362,7 @@ public struct BInt:
 
         let chars = Array("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
-		var (number, sign, base, limbs) = (number, false, [Limb(1)], [Limb(0)])
+		var (number, sign, /* base, */ limbs) = (number, false, /*[Limb(1)],*/ [Limb(0)])
 
 		if number.hasPrefix("-")
 		{
@@ -359,12 +370,12 @@ public struct BInt:
 			sign = number != "0"
 		}
         
-        for char in number.reversed()
+        for char in number // .reversed()
         {
             if let digit = chars.firstIndex(of: char), digit < radix
             {
-                limbs.addProductOf(multiplier: base, multiplicand: Limb(digit))
-                base = base.multiplyingBy([Limb(radix)])
+                limbs = limbs.multiplyingBy([Limb(radix)])
+                limbs.addProductOf(multiplier: [1], multiplicand: Limb(digit))
             }
             else
             {
@@ -1065,8 +1076,8 @@ fileprivate extension String
         var x = self
         var splits = [String]()
         while x.count > 0 {
-            splits.append(String(x.suffix(count)))
-            x = String(x.dropLast(count))
+            splits.append(String(x.prefix(count)))
+            x = String(x.dropFirst(count))
         }
         return splits
 //		return stride(from: 0, to: self.count, by: count).map { i -> String in
