@@ -194,13 +194,12 @@ public struct BInt:
 	internal var limbs = Limbs()
 
 	// Required by the protocol "Numeric".
-	public typealias Magnitude = UInt64
+	public typealias Magnitude = BInt
 
-	// Required by the protocol "Numeric". It's pretty useless because the magnitude of a BInt won't
-	// fit into a UInt64 generally, so we just return the first limb of the BInt.
-	public var magnitude: UInt64
+	// Required by the protocol "Numeric". Not useless anymore. - MG
+	public var magnitude: BInt
 	{
-		return self.limbs[0]
+        return self.isNegative() ? -self : self
 	}
 
 	// Required by the protocol "BinaryInteger".
@@ -222,21 +221,37 @@ public struct BInt:
 	public var sizeDescription: String
 	{
 		// One bit for the sign, plus the size of the limbs.
-		let bits = self.size
-
-		if bits < 8_000
-		{
-			return String(format: "%.1f b", Double(bits) / 8.0)
-		}
-		if bits < 8_000_000
-		{
-			return String(format: "%.1f kb", Double(bits) / 8_000.0)
-		}
-		if UInt64(bits) < UInt64(8_000_000_000.0)
-		{
-			return String(format: "%.1f mb", Double(bits) / 8_000_000.0)
-		}
-		return String(format: "%.1f gb", Double(bits) / 8_000_000_000.0)
+        if #available(iOS 13.0, macOS 10.15, *) {
+            typealias Storage = Measurement<UnitInformationStorage>
+            let bytes = Storage(value: Double(self.size), unit: .bits).converted(to: .bytes)
+            if bytes < Storage(value: 1, unit: .kilobytes) {
+                return bytes.description
+            }
+            if bytes < Storage(value: 1, unit: .megabytes) {
+                return bytes.converted(to: .kilobytes).description
+            }
+            if bytes < Storage(value: 1, unit: .gigabytes) {
+                return bytes.converted(to: .megabytes).description
+            }
+            return bytes.converted(to: .gigabytes).description
+        } else {
+            // Fallback on earlier versions
+            let bytes = Double(self.size) / 8.0
+            let KB = 1_000.0, MB = KB * KB, GB = KB * KB * KB
+            if bytes < KB
+            {
+                return String(format: "%.1f B", bytes)
+            }
+            if bytes < MB
+            {
+                return String(format: "%.1f KB", bytes / KB)
+            }
+            if bytes < GB
+            {
+                return String(format: "%.1f MB", bytes / MB)
+            }
+            return String(format: "%.1f GB", bytes / GB)
+        }
 	}
 
 	//
@@ -301,13 +316,13 @@ public struct BInt:
 
 		if str.hasPrefix("-")
 		{
-			str.remove(at: str.startIndex)
+			str.removeFirst()
 			sign = str != "0"
 		}
 
-		for chunk in String(str.reversed()).split(19).map({ String($0.reversed()) })
+        for chunk in str.split(19)
 		{
-			if let num = Limb(String(chunk))
+			if let num = Limb(chunk)
 			{
 				limbs.addProductOf(multiplier: base, multiplicand: num)
 				base = base.multiplyingBy([10_000_000_000_000_000_000])
@@ -326,6 +341,7 @@ public struct BInt:
 	/// string radix value must be set to 16.
 	public init?(_ number: String, radix: Int)
 	{
+        assert(radix > 1 && radix <= 36, "Radix must be from 2...36")
 		if radix == 10
 		{
 			// Regular string init is faster for decimal numbers.
@@ -333,33 +349,28 @@ public struct BInt:
 			return
 		}
 
-		let chars: [Character] = [
-			"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f", "g",
-			"h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x",
-			"y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O",
-			"P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"
-		]
+        let chars = Array("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
 		var (number, sign, base, limbs) = (number, false, [Limb(1)], [Limb(0)])
 
 		if number.hasPrefix("-")
 		{
-			number.remove(at: number.startIndex)
+			number.removeFirst()
 			sign = number != "0"
 		}
-
-		for char in number.reversed()
-		{
-			if let digit = chars.firstIndex(of: char), digit < radix
-			{
-				limbs.addProductOf(multiplier: base, multiplicand: Limb(digit))
-				base = base.multiplyingBy([Limb(radix)])
-			}
-			else
-			{
-				return nil
-			}
-		}
+        
+        for char in number.reversed()
+        {
+            if let digit = chars.firstIndex(of: char), digit < radix
+            {
+                limbs.addProductOf(multiplier: base, multiplicand: Limb(digit))
+                base = base.multiplyingBy([Limb(radix)])
+            }
+            else
+            {
+                return nil
+            }
+        }
 
 		self.init(sign: sign, limbs: limbs)
 	}
@@ -1049,13 +1060,20 @@ public struct BInt:
 
 fileprivate extension String
 {
-	// Splits the string into equally sized parts (exept for the last one).
+	// Splits the string into equally sized parts (except for the last one).
 	func split(_ count: Int) -> [String] {
-		return stride(from: 0, to: self.count, by: count).map { i -> String in
-			let start = index(startIndex, offsetBy: i)
-			let end = index(start, offsetBy: count, limitedBy: endIndex) ?? endIndex
-			return String(self[start..<end])
-		}
+        var x = self
+        var splits = [String]()
+        while x.count > 0 {
+            splits.append(String(x.suffix(count)))
+            x = String(x.dropLast(count))
+        }
+        return splits
+//		return stride(from: 0, to: self.count, by: count).map { i -> String in
+//			let start = index(startIndex, offsetBy: i)
+//			let end = index(start, offsetBy: count, limitedBy: endIndex) ?? endIndex
+//			return String(self[start..<end])
+//		}
 	}
 }
 
