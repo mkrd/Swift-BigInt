@@ -1075,10 +1075,18 @@ fileprivate extension String
 	func split(_ count: Int) -> [String] {
         var x = self
         var splits = [String]()
-        while x.count > 0 {
-            splits.append(String(x.prefix(count)))
-            x = String(x.dropFirst(count))
+        while x.count > count {
+            var s = ""; s.reserveCapacity(count)
+            for _ in 1...count {
+                s.append(x.removeFirst())
+            }
+            splits.append(s)
         }
+        if x.count > 0 { splits.append(x) }
+//        while x.count > 0 {
+//            splits.append(String(x.prefix(count)))
+//            x = String(x.dropFirst(count))
+//        }
         return splits
 //		return stride(from: 0, to: self.count, by: count).map { i -> String in
 //			let start = index(startIndex, offsetBy: i)
