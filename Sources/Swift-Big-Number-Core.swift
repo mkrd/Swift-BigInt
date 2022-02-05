@@ -330,22 +330,25 @@ public struct BInt:
 			str.removeFirst()
 			sign = str != "0"
 		}
-
-        for chunk in str.split(BInt.maxPowerOf10)
-		{
-			if let num = Limb(chunk)
-			{
+        
+        var chunk=""; chunk.reserveCapacity(BInt.maxPowerOf10)
+        while !str.isEmpty {
+            chunk=""
+            for _ in 1...BInt.maxPowerOf10 where !str.isEmpty {
+                chunk.append(str.removeFirst())
+            }
+            if let num = Limb(chunk)
+            {
                 limbs = limbs.multiplyingBy([BInt.multipliers10[chunk.count-1]])
                 limbs.addProductOf(multiplier: [1], multiplicand: num)
-			}
-			else
-			{
-				return nil
-			}
-		}
-
-		self.init(sign: sign, limbs: limbs)
-	}
+            }
+            else
+            {
+                return nil
+            }
+        }
+        self.init(sign: sign, limbs: limbs)
+    }
 
 	/// Create an instance initialized to a string with the value of mathematical numerical
 	/// system of the specified radix (base). So for example, to get the value of hexadecimal
@@ -1075,14 +1078,14 @@ fileprivate extension String
 	func split(_ count: Int) -> [String] {
         var x = self
         var splits = [String]()
-        while x.count > count {
-            var s = ""; s.reserveCapacity(count)
-            for _ in 1...count {
+        var s = ""; s.reserveCapacity(count)
+        while !x.isEmpty {
+            s = ""
+            for _ in 1...count where !x.isEmpty {
                 s.append(x.removeFirst())
             }
             splits.append(s)
         }
-        if x.count > 0 { splits.append(x) }
 //        while x.count > 0 {
 //            splits.append(String(x.prefix(count)))
 //            x = String(x.dropFirst(count))
