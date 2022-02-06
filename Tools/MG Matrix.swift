@@ -17,6 +17,7 @@ protocol NumericType:
 
 extension Double: NumericType
 {
+    // FIXME: Compiler warns about function call causing infinite recursion - MG
 	init<T: NumericType>(_ n: T) {
 		self.init(n)
 	}
@@ -468,6 +469,7 @@ func -=<T>(A: inout Matrix<T>, B: Matrix<T>)
 
 func -<T>(A: Matrix<T>, B: Matrix<T>) -> Matrix<T>
 {
+    // FIXME: Compiler warns about function call causing infinite recursion - MG 
 	return A - B
 }
 

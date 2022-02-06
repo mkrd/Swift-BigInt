@@ -306,49 +306,6 @@ public struct BInt:
 	{
 		self.init(limbs: [Limb(n)])
 	}
-    
-//    private static let maxPowerOf10 = 19
-//    private static var multipliers10:[Digit] = {
-//        var multipliers = [Digit]()
-//        var x = Digit(1)
-//        for _ in 1...maxPowerOf10 {
-//            x *= 10
-//            multipliers.append(x)
-//        }
-//        return multipliers
-//    }()
-
-	/// Create an instance initialized to a string value.
-//	public init?(_ str: String)
-//	{
-//		var (str, sign, /*base,*/ limbs) = (str, false, /*[Limb(1)],*/ [Limb(0)])
-//
-//		limbs.reserveCapacity(Int(Double(str.count) / log10(pow(2.0, 64.0))))
-//
-//		if str.hasPrefix("-")
-//		{
-//			str.removeFirst()
-//			sign = str != "0"
-//		}
-//
-//        var chunk=""; chunk.reserveCapacity(BInt.maxPowerOf10)
-//        while !str.isEmpty {
-//            chunk=""
-//            for _ in 1...BInt.maxPowerOf10 where !str.isEmpty {
-//                chunk.append(str.removeFirst())
-//            }
-//            if let num = Limb(chunk)
-//            {
-//                limbs = limbs.multiplyingBy([BInt.multipliers10[chunk.count-1]])
-//                limbs.addProductOf(multiplier: [1], multiplicand: num)
-//            }
-//            else
-//            {
-//                return nil
-//            }
-//        }
-//        self.init(sign: sign, limbs: limbs)
-//    }
 
 	/// Create an instance initialized to a string with the value of mathematical numerical
 	/// system of the specified radix (base). So, for example, to get the value of hexadecimal
@@ -436,30 +393,6 @@ public struct BInt:
 		}
 		self.init(sign: sign, limbs: limbs)
 	}
-
-	/// Create an instance initialized to a string with the value of mathematical numerical
-	/// system of the specified radix (base). You have to specify the base as a prefix, so for
-	/// example, "0b100101010101110" is a vaild input for a binary number. Currently,
-	/// hexadecimal (0x), octal (0o) and binary (0b) are supported.
-//	public init?(prefixedNumber number: String)
-//	{
-//		if number.hasPrefix("0x")
-//		{
-//			self.init(String(number.dropFirst(2)), radix: 16)
-//		}
-//		if number.hasPrefix("0o")
-//		{
-//			self.init(String(number.dropFirst(2)), radix: 8)
-//		}
-//		if number.hasPrefix("0b")
-//		{
-//			self.init(String(number.dropFirst(2)), radix: 2)
-//		}
-//		else
-//		{
-//			return nil
-//		}
-//	}
 
 	//	Requierd by protocol ExpressibleByFloatLiteral.
 	public init(floatLiteral value: Double)
@@ -1122,29 +1055,31 @@ public struct BInt:
 
 fileprivate extension String
 {
+	// FIXME: The *split* causes a massive overhead due to *self* calls. Please remove.
+	// Alternatives have been implemented.
 	// Splits the string into equally sized parts (except for the last one).
-	func split(_ count: Int) -> [String] {
-        var x = self
-        var splits = [String]()
-        var s = ""; s.reserveCapacity(count)
-        while !x.isEmpty {
-            s = ""
-            for _ in 1...count where !x.isEmpty {
-                s.append(x.removeFirst())
-            }
-            splits.append(s)
-        }
+//	func split(_ count: Int) -> [String] {
+//        var x = self
+//        var splits = [String]()
+//        var s = ""; s.reserveCapacity(count)
+//        while !x.isEmpty {
+//            s = ""
+//            for _ in 1...count where !x.isEmpty {
+//                s.append(x.removeFirst())
+//            }
+//            splits.append(s)
+//        }
 //        while x.count > 0 {
 //            splits.append(String(x.prefix(count)))
 //            x = String(x.dropFirst(count))
 //        }
-        return splits
+ //       return splits
 //		return stride(from: 0, to: self.count, by: count).map { i -> String in
 //			let start = index(startIndex, offsetBy: i)
 //			let end = index(start, offsetBy: count, limitedBy: endIndex) ?? endIndex
 //			return String(self[start..<end])
 //		}
-	}
+//	}
 }
 
 fileprivate let DigitBase:     Digit = 1_000_000_000_000_000_000
