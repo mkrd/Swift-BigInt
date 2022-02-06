@@ -199,7 +199,7 @@ public struct BInt:
 	// Required by the protocol "Numeric". Not useless anymore. - MG
 	public var magnitude: BInt
 	{
-        return self.isNegative() ? -self : self
+        self.isNegative() ? -self : self
 	}
 
 	// Required by the protocol "BinaryInteger".
@@ -307,85 +307,133 @@ public struct BInt:
 		self.init(limbs: [Limb(n)])
 	}
     
-    private static let maxPowerOf10 = 19
-    private static var multipliers10:[Digit] = {
-        var multipliers = [Digit]()
-        var x = Digit(1)
-        for _ in 1...maxPowerOf10 {
-            x *= 10
-            multipliers.append(x)
-        }
-        return multipliers
-    }()
+//    private static let maxPowerOf10 = 19
+//    private static var multipliers10:[Digit] = {
+//        var multipliers = [Digit]()
+//        var x = Digit(1)
+//        for _ in 1...maxPowerOf10 {
+//            x *= 10
+//            multipliers.append(x)
+//        }
+//        return multipliers
+//    }()
 
 	/// Create an instance initialized to a string value.
-	public init?(_ str: String)
-	{
-		var (str, sign, /*base,*/ limbs) = (str, false, /*[Limb(1)],*/ [Limb(0)])
-
-		limbs.reserveCapacity(Int(Double(str.count) / log10(pow(2.0, 64.0))))
-
-		if str.hasPrefix("-")
-		{
-			str.removeFirst()
-			sign = str != "0"
-		}
-        
-        var chunk=""; chunk.reserveCapacity(BInt.maxPowerOf10)
-        while !str.isEmpty {
-            chunk=""
-            for _ in 1...BInt.maxPowerOf10 where !str.isEmpty {
-                chunk.append(str.removeFirst())
-            }
-            if let num = Limb(chunk)
-            {
-                limbs = limbs.multiplyingBy([BInt.multipliers10[chunk.count-1]])
-                limbs.addProductOf(multiplier: [1], multiplicand: num)
-            }
-            else
-            {
-                return nil
-            }
-        }
-        self.init(sign: sign, limbs: limbs)
-    }
+//	public init?(_ str: String)
+//	{
+//		var (str, sign, /*base,*/ limbs) = (str, false, /*[Limb(1)],*/ [Limb(0)])
+//
+//		limbs.reserveCapacity(Int(Double(str.count) / log10(pow(2.0, 64.0))))
+//
+//		if str.hasPrefix("-")
+//		{
+//			str.removeFirst()
+//			sign = str != "0"
+//		}
+//
+//        var chunk=""; chunk.reserveCapacity(BInt.maxPowerOf10)
+//        while !str.isEmpty {
+//            chunk=""
+//            for _ in 1...BInt.maxPowerOf10 where !str.isEmpty {
+//                chunk.append(str.removeFirst())
+//            }
+//            if let num = Limb(chunk)
+//            {
+//                limbs = limbs.multiplyingBy([BInt.multipliers10[chunk.count-1]])
+//                limbs.addProductOf(multiplier: [1], multiplicand: num)
+//            }
+//            else
+//            {
+//                return nil
+//            }
+//        }
+//        self.init(sign: sign, limbs: limbs)
+//    }
 
 	/// Create an instance initialized to a string with the value of mathematical numerical
-	/// system of the specified radix (base). So for example, to get the value of hexadecimal
-	/// string radix value must be set to 16.
-	public init?(_ number: String, radix: Int)
+	/// system of the specified radix (base). So, for example, to get the value of hexadecimal
+	/// string radix value must be set to 16 or the string must be prefixed by "0x".
+	///
+	/// Note: I merged all the String inits into one which is much simpler to understand.
+	/// Valid input numbers are of the form:
+	///  [ "-" ] [ "0x" | "0o" | "0b" ] { radix_digit }
+	///  where radix_digit = "0".."9" + "a".."z" + "A".."Z"
+	public init?(_ number: String, radix: Int = 10)
 	{
-        assert(radix > 1 && radix <= 36, "Radix must be from 2...36")
-		if radix == 10
-		{
-			// Regular string init is faster for decimal numbers.
-			self.init(number)
-			return
-		}
-
-        let chars = Array("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
-
-		var (number, sign, /* base, */ limbs) = (number, false, /*[Limb(1)],*/ [Limb(0)])
-
+		var (number, radix, sign, limbs) = (number, radix, false, [Limb(0)])
+		
 		if number.hasPrefix("-")
 		{
 			number.removeFirst()
-			sign = number != "0"
+			sign = number != "0"  // is zero signed?
 		}
-        
-        for char in number // .reversed()
-        {
-            if let digit = chars.firstIndex(of: char), digit < radix
-            {
-                limbs = limbs.multiplyingBy([Limb(radix)])
-                limbs.addProductOf(multiplier: [1], multiplicand: Limb(digit))
-            }
-            else
-            {
-                return nil
-            }
-        }
-
+		if number.hasPrefix("0x")
+		{
+			number.removeFirst(2); radix = 16 // override the radix and see how it goes
+		}
+		if number.hasPrefix("0o")
+		{
+			number.removeFirst(2); radix = 8 // override the radix and see how it goes
+		}
+		if number.hasPrefix("0b")
+		{
+			number.removeFirst(2); radix = 2 // override the radix and see how it goes
+		}
+		
+		// Reserve enough space for this number Limb.max
+		let digitsPerLimb = 64 * log(2.0)/log(Double(radix))
+		limbs.reserveCapacity(Int(Double(number.count) / digitsPerLimb))
+		
+		// Handle most radices the same way unless a radix > 26 is used
+		if radix <= 26
+		{
+			var maxPowerOfRadix = max(1,min(Int(digitsPerLimb), number.count))
+			
+			// generate a multiplier table at the start
+			let multipliersOfRadix:[Digit] = {
+				var multipliers = [Digit]()
+				var x = Digit(1)
+				for _ in 1...maxPowerOfRadix where x < Digit.max/Digit(radix) {
+					x *= Digit(radix)
+					multipliers.append(x)
+				}
+				return multipliers
+			}()
+			
+			maxPowerOfRadix = multipliersOfRadix.count // adjust if we guessed wrong
+			var chunk = ""; chunk.reserveCapacity(maxPowerOfRadix)
+			while !number.isEmpty {
+				chunk = ""
+				for _ in 1...maxPowerOfRadix where !number.isEmpty {
+					chunk.append(number.removeFirst())
+				}
+				if let num = Limb(chunk, radix: radix)
+				{
+					limbs = limbs.multiplyingBy([multipliersOfRadix[chunk.count-1]])
+					limbs.addProductOf(multiplier: [1], multiplicand: num)
+				}
+				else
+				{
+					return nil
+				}
+			}
+		}
+		else
+		{
+			let validDigits = Array("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+			for char in number
+			{
+				if let digit = validDigits.firstIndex(of: char), digit < radix
+				{
+					limbs = limbs.multiplyingBy([Limb(radix)])
+					limbs.addProductOf(multiplier: [1], multiplicand: Limb(digit))
+				}
+				else
+				{
+					return nil
+				}
+			}
+		}
 		self.init(sign: sign, limbs: limbs)
 	}
 
@@ -393,25 +441,25 @@ public struct BInt:
 	/// system of the specified radix (base). You have to specify the base as a prefix, so for
 	/// example, "0b100101010101110" is a vaild input for a binary number. Currently,
 	/// hexadecimal (0x), octal (0o) and binary (0b) are supported.
-	public init?(prefixedNumber number: String)
-	{
-		if number.hasPrefix("0x")
-		{
-			self.init(String(number.dropFirst(2)), radix: 16)
-		}
-		if number.hasPrefix("0o")
-		{
-			self.init(String(number.dropFirst(2)), radix: 8)
-		}
-		if number.hasPrefix("0b")
-		{
-			self.init(String(number.dropFirst(2)), radix: 2)
-		}
-		else
-		{
-			return nil
-		}
-	}
+//	public init?(prefixedNumber number: String)
+//	{
+//		if number.hasPrefix("0x")
+//		{
+//			self.init(String(number.dropFirst(2)), radix: 16)
+//		}
+//		if number.hasPrefix("0o")
+//		{
+//			self.init(String(number.dropFirst(2)), radix: 8)
+//		}
+//		if number.hasPrefix("0b")
+//		{
+//			self.init(String(number.dropFirst(2)), radix: 2)
+//		}
+//		else
+//		{
+//			return nil
+//		}
+//	}
 
 	//	Requierd by protocol ExpressibleByFloatLiteral.
 	public init(floatLiteral value: Double)
@@ -1297,6 +1345,11 @@ fileprivate extension Array where Element == Limb
 
 	/// Returns the number of bits that contribute to the represented number, ignoring all
 	/// leading zeros.
+	
+	// FIXME: - Not the correct definition of *bitWidth* according to Apple - MG 6 Feb 2022
+	///       As evidence have a look at `Int32(1).bitWidth = 32`.  I know it's stupid but
+	///       too late to change now.  Maybe we could define an `exactBitWidth` to annoy
+	///       Apple.
 	var bitWidth: Int
 	{
 		var lastBits = 0
@@ -1307,7 +1360,7 @@ fileprivate extension Array where Element == Limb
 			lastBits += 1
 		}
 
-		return ((self.count - 1) * 64) + lastBits
+		return ((self.count - 1) * Limb.bitWidth) + lastBits
 	}
 
 	///	Get bit i of limbs.
