@@ -2015,10 +2015,10 @@ fileprivate extension Array where Element == Limb
 //
 //
 //
-public class BIntMath
+internal class BIntMath
 {
 	/// Returns true iff (2 ** exp) - 1 is a mersenne prime.
-	static public func isMersenne(_ exp: Int) -> Bool
+	static func isMersenne(_ exp: Int) -> Bool
 	{
 		var mersenne = Limbs(repeating: Limb.max, count: exp >> 6)
 
@@ -2103,12 +2103,12 @@ public class BIntMath
 		return a.divMod(steinGcd(a, b)).quotient.multiplyingBy(b)
 	}
 
-	static public func lcm(_ a:BInt, _ b:BInt) -> BInt
+	static func lcm(_ a:BInt, _ b:BInt) -> BInt
 	{
 		return BInt(limbs: lcmPositive(a.limbs, b.limbs))
 	}
 
-	static public func fib(_ n:Int) -> BInt
+	static func fib(_ n:Int) -> BInt
 	{
 		var a: Limbs = [0], b: Limbs = [1], t: Limbs
 
@@ -2123,14 +2123,14 @@ public class BIntMath
 	}
 
 	///	Order matters, repetition not allowed.
-	static public func permutations(_ n: Int, _ k: Int) -> BInt
+	static func permutations(_ n: Int, _ k: Int) -> BInt
 	{
 		// n! / (n-k)!
 		return BInt(n).factorial() / BInt(n - k).factorial()
 	}
 
 	///	Order matters, repetition allowed.
-	static public func permutationsWithRepitition(_ n: Int, _ k: Int) -> BInt
+	static func permutationsWithRepitition(_ n: Int, _ k: Int) -> BInt
 	{
 		// n ** k
 		return BInt(n) ** k
