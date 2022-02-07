@@ -20,12 +20,6 @@ class BIntTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
-    
-//    func testSizeString()
-//    {
-//        let x = BInt(1234567890123456789)
-//        print(x.sizeDescription)
-//    }
 
 	func testRadixInitializerAndGetter()
 	{

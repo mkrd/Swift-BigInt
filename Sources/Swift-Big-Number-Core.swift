@@ -740,7 +740,7 @@ public struct BInt:
 	public prefix static func ~(x: BInt) -> BInt
 	{
 		var res = x.limbs
-		for i in 0..<(res.bitWidth)
+		for i in 0..<(res.exactBitWidth)
 		{
 			res.setBit(at: i, to: !res.getBit(at: i))
 		}
@@ -1039,49 +1039,6 @@ public struct BInt:
 	static func >=(lhs: BInt, rhs:  Int) -> Bool { return !(lhs < BInt(rhs)) }
 }
 
-//
-//
-//	MARK: - String operations
-//	————————————————————————————————————————————————————————————————————————————————————————————
-//	||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-//	||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-//	||||||||        String operations        |||||||||||||||||||||||||||||||||||||||||||||||||||
-//	||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-//	||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-//	————————————————————————————————————————————————————————————————————————————————————————————
-//
-//
-//
-
-fileprivate extension String
-{
-	// FIXME: The *split* causes a massive overhead due to *self* calls. Please remove.
-	// Alternatives have been implemented.
-	// Splits the string into equally sized parts (except for the last one).
-//	func split(_ count: Int) -> [String] {
-//        var x = self
-//        var splits = [String]()
-//        var s = ""; s.reserveCapacity(count)
-//        while !x.isEmpty {
-//            s = ""
-//            for _ in 1...count where !x.isEmpty {
-//                s.append(x.removeFirst())
-//            }
-//            splits.append(s)
-//        }
-//        while x.count > 0 {
-//            splits.append(String(x.prefix(count)))
-//            x = String(x.dropFirst(count))
-//        }
- //       return splits
-//		return stride(from: 0, to: self.count, by: count).map { i -> String in
-//			let start = index(startIndex, offsetBy: i)
-//			let end = index(start, offsetBy: count, limitedBy: endIndex) ?? endIndex
-//			return String(self[start..<end])
-//		}
-//	}
-}
-
 fileprivate let DigitBase:     Digit = 1_000_000_000_000_000_000
 fileprivate let DigitHalfBase: Digit =             1_000_000_000
 fileprivate let DigitZeros           =                        18
@@ -1276,25 +1233,16 @@ fileprivate extension Array where Element == Limb
 	//	————————————————————————————————————————————————————————————————————————————————————————
 	//
 	//
-	//
-
+	
+	/// The number of bits in the binary representation of this value, including leading zeros.
+	var bitWidth: Int { self.count * Limb.bitWidth }
+	
 	/// Returns the number of bits that contribute to the represented number, ignoring all
 	/// leading zeros.
-	
-	// FIXME: - Not the correct definition of *bitWidth* according to Apple - MG 6 Feb 2022
-	///       As evidence have a look at `Int32(1).bitWidth = 32`.  I know it's stupid but
-	///       too late to change now.  Maybe we could define an `exactBitWidth` to annoy
-	///       Apple.
-	var bitWidth: Int
+	var exactBitWidth: Int
 	{
-		var lastBits = 0
-		var last = self.last!
-
-		while last != 0 {
-			last >>= 1
-			lastBits += 1
-		}
-
+		let last = self.last!
+		let lastBits = last.bitWidth - last.leadingZeroBitCount
 		return ((self.count - 1) * Limb.bitWidth) + lastBits
 	}
 

@@ -15,14 +15,7 @@ protocol NumericType:
 	static func /(lhs: Self, rhs: Self) -> Self
 }
 
-extension Double: NumericType
-{
-    // FIXME: Compiler warns about function call causing infinite recursion - MG
-	init<T: NumericType>(_ n: T) {
-		self.init(n)
-	}
-
-}
+extension Double: NumericType { }
 extension Int: NumericType
 {
 	public init(floatLiteral value: Double)
@@ -469,8 +462,9 @@ func -=<T>(A: inout Matrix<T>, B: Matrix<T>)
 
 func -<T>(A: Matrix<T>, B: Matrix<T>) -> Matrix<T>
 {
-    // FIXME: Compiler warns about function call causing infinite recursion - MG 
-	return A - B
+    var A = A
+    A -= B
+    return A
 }
 
 
