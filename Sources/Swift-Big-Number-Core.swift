@@ -194,13 +194,12 @@ public struct BInt:
 	internal var limbs = Limbs()
 
 	// Required by the protocol "Numeric".
-	public typealias Magnitude = UInt64
+	public typealias Magnitude = BInt
 
-	// Required by the protocol "Numeric". It's pretty useless because the magnitude of a BInt won't
-	// fit into a UInt64 generally, so we just return the first limb of the BInt.
-	public var magnitude: UInt64
+	// Required by the protocol "Numeric". Not useless anymore. - MG
+	public var magnitude: BInt
 	{
-		return self.limbs[0]
+        self.isNegative() ? -self : self
 	}
 
 	// Required by the protocol "BinaryInteger".
@@ -222,21 +221,37 @@ public struct BInt:
 	public var sizeDescription: String
 	{
 		// One bit for the sign, plus the size of the limbs.
-		let bits = self.size
-
-		if bits < 8_000
-		{
-			return String(format: "%.1f b", Double(bits) / 8.0)
-		}
-		if bits < 8_000_000
-		{
-			return String(format: "%.1f kb", Double(bits) / 8_000.0)
-		}
-		if UInt64(bits) < UInt64(8_000_000_000.0)
-		{
-			return String(format: "%.1f mb", Double(bits) / 8_000_000.0)
-		}
-		return String(format: "%.1f gb", Double(bits) / 8_000_000_000.0)
+        if #available(iOS 13.0, macOS 10.15, *) {
+            typealias Storage = Measurement<UnitInformationStorage>
+            let bytes = Storage(value: Double(self.size), unit: .bits).converted(to: .bytes)
+            if bytes < Storage(value: 1, unit: .kilobytes) {
+                return bytes.description
+            }
+            if bytes < Storage(value: 1, unit: .megabytes) {
+                return bytes.converted(to: .kilobytes).description
+            }
+            if bytes < Storage(value: 1, unit: .gigabytes) {
+                return bytes.converted(to: .megabytes).description
+            }
+            return bytes.converted(to: .gigabytes).description
+        } else {
+            // Fallback on earlier versions
+            let bytes = Double(self.size) / 8.0
+            let KB = 1_000.0, MB = KB * KB, GB = KB * KB * KB
+            if bytes < KB
+            {
+                return String(format: "%.1f B", bytes)
+            }
+            if bytes < MB
+            {
+                return String(format: "%.1f KB", bytes / KB)
+            }
+            if bytes < GB
+            {
+                return String(format: "%.1f MB", bytes / MB)
+            }
+            return String(format: "%.1f GB", bytes / GB)
+        }
 	}
 
 	//
@@ -292,100 +307,91 @@ public struct BInt:
 		self.init(limbs: [Limb(n)])
 	}
 
-	/// Create an instance initialized to a string value.
-	public init?(_ str: String)
-	{
-		var (str, sign, base, limbs) = (str, false, [Limb(1)], [Limb(0)])
-
-		limbs.reserveCapacity(Int(Double(str.count) / log10(pow(2.0, 64.0))))
-
-		if str.hasPrefix("-")
-		{
-			str.remove(at: str.startIndex)
-			sign = str != "0"
-		}
-
-		for chunk in String(str.reversed()).split(19).map({ String($0.reversed()) })
-		{
-			if let num = Limb(String(chunk))
-			{
-				limbs.addProductOf(multiplier: base, multiplicand: num)
-				base = base.multiplyingBy([10_000_000_000_000_000_000])
-			}
-			else
-			{
-				return nil
-			}
-		}
-
-		self.init(sign: sign, limbs: limbs)
-	}
-
 	/// Create an instance initialized to a string with the value of mathematical numerical
-	/// system of the specified radix (base). So for example, to get the value of hexadecimal
-	/// string radix value must be set to 16.
-	public init?(_ number: String, radix: Int)
+	/// system of the specified radix (base). So, for example, to get the value of hexadecimal
+	/// string radix value must be set to 16 or the string must be prefixed by "0x".
+	///
+	/// Note: I merged all the String inits into one which is much simpler to understand.
+	/// Valid input numbers are of the form:
+	///  [ "-" ] [ "0x" | "0o" | "0b" ] { radix_digit }
+	///  where radix_digit = "0".."9" + "a".."z" + "A".."Z"
+	public init?(_ number: String, radix: Int = 10)
 	{
-		if radix == 10
-		{
-			// Regular string init is faster for decimal numbers.
-			self.init(number)
-			return
-		}
-
-		let chars: [Character] = [
-			"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f", "g",
-			"h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x",
-			"y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O",
-			"P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"
-		]
-
-		var (number, sign, base, limbs) = (number, false, [Limb(1)], [Limb(0)])
-
+		var (number, radix, sign, limbs) = (number, radix, false, [Limb(0)])
+		
 		if number.hasPrefix("-")
 		{
-			number.remove(at: number.startIndex)
-			sign = number != "0"
+			number.removeFirst()
+			sign = number != "0"  // is zero signed?
 		}
-
-		for char in number.reversed()
-		{
-			if let digit = chars.firstIndex(of: char), digit < radix
-			{
-				limbs.addProductOf(multiplier: base, multiplicand: Limb(digit))
-				base = base.multiplyingBy([Limb(radix)])
-			}
-			else
-			{
-				return nil
-			}
-		}
-
-		self.init(sign: sign, limbs: limbs)
-	}
-
-	/// Create an instance initialized to a string with the value of mathematical numerical
-	/// system of the specified radix (base). You have to specify the base as a prefix, so for
-	/// example, "0b100101010101110" is a vaild input for a binary number. Currently,
-	/// hexadecimal (0x), octal (0o) and binary (0b) are supported.
-	public init?(prefixedNumber number: String)
-	{
 		if number.hasPrefix("0x")
 		{
-			self.init(String(number.dropFirst(2)), radix: 16)
+			number.removeFirst(2); radix = 16 // override the radix and see how it goes
 		}
 		if number.hasPrefix("0o")
 		{
-			self.init(String(number.dropFirst(2)), radix: 8)
+			number.removeFirst(2); radix = 8 // override the radix and see how it goes
 		}
 		if number.hasPrefix("0b")
 		{
-			self.init(String(number.dropFirst(2)), radix: 2)
+			number.removeFirst(2); radix = 2 // override the radix and see how it goes
+		}
+		
+		// Reserve enough space for this number Limb.max
+		let digitsPerLimb = 64 * log(2.0)/log(Double(radix))
+		limbs.reserveCapacity(Int(Double(number.count) / digitsPerLimb))
+		
+		// Handle most radices the same way unless a radix > 26 is used
+		if radix <= 26
+		{
+			var maxPowerOfRadix = max(1,min(Int(digitsPerLimb), number.count))
+			
+			// generate a multiplier table at the start
+			let multipliersOfRadix:[Digit] = {
+				var multipliers = [Digit]()
+				var x = Digit(1)
+				for _ in 1...maxPowerOfRadix where x < Digit.max/Digit(radix) {
+					x *= Digit(radix)
+					multipliers.append(x)
+				}
+				return multipliers
+			}()
+			
+			maxPowerOfRadix = multipliersOfRadix.count // adjust if we guessed wrong
+			var chunk = ""; chunk.reserveCapacity(maxPowerOfRadix)
+			while !number.isEmpty {
+				chunk = ""
+				for _ in 1...maxPowerOfRadix where !number.isEmpty {
+					chunk.append(number.removeFirst())
+				}
+				if let num = Limb(chunk, radix: radix)
+				{
+					limbs = limbs.multiplyingBy([multipliersOfRadix[chunk.count-1]])
+					limbs.addProductOf(multiplier: [1], multiplicand: num)
+				}
+				else
+				{
+					return nil
+				}
+			}
 		}
 		else
 		{
-			return nil
+			let validDigits = Array("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+			for char in number
+			{
+				if let digit = validDigits.firstIndex(of: char), digit < radix
+				{
+					limbs = limbs.multiplyingBy([Limb(radix)])
+					limbs.addProductOf(multiplier: [1], multiplicand: Limb(digit))
+				}
+				else
+				{
+					return nil
+				}
+			}
 		}
+		self.init(sign: sign, limbs: limbs)
 	}
 
 	//	Requierd by protocol ExpressibleByFloatLiteral.
@@ -734,7 +740,7 @@ public struct BInt:
 	public prefix static func ~(x: BInt) -> BInt
 	{
 		var res = x.limbs
-		for i in 0..<(res.bitWidth)
+		for i in 0..<(res.exactBitWidth)
 		{
 			res.setBit(at: i, to: !res.getBit(at: i))
 		}
@@ -1033,32 +1039,6 @@ public struct BInt:
 	static func >=(lhs: BInt, rhs:  Int) -> Bool { return !(lhs < BInt(rhs)) }
 }
 
-//
-//
-//	MARK: - String operations
-//	————————————————————————————————————————————————————————————————————————————————————————————
-//	||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-//	||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-//	||||||||        String operations        |||||||||||||||||||||||||||||||||||||||||||||||||||
-//	||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-//	||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-//	————————————————————————————————————————————————————————————————————————————————————————————
-//
-//
-//
-
-fileprivate extension String
-{
-	// Splits the string into equally sized parts (exept for the last one).
-	func split(_ count: Int) -> [String] {
-		return stride(from: 0, to: self.count, by: count).map { i -> String in
-			let start = index(startIndex, offsetBy: i)
-			let end = index(start, offsetBy: count, limitedBy: endIndex) ?? endIndex
-			return String(self[start..<end])
-		}
-	}
-}
-
 fileprivate let DigitBase:     Digit = 1_000_000_000_000_000_000
 fileprivate let DigitHalfBase: Digit =             1_000_000_000
 fileprivate let DigitZeros           =                        18
@@ -1253,21 +1233,17 @@ fileprivate extension Array where Element == Limb
 	//	————————————————————————————————————————————————————————————————————————————————————————
 	//
 	//
-	//
-
+	
+	/// The number of bits in the binary representation of this value, including leading zeros.
+	var bitWidth: Int { self.count * Limb.bitWidth }
+	
 	/// Returns the number of bits that contribute to the represented number, ignoring all
 	/// leading zeros.
-	var bitWidth: Int
+	var exactBitWidth: Int
 	{
-		var lastBits = 0
-		var last = self.last!
-
-		while last != 0 {
-			last >>= 1
-			lastBits += 1
-		}
-
-		return ((self.count - 1) * 64) + lastBits
+		let last = self.last!
+		let lastBits = last.bitWidth - last.leadingZeroBitCount
+		return ((self.count - 1) * Limb.bitWidth) + lastBits
 	}
 
 	///	Get bit i of limbs.
@@ -2111,7 +2087,7 @@ internal class BIntMath
 		return BInt(n).factorial() / (BInt(k).factorial() * BInt(n - k).factorial())
 	}
 
-	static func randomBInt(bits n: Int) -> BInt
+	static public func randomBInt(bits n: Int) -> BInt
 	{
 		let limbs = n >> 6
 		let singleBits = n % 64

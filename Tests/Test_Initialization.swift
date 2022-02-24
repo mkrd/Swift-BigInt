@@ -23,15 +23,18 @@ class Test_Initialization: XCTestCase {
 	{
 		// Test if BInt stores limbs correctly
 		XCTAssert(BInt(limbs: [0]).rawValue.limbs == [0])
+        XCTAssert(BInt(limbs: [0]).bitWidth == UInt64.bitWidth)
 
 		// Test some interesting edge cases
 		for n in [0, 1, -1, Int.max, Int.min]
 		{
 			XCTAssert(n.description == BInt(n).description)
+            XCTAssert(n.bitWidth == BInt(n).bitWidth)  // since Int.bitWidth == UInt64.bitWidth
 		}
 
 		let b = BInt(1) + BInt(limbs: [UInt64.max, UInt64.max, UInt64.max, UInt64.max])
 		XCTAssert(b.rawValue.limbs == [0, 0, 0, 0, 1])
+        XCTAssert(b.bitWidth == UInt64.bitWidth * 5)
     }
     
     func testBytes()
@@ -67,13 +70,6 @@ class Test_Initialization: XCTestCase {
             let my_rand = try! JSONDecoder().decode(BInt.self, from: rand_json)
             
             XCTAssertEqual(rand, my_rand)
-        }
-    }
-
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
         }
     }
 
