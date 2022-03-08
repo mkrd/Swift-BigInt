@@ -124,5 +124,6 @@ class BIntTests: XCTestCase {
         }
         XCTAssertNotEqual(x, 0)
         XCTAssertGreaterThan(x, BInt(Int32.max))
+        XCTAssertEqual(x, BInt("190000000000000000000"))
     }
 }
