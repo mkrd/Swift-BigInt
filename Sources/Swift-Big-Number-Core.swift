@@ -2348,7 +2348,7 @@ public struct BDouble:
                         } else {
                             safeAfterExp = safeAfterExp - beforeExp.count + 1
                         }
-						let num = beforeExp + String([Character](repeating: "0", count: safeAfterExp))
+						let num = beforeExp + String([Character](repeating: "0", count: abs(safeAfterExp)))
 						self.init(num, over: "1")
 						return
 					}

@@ -35,6 +35,11 @@ class BDoubleTests : XCTestCase {
 		XCTAssertEqual(BDouble("1.2")?.fractionDescription, "6/5")
 		XCTAssertEqual(BDouble("5.7156430570677954e-05"), 5.7156430570677954e-05)
 		
+		// Issue #63
+		XCTAssertEqual(BDouble("8.585213060425812e-06"), BDouble(8.585213060425812e-06))
+		XCTAssertEqual(BDouble("8.585213060425812e-06"), BDouble("8.585213060425812e-6"))
+		XCTAssertNotEqual(BDouble("8.585213060425812e-06"), BDouble("8.585213060425812e06"))
+		
 		for _ in 0..<100 {
 			let rn = Double(Double(arc4random()) / Double(UINT32_MAX))
 			XCTAssertNotNil(BDouble(rn))
