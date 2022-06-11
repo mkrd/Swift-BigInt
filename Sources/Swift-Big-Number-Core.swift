@@ -2326,7 +2326,7 @@ public struct BDouble:
                         if beforeExp.starts(with: "+") || beforeExp.starts(with: "-") {
                             safeAfterExp = safeAfterExp - beforeExp.count + 2
                         } else {
-                            safeAfterExp = safeAfterExp - beforeExp.count + 1
+                            safeAfterExp = safeAfterExp + (beforeExp.count - 1)
                         }
 						// if safeAfterExp is negative this results in a crash
 						// more testing and test cases needed
@@ -2346,7 +2346,7 @@ public struct BDouble:
                         if beforeExp.starts(with: "+") || beforeExp.starts(with: "-") {
                             safeAfterExp = safeAfterExp - beforeExp.count + 2
                         } else {
-                            safeAfterExp = safeAfterExp - beforeExp.count + 1
+                            safeAfterExp = safeAfterExp - (beforeExp.count - 1)
                         }
 						let num = beforeExp + String([Character](repeating: "0", count: abs(safeAfterExp)))
 						self.init(num, over: "1")
