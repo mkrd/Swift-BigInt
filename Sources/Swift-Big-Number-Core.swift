@@ -315,27 +315,66 @@ public struct BInt:
 	/// Valid input numbers are of the form:
 	///  [ "-" ] [ "0x" | "0o" | "0b" ] { radix_digit }
 	///  where radix_digit = "0".."9" + "a".."z" + "A".."Z"
-	public init?(_ number: String, radix: Int = 10)
+    ///
+    ///  - note:
+    ///  When `radix` is not set, it will default to 10 unless the number has the following prefix:
+    ///     * `0x` for hexadecimal, or radix 16
+    ///     * `0o` for ocatal, or radix 8
+    ///     * `0b` for binary, or radix 2
+    ///
+    ///  - parameters:
+    ///   - number: The number to convert
+    ///   - radix: When not set, a radix will be attempted to be found from the given `number` with the default being 10
+	public init?(_ number: String, radix: Int? = nil)
 	{
 		var (number, radix, sign, limbs) = (number, radix, false, [Limb(0)])
 		
+        // First we figure out if the number is negative
 		if number.hasPrefix("-")
 		{
 			number.removeFirst()
 			sign = number != "0"  // is zero signed?
 		}
-		if number.hasPrefix("0x")
-		{
-			number.removeFirst(2); radix = 16 // override the radix and see how it goes
-		}
-		if number.hasPrefix("0o")
-		{
-			number.removeFirst(2); radix = 8 // override the radix and see how it goes
-		}
-		if number.hasPrefix("0b")
-		{
-			number.removeFirst(2); radix = 2 // override the radix and see how it goes
-		}
+        
+        // Then we figure out the radix
+        if radix == nil {
+            if number.hasPrefix("0x")
+            {
+                radix = 16
+            }
+            else if number.hasPrefix("0o")
+            {
+                radix = 8
+            }
+            else if number.hasPrefix("0b")
+            {
+                radix = 2
+            } else {
+                radix = 10
+            }
+        }
+        
+        guard let radix = radix else {
+            return nil
+        }
+        
+        // We strip the number if a radix is set and is prefixed
+        switch radix {
+        case 16:
+            if number.hasPrefix("0x") {
+                    number.removeFirst(2)
+            }
+        case 8:
+            if number.hasPrefix("0o") {
+                number.removeFirst(2)
+            }
+        case 2:
+            if number.hasPrefix("0b") {
+                number.removeFirst(2)
+            }
+        default:
+            break
+        }
 		
 		// Reserve enough space for this number Limb.max
 		let digitsPerLimb = 64 * log(2.0)/log(Double(radix))
