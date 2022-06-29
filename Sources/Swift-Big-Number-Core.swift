@@ -253,6 +253,13 @@ public struct BInt:
             return String(format: "%.1f GB", bytes / GB)
         }
 	}
+    
+    /// Common prefixes for different bases
+    static public var stringPrefixes = [
+        2: "0b",
+        8: "0o",
+        16: "0x"
+    ]
 
 	//
 	//
@@ -308,27 +315,29 @@ public struct BInt:
 	}
 
 	/// Create an instance initialized to a string with the value of mathematical numerical
-	/// system of the specified radix (base). So, for example, to get the value of hexadecimal
-	/// string radix value must be set to 16 or the string must be prefixed by "0x".
+	/// system of the specified radix (base).
 	///
+    /// The string passed as text may begin with a plus or minus sign character (+ or -), followed by one or more numeric digits (0-9) or letters (a-z or A-Z). Parsing of the string is case insensitive.
+    ///
+    /// If text is in an invalid format or contains characters that are out of bounds for the given radix, or if the value it denotes in the given radix is not representable, the result is nil. 
+    ///
 	/// Note: I merged all the String inits into one which is much simpler to understand.
 	/// Valid input numbers are of the form:
 	///  [ "-" ] [ "0x" | "0o" | "0b" ] { radix_digit }
 	///  where radix_digit = "0".."9" + "a".."z" + "A".."Z"
     ///
-    ///  When `radix` is not set, it will default to 10 unless the number has the following prefix:
-    ///
-    ///  * `0x` for hexadecimal, or radix 16
-    ///  * `0o` for ocatal, or radix 8
-    ///  * `0b` for binary, or radix 2
+    /// Common prefixes are supported and stripped through ``stringPrefixes``
     ///
     ///  - parameter number: The number to convert
     ///  - parameter radix: The radix, or base, to use for converting text to an Big Integer value. radix must be in the range 2...62. The default is 10.
-	public init?(_ number: String, radix: Int? = nil)
+	public init?(_ number: String, radix: Int = 10)
 	{
-        
 		var (number, radix, sign, limbs) = (number, radix, false, [Limb(0)])
 		
+        if radix < 2 {
+            return nil
+        }
+        
         // First we figure out if the number is negative
 		if number.hasPrefix("-")
 		{
@@ -336,48 +345,11 @@ public struct BInt:
 			sign = number != "0"  // is zero signed?
 		}
         
-        // Then we figure out the radix
-        if radix == nil {
-            if number.hasPrefix("0x")
-            {
-                radix = 16
-            }
-            else if number.hasPrefix("0o")
-            {
-                radix = 8
-            }
-            else if number.hasPrefix("0b")
-            {
-                radix = 2
-            } else {
-                radix = 10
-            }
-        }
-        
-        guard let radix = radix else {
-            return nil
-        }
-        
-        if radix < 2 {
-            return nil
-        }
-        
         // We strip the number if a radix is set and is prefixed
-        switch radix {
-        case 16:
-            if number.hasPrefix("0x") {
-                number.removeFirst(2)
+        if let prefix = Self.stringPrefixes[radix] {
+            if number.hasPrefix(prefix) {
+                number.removeFirst(prefix.count)
             }
-        case 8:
-            if number.hasPrefix("0o") {
-                number.removeFirst(2)
-            }
-        case 2:
-            if number.hasPrefix("0b") {
-                number.removeFirst(2)
-            }
-        default:
-            break
         }
 		
 		// Reserve enough space for this number Limb.max
@@ -2568,7 +2540,7 @@ public struct BDouble:
 		_precision = nv
 		}
 	}
-
+    
 	/**
 	 * returns the current value in decimal format with the current precision
 	 */

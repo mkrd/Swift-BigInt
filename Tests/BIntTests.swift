@@ -116,8 +116,8 @@ class BIntTests: XCTestCase {
     /** An issue was reported where a hex string was not being converted to a decimal. This test case checks that. */
     func testIssue58() throws {
         // 190000000000000000000
-        let x = try XCTUnwrap(BInt("0x00000000000000000000000000000000000000000000000a4cc799563c380000"))
-        let y = try XCTUnwrap(BInt("0x00000000000000000000000000000000000000000000000a4cc799563c380000", radix:16))
+        let x = try XCTUnwrap(BInt("0x00000000000000000000000000000000000000000000000a4cc799563c380000", radix: 16))
+        let y = try XCTUnwrap(BInt("0x00000000000000000000000000000000000000000000000a4cc799563c380000", radix: 16))
         XCTAssertEqual(x, y)
         for radix in 2...16 {
             XCTAssertEqual(x.asString(radix: radix), y.asString(radix: radix))
@@ -125,5 +125,15 @@ class BIntTests: XCTestCase {
         XCTAssertNotEqual(x, 0)
         XCTAssertGreaterThan(x, BInt(Int32.max))
         XCTAssertEqual(x, BInt("190000000000000000000"))
+    }
+    
+    func testIssue67() throws {
+        let x = try XCTUnwrap(BInt("0b1310c5a2c30000", radix: 16))
+        XCTAssertEqual(x, BInt("0x0b1310c5a2c30000", radix: 16))
+        
+        let y = try XCTUnwrap(BInt("0b", radix: 16))
+        XCTAssertEqual(y, 11)
+        XCTAssertEqual(y, BInt("0xb", radix: 16))
+        XCTAssertEqual(y, BInt("0x0b", radix: 16))
     }
 }
