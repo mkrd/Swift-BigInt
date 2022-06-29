@@ -362,7 +362,7 @@ public struct BInt:
         switch radix {
         case 16:
             if number.hasPrefix("0x") {
-                    number.removeFirst(2)
+                number.removeFirst(2)
             }
         case 8:
             if number.hasPrefix("0o") {
