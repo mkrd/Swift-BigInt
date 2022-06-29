@@ -316,17 +316,17 @@ public struct BInt:
 	///  [ "-" ] [ "0x" | "0o" | "0b" ] { radix_digit }
 	///  where radix_digit = "0".."9" + "a".."z" + "A".."Z"
     ///
-    ///  - note:
     ///  When `radix` is not set, it will default to 10 unless the number has the following prefix:
-    ///     * `0x` for hexadecimal, or radix 16
-    ///     * `0o` for ocatal, or radix 8
-    ///     * `0b` for binary, or radix 2
     ///
-    ///  - parameters:
-    ///   - number: The number to convert
-    ///   - radix: When not set, a radix will be attempted to be found from the given `number` with the default being 10
+    ///  * `0x` for hexadecimal, or radix 16
+    ///  * `0o` for ocatal, or radix 8
+    ///  * `0b` for binary, or radix 2
+    ///
+    ///  - parameter number: The number to convert
+    ///  - parameter radix: The radix, or base, to use for converting text to an Big Integer value. radix must be in the range 2...62. The default is 10.
 	public init?(_ number: String, radix: Int? = nil)
 	{
+        
 		var (number, radix, sign, limbs) = (number, radix, false, [Limb(0)])
 		
         // First we figure out if the number is negative
@@ -355,6 +355,10 @@ public struct BInt:
         }
         
         guard let radix = radix else {
+            return nil
+        }
+        
+        if radix < 2 {
             return nil
         }
         
