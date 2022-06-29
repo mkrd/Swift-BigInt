@@ -321,6 +321,18 @@ class BDoubleTests : XCTestCase {
 		XCTAssertEqual(bigD?.decimalDescription, "0.000000000300000")
 		bigD?.precision = 5
 		XCTAssertEqual(bigD?.decimalDescription, "0.00000")
+		
+		bigD = BDouble("0.00000012")
+		bigD?.precision = 9
+		XCTAssertEqual(bigD?.decimalDescription, "0.000000120")
+		
+		bigD = BDouble("1.2e-7")
+		bigD?.precision = 9
+		XCTAssertEqual(bigD?.decimalDescription, "0.000000120")
+		
+		bigD = BDouble("5.7156430570677954e-05")
+		bigD?.precision = 21
+		XCTAssertEqual(bigD?.decimalDescription, "0.000057156430570677954")
 	}
 	
 	func testNearlyEqual() {
