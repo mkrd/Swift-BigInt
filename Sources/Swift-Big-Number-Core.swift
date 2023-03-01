@@ -2363,8 +2363,14 @@ public struct BDouble:
                         } else {
                             safeAfterExp = safeAfterExp - (beforeExp.count - 1)
                         }
-						let num = beforeExp + String([Character](repeating: "0", count: abs(safeAfterExp)))
-						self.init(num, over: "1")
+						var num: String
+						if safeAfterExp >= 0 {
+							num = beforeExp + String([Character](repeating: "0", count: safeAfterExp))
+							self.init(num, over: "1")
+						} else {
+							num = beforeExp
+							self.init(num, over: "1" + String(repeating: "0", count: abs(safeAfterExp)))
+						}
 						return
 					}
 					return nil
