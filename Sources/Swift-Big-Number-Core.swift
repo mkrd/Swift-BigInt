@@ -2694,7 +2694,12 @@ public struct BDouble:
 
 		let offset = res.count - digits
 		let rhs = Double("0." + res.suffix(res.count - offset))!
-		let lhs = res.prefix(offset)
+		var lhs: String.SubSequence
+		if offset >= 0 {
+			lhs = res.prefix(offset)
+		} else {
+			lhs = ""
+		}
 		var retVal = BInt(String(lhs))!
 		
 		if self.isNegative()
