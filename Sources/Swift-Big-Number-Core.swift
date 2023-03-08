@@ -3092,7 +3092,13 @@ public func floor(_ base: BDouble) -> BInt
 	let res = BInt(limbs: rawRes).description
 	
 	let offset = res.count - digits
-	let lhs = res.prefix(offset).description
+	
+	var lhs: String
+	if offset >= 0 {
+		lhs = res.prefix(offset).description
+	} else {
+		lhs = ""
+	}
 	let rhs = Double("0." + res.suffix(res.count - offset))!
 	
 	var ans = BInt(String(lhs))!
@@ -3111,6 +3117,7 @@ public func floor(_ base: BDouble) -> BInt
  */
 public func ceil(_ base: BDouble) -> BInt
 {
+	
 	if base.isZero()
 	{
 		return BInt(0)
@@ -3124,7 +3131,12 @@ public func ceil(_ base: BDouble) -> BInt
 
 	let offset = res.count - digits
 	let rhs = Double("0." + res.suffix(res.count - offset))!
-	let lhs = res.prefix(offset)
+	var lhs: String.SubSequence
+	if offset >= 0 {
+		lhs = res.prefix(offset)
+	} else {
+		lhs = ""
+	}
 	
 	var retVal = BInt(String(lhs))!
 	

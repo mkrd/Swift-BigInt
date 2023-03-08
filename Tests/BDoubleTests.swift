@@ -117,7 +117,9 @@ class BDoubleTests : XCTestCase {
 			("10000.5234", "6.4774", "5.8952"),
 			("-108700.5234", "6.4774", "3.2034"),
 			("-1.5234", "6.4774", "4.954"),
+			("-1.5234", "60.4774", "58.954"),
 			("1.5234", "6.4774", "1.5234"),
+			("1.5234", "60.4774", "1.5234"),
 			("0", "1000", "0"),
 		]
 
@@ -264,22 +266,39 @@ class BDoubleTests : XCTestCase {
 		XCTAssertEqual(BDouble("1.1")?.rounded(), BInt("1"))
 		XCTAssertEqual(BDouble("1.5")?.rounded(), BInt("1"))
 		XCTAssertEqual(BDouble("1.6")?.rounded(), BInt("2"))
-		
+
 		XCTAssertEqual(floor(BDouble(-1.0)), BInt("-1"))
 		XCTAssertEqual(floor(BDouble(-1.1)), BInt("-2"))
 		XCTAssertEqual(floor(BDouble(-1.5)), BInt("-2"))
 		XCTAssertEqual(floor(BDouble(-1.6)), BInt("-2"))
+		XCTAssertEqual(floor(BDouble(-0.1)), BInt("-1"))
+		XCTAssertEqual(floor(BDouble(-0.05)), BInt("-1"))
 		XCTAssertEqual(floor(BDouble(0)), BInt("0"))
+		XCTAssertEqual(floor(BDouble(0.05)), BInt("0"))
+		XCTAssertEqual(floor(BDouble(0.1)), BInt("0"))
 		XCTAssertEqual(floor(BDouble(1.0)), BInt("1"))
 		XCTAssertEqual(floor(BDouble(1.1)), BInt("1"))
 		XCTAssertEqual(floor(BDouble(1.5)), BInt("1"))
 		XCTAssertEqual(floor(BDouble(1.6)), BInt("1"))
 		
-		XCTAssertEqual(ceil(BDouble(-1.0)), BInt("-1"))
-		XCTAssertEqual(ceil(BDouble(-1.1)), BInt("-1"))
-		XCTAssertEqual(ceil(BDouble(-1.5)), BInt("-1"))
+		
 		XCTAssertEqual(ceil(BDouble(-1.6)), BInt("-1"))
+		XCTAssertEqual(ceil(BDouble(-1.5)), BInt("-1"))
+		XCTAssertEqual(ceil(BDouble(-1.1)), BInt("-1"))
+		XCTAssertEqual(ceil(BDouble(-1.0)), BInt("-1"))
+		XCTAssertEqual(ceil(BDouble(-0.9)), BInt("0"))
+		XCTAssertEqual(ceil(BDouble(-0.5)), BInt("0"))
+		XCTAssertEqual(ceil(BDouble(-0.4)), BInt("0"))
+		XCTAssertEqual(ceil(BDouble(-0.3)), BInt("0"))
+		XCTAssertEqual(ceil(BDouble(-0.2)), BInt("0"))
+		XCTAssertEqual(ceil(BDouble(-0.1)), BInt("0"))
 		XCTAssertEqual(ceil(BDouble(0)), BInt("0"))
+		XCTAssertEqual(ceil(BDouble(0.05)), BInt("1"))
+		XCTAssertEqual(ceil(BDouble(0.1)), BInt("1"))
+		XCTAssertEqual(ceil(BDouble(0.05)), BInt("1"))
+		XCTAssertEqual(ceil(BDouble(0.3)), BInt("1"))
+		XCTAssertEqual(ceil(BDouble(0.4)), BInt("1"))
+		XCTAssertEqual(ceil(BDouble(0.5)), BInt("1"))
 		XCTAssertEqual(ceil(BDouble(1.0)), BInt("1"))
 		XCTAssertEqual(ceil(BDouble(1.1)), BInt("2"))
 		XCTAssertEqual(ceil(BDouble(1.5)), BInt("2"))
