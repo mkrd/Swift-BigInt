@@ -173,37 +173,6 @@ permutations(BInt, BInt) // Returns BInt
 combinations(BInt, BInt) // Returns BInt
 ```
 
-### Compatibility with Bignum
-
-`BInt` has a typealias to `Bignum` that is largely drop-in compatible with the OpenSSL-based [Swift big number library](https://github.com/Bouke/Bignum).  The following properties and operations are available on `BInt`/`Bignum`:
-
-```swift
-public var data: Data				/// Representation as big-endian Data
-public var dec: String				/// Decimal string representation
-public var hex: String				/// Hexadecimal string representation
-
-public init(hex: String)			/// Initialise a new BInt from a hexadecimal string
-public init(_ n: UInt64)			/// Initialise from an unsigned, 64 bit integer
-public init(data: Data)				/// Initialise from big-endian Data
-
-/// Combined exponentiation/modulo algorithm
-///
-/// - Parameters:
-///   - b: base
-///   - p: power
-///   - m: modulus
-/// - Returns: pow(b, p) % m
-public func mod_exp(_ b: BInt, _ p: BInt, _ m: BInt) -> BInt
-
-/// Non-negative modulo operation
-///
-/// - Parameters:
-///   - a: left hand side of the module operation
-///   - m: modulus
-/// - Returns: r := a % b such that 0 <= r < abs(m)
-public func nnmod(_ a: BInt, _ m: BInt) -> BInt
-```
-
 ## BDouble
 
 ### BDouble allows these constructors
