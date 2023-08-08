@@ -224,7 +224,7 @@ public struct BInt:
 	public var sizeDescription: String
 	{
 		// One bit for the sign, plus the size of the limbs.
-        if #available(iOS 13.0, macOS 10.15, *) {
+        if #available(iOS 13.0, macOS 10.15, watchOS 6.0, *) {
             typealias Storage = Measurement<UnitInformationStorage>
             let bytes = Storage(value: Double(self.size), unit: .bits).converted(to: .bytes)
             if bytes < Storage(value: 1, unit: .kilobytes) {
