@@ -7,7 +7,9 @@
 */
 
 import XCTest
+#if !COCOAPODS
 @testable import MGTools
+#endif
 
 public class MG_Matrix_Tests: XCTestCase
 {

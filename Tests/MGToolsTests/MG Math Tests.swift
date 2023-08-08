@@ -7,7 +7,9 @@
 */
 
 import XCTest
+#if !COCOAPODS
 @testable import MGTools
+#endif
 
 class MG_Math_Tests: XCTestCase {
     func test_primesTo() {

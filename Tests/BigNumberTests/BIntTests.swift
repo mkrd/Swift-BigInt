@@ -7,7 +7,9 @@
 //
 
 import XCTest
+#if !COCOAPODS
 import MGTools
+#endif
 @testable import BigNumber
 
 class BIntTests: XCTestCase {
