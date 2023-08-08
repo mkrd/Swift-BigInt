@@ -101,7 +101,7 @@ class BIntTests: XCTestCase {
 	func testPerformanceStringInit() {
 		self.measure {
 			for _ in (0...15000) {
-				let _ = BInt(String(arc4random()))
+				let _ = BInt(String(UInt32.random(in: 0..<UInt32.max)))
 			}
 		}
 	}
@@ -109,7 +109,7 @@ class BIntTests: XCTestCase {
 	func testPerformanceStringRadixInit() {
 		self.measure {
 			for _ in (0...15000) {
-				let _ = BInt(String(arc4random()), radix: 10)
+				let _ = BInt(String(UInt32.random(in: 0..<UInt32.max)), radix: 10)
 			}
 		}
 	}

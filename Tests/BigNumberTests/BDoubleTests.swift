@@ -41,7 +41,7 @@ class BDoubleTests : XCTestCase {
 		XCTAssertNotEqual(BDouble("8.585213060425812e-06"), BDouble("8.585213060425812e06"))
 		XCTAssertEqual(BDouble("1.2345678901234569e13"), BDouble("12345678901234.569"))
 		for _ in 0..<100 {
-			let rn = Double(Double(arc4random()) / Double(UINT32_MAX))
+            let rn = Double.random(in: 0..<Double(UInt32.max))
 			XCTAssertNotNil(BDouble(rn))
 			
 			let rn2 = pow(rn * 100, 2.0)
@@ -72,7 +72,7 @@ class BDoubleTests : XCTestCase {
 		XCTAssert(BDouble(1.1) >= 1.0)
 		
 		for _ in 1..<100 {
-			let rn = Double(Double(arc4random()) / Double(UINT32_MAX))
+			let rn = Double.random(in: 0..<Double(UInt32.max))
 			let rn2 = pow(rn * 100, 2.0)
 			
 			XCTAssert(BDouble(rn) < BDouble(rn2))
@@ -98,7 +98,7 @@ class BDoubleTests : XCTestCase {
 		for i in 0..<100 {
 			XCTAssertEqual(pow(BDouble(Double(i)), 0), 1.0)
 			
-			let rn = Double(Double(arc4random()) / Double(UINT32_MAX))
+			let rn = Double.random(in: 0..<Double(UInt32.max))
 			XCTAssert(pow(BDouble(rn), 0) == 1.0)
 		}
 		
@@ -106,7 +106,7 @@ class BDoubleTests : XCTestCase {
 		for i in 0..<100 {
 			XCTAssertEqual(pow(BDouble(Double(i)), 1), BDouble(Double(i)))
 			
-			let rn = Double(Double(arc4random()) / Double(UINT32_MAX))
+			let rn = Double.random(in: 0..<Double(UInt32.max))
 			XCTAssertEqual(pow(BDouble(rn), 1), BDouble(rn))
 		}
 	}
@@ -503,8 +503,8 @@ class BDoubleTests : XCTestCase {
 	func testPerformanceStringInit() {
 		self.measure {
 			for _ in (0...1000) {
-				let _ = BDouble(String(arc4random()))
-				let _ = BDouble(String(arc4random())+"."+String(arc4random()))
+                let _ = BDouble(String(UInt32.random(in: 0..<UInt32.max)))
+				let _ = BDouble(String(UInt32.random(in: 0..<UInt32.max))+"."+String(UInt32.random(in: 0..<UInt32.max)))
 			}
 		}
 	}
@@ -512,8 +512,8 @@ class BDoubleTests : XCTestCase {
 	func testPerformanceStringRadixInit() {
 		self.measure {
 			for _ in (0...1000) {
-				let _ = BDouble(String(arc4random()), radix: 10)
-				let _ = BDouble(String(arc4random())+"."+String(arc4random()), radix: 10)
+				let _ = BDouble(String(UInt32.random(in: 0..<UInt32.max)), radix: 10)
+				let _ = BDouble(String(UInt32.random(in: 0..<UInt32.max))+"."+String(UInt32.random(in: 0..<UInt32.max)), radix: 10)
 			}
 		}
 	}
@@ -528,7 +528,7 @@ class BDoubleTests : XCTestCase {
 			
 			XCTAssertEqual(one, my_one)
 			
-			let rand = BDouble(String(arc4random()), radix: 10)
+			let rand = BDouble(String(UInt32.random(in: 0..<UInt32.max)), radix: 10)
 			
 			let rand_json = try! JSONEncoder().encode(rand)
 			

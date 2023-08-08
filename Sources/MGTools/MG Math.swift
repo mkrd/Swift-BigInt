@@ -221,10 +221,7 @@ public class math
 	/// Returns a random Double within the specified closed range.
 	public static func random(_ range: ClosedRange<Double>) -> Double
 	{
-		let offset = range.lowerBound
-		let delta = range.upperBound - range.lowerBound
-
-		return offset + ((delta * Double(arc4random())) / Double(UInt32.max))
+        return Double.random(in: range)
 	}
 
 	/// Returns an array filled with n random Doubles within the specified closed range.

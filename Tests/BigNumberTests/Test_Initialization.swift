@@ -63,7 +63,7 @@ class Test_Initialization: XCTestCase {
             
             XCTAssertEqual(one, my_one)
             
-            let rand = BInt(String(arc4random()), radix: 10)
+            let rand = BInt(String(UInt32.random(in: 0..<UInt32.max)), radix: 10)
             
             let rand_json = try! JSONEncoder().encode(rand)
             
