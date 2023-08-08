@@ -2114,8 +2114,8 @@ internal class BIntMath
 
 		for i in 0..<Int(limbs)
 		{
-			res[i] = Limb(arc4random_uniform(UInt32.max)) |
-				(Limb(arc4random_uniform(UInt32.max)) << 32)
+            res[i] = Limb(Random.uint32(max: .max)) |
+				(Limb(Random.uint32(max: .max)) << 32)
 		}
 
 		if singleBits > 0
@@ -2124,17 +2124,17 @@ internal class BIntMath
 
 			if singleBits < 32
 			{
-				last = Limb(arc4random_uniform(UInt32(2 ** singleBits)))
+                last = Limb(Random.uint32(max: UInt32(2 ** singleBits)))
 
 			}
 			else if singleBits == 32
 			{
-				last = Limb(arc4random_uniform(UInt32.max))
+				last = Limb(Random.uint32(max: .max))
 			}
 			else
 			{
-				last = Limb(arc4random_uniform(UInt32.max)) |
-					(Limb(arc4random_uniform(UInt32(2.0 ** (singleBits - 32)))) << 32)
+				last = Limb(Random.uint32(max: .max)) |
+					(Limb(Random.uint32(max: UInt32(2.0 ** (singleBits - 32)))) << 32)
 			}
 			if last != 0 { res.append(last) }
 		}
@@ -3212,4 +3212,28 @@ public func mod(_ lhs: BDouble, _ rhs: BDouble) -> BDouble {
 	let inner_ceil: BDouble = -lhs/rhs
 	let _ceil: BDouble = BDouble(ceil(inner_ceil))
 	return lhs + (rhs*_ceil)
+}
+
+internal struct Random {
+    private init() {
+        #if os(Linux)
+        srandom(time(nil))
+        #endif
+    }
+    
+    @inlinable
+    func uint32(max: UInt32) -> UInt32 {
+        #if os(Linux)
+        return random() % max
+        #else
+        return arc4random_uniform(max)
+        #endif
+    }
+    
+    @inlinable
+    static func uint32(max: UInt32) -> UInt32 {
+        instance.uint32(max: max)
+    }
+    
+    static let instance = Self()
 }
