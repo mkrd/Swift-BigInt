@@ -8,7 +8,6 @@
 
 #if os(Linux)
 	import Glibc
-	import CBSD
 #endif
 
 import Foundation
@@ -198,10 +197,7 @@ public class math
 	/// Returns a random integer within the specified range. The maximum range size is 2**32 - 1
 	public static func random(_ range: Range<Int>) -> Int
 	{
-		let offset = Int(range.lowerBound)
-		let delta = UInt32(range.upperBound - range.lowerBound)
-
-		return offset + Int(arc4random_uniform(delta))
+		return Int.random(in: range)
 	}
 
 	/// Returns a random integer within the specified closed range.

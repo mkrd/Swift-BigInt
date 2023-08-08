@@ -103,7 +103,6 @@
 import Foundation
 #if os(Linux)
 import Glibc
-import CBSD
 #endif
 
 //	MARK: - Typealiases
@@ -2115,28 +2114,11 @@ internal class BIntMath
 
 		for i in 0..<Int(limbs)
 		{
-			res[i] = Limb(arc4random_uniform(UInt32.max)) |
-				(Limb(arc4random_uniform(UInt32.max)) << 32)
+			res[i] = Limb(UInt64.random(in: 0...UInt64.max))
 		}
-
 		if singleBits > 0
 		{
-			var last: Limb
-
-			if singleBits < 32
-			{
-				last = Limb(arc4random_uniform(UInt32(2 ** singleBits)))
-
-			}
-			else if singleBits == 32
-			{
-				last = Limb(arc4random_uniform(UInt32.max))
-			}
-			else
-			{
-				last = Limb(arc4random_uniform(UInt32.max)) |
-					(Limb(arc4random_uniform(UInt32(2.0 ** (singleBits - 32)))) << 32)
-			}
+			let last = Limb(UInt64.random(in: 0..<(1 << singleBits)))
 			if last != 0 { res.append(last) }
 		}
 

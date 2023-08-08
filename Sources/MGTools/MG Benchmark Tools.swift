@@ -9,7 +9,6 @@
 import Foundation
 #if os(Linux)
 	import Glibc
-	import CBSD
 
 	private func mach_absolute_time() -> UInt64 {
 		var tv = timeval();
