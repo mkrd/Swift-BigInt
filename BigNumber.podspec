@@ -139,7 +139,7 @@ A lightweight, high performance bignum library for Swift for both intergers and 
   s.test_spec "BigNumberTests" do |ts|
     ts.platforms = { :ios => "11.0", :osx => "10.11", :tvos => "11.0" }
     ts.source_files = "Sources/MGTools/*.swift", "Tests/BigNumberTests/*.swift", "Tests/MGToolsTests/*.swift"
-    ts.resources = "Tests/BigNumberTests/Resources/*.json"
+    ts.resources = "Tests/BigNumberTests/Resources"
   end
 
 end

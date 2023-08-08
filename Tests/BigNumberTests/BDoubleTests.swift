@@ -1,5 +1,8 @@
 import XCTest
 import Foundation
+#if !COCOAPODS
+@testable import MGTools
+#endif
 @testable import BigNumber
 
 class BDoubleTests : XCTestCase {
@@ -178,7 +181,6 @@ class BDoubleTests : XCTestCase {
 		}
 	}
 	
-	#if !SWIFT_PACKAGE
 	func test_decimalExpansionRandom()
 	{
 		func generateDoubleString(preDecimalCount: Int, postDecimalCount: Int) -> String
@@ -254,7 +256,6 @@ class BDoubleTests : XCTestCase {
 			
 		}
 	}
-	#endif
 	
 	func testRounding() {
 		XCTAssertEqual(BDouble("-1.0")?.rounded(), BInt("-1"))

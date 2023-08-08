@@ -7,6 +7,9 @@
 //
 
 import XCTest
+#if !COCOAPODS
+@testable import MGTools
+#endif
 @testable import BigNumber
 
 class Test_Basic_Math: XCTestCase {
@@ -30,7 +33,6 @@ class Test_Basic_Math: XCTestCase {
 		let arithmetricInt:  [(Int,  Int ) -> Int ] = [(+), (-), (*), (/), (%)]
 		let arithmetricBInt: [(BInt, BInt) -> BInt] = [(+), (-), (*), (/), (%)]
 
-        #if !SWIFT_PACKAGE
 		for (_, i_op) in (0..<iterations)><(0..<arithmetricInt.count)
 		{
 			let (x, y) = (math.random((-m)...m), math.random((-m)...m))
@@ -39,7 +41,6 @@ class Test_Basic_Math: XCTestCase {
 			let resBInt = (arithmetricBInt[i_op])(BInt(x), BInt(y))
 			XCTAssert(resInt.description == resBInt.description)
 		}
-        #endif
 	}
 
 	func test_Comparison_Operators_BInt()
@@ -53,7 +54,6 @@ class Test_Basic_Math: XCTestCase {
 		let compareInt:  [(Int,   Int) -> Bool] = [(<), (<=), (>), (>=), (==), (!=)]
 		let compareBInt: [(BInt, BInt) -> Bool] = [(<), (<=), (>), (>=), (==), (!=)]
 
-        #if !SWIFT_PACKAGE
 		for (_, i_op) in (0..<iterations)><(0..<compareInt.count)
 		{
 			let (x, y) = (math.random((-m)...m), math.random((-m)...m))
@@ -61,7 +61,6 @@ class Test_Basic_Math: XCTestCase {
 			let resBInt = (compareBInt[i_op])(BInt(x), BInt(y))
 			XCTAssert(resInt == resBInt)
 		}
-        #endif
 	}
 
 	func test_Shift_Operators_BInt()
@@ -72,7 +71,6 @@ class Test_Basic_Math: XCTestCase {
 		let shiftInt:  [(UInt64,  UInt64) -> UInt64] = [(<<), (>>)]
 		let shiftBInt: [(BInt,       Int) -> BInt  ] = [(<<), (>>)]
 
-        #if !SWIFT_PACKAGE
 		for (_, i_op) in (0..<iterations)><(0..<shiftInt.count)
 		{
 			let (x, y) = (math.random(0...58), math.random(0...58))
@@ -80,7 +78,6 @@ class Test_Basic_Math: XCTestCase {
 			let resBInt = (shiftBInt[i_op])(BInt(x), y)
 			XCTAssert(resInt == resBInt)
 		}
-        #endif
 	}
 
 	func test_Negation_BInt()
@@ -168,7 +165,6 @@ class Test_Basic_Math: XCTestCase {
 
 	func test_Arithmetric_Operators_BDouble()
 	{
-        #if !SWIFT_PACKAGE
 		for _ in 0..<1000
 		{
 			let a = math.random(-10...10)
@@ -244,7 +240,6 @@ class Test_Basic_Math: XCTestCase {
 				XCTAssert(BInt(sign:  a1.sign, limbs: a1.numerator).description == String(a1Int))
 			}
 		}
-        #endif
 	}
 
     func test_Power() {
