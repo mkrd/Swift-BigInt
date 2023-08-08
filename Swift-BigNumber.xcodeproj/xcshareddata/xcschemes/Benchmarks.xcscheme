@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "AE8388A5203F1CAF00FAC88F"
-               BuildableName = "BigNumber.framework"
-               BlueprintName = "BigNumber-iOS"
+               BlueprintIdentifier = "C2F92B371D0F7421003CDF7D"
+               BuildableName = "Benchmarks"
+               BlueprintName = "Benchmarks"
                ReferencedContainer = "container:Swift-BigNumber.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -27,26 +27,7 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "AE8388A5203F1CAF00FAC88F"
-            BuildableName = "BigNumber.framework"
-            BlueprintName = "BigNumber-iOS"
-            ReferencedContainer = "container:Swift-BigNumber.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "AE8388AD203F1CB000FAC88F"
-               BuildableName = "BigNumber-iOSTests.xctest"
-               BlueprintName = "BigNumber-iOSTests"
-               ReferencedContainer = "container:Swift-BigNumber.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -58,16 +39,18 @@
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
-      allowLocationSimulation = "YES">
-      <MacroExpansion>
+      allowLocationSimulation = "YES"
+      viewDebuggingEnabled = "No">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "AE8388A5203F1CAF00FAC88F"
-            BuildableName = "BigNumber.framework"
-            BlueprintName = "BigNumber-iOS"
+            BlueprintIdentifier = "C2F92B371D0F7421003CDF7D"
+            BuildableName = "Benchmarks"
+            BlueprintName = "Benchmarks"
             ReferencedContainer = "container:Swift-BigNumber.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -75,15 +58,16 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "AE8388A5203F1CAF00FAC88F"
-            BuildableName = "BigNumber.framework"
-            BlueprintName = "BigNumber-iOS"
+            BlueprintIdentifier = "C2F92B371D0F7421003CDF7D"
+            BuildableName = "Benchmarks"
+            BlueprintName = "Benchmarks"
             ReferencedContainer = "container:Swift-BigNumber.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

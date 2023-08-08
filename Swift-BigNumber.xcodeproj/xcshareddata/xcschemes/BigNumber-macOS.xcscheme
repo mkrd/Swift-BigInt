@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "AE8388A5203F1CAF00FAC88F"
+               BlueprintIdentifier = "F64629531FF017E90074A180"
                BuildableName = "BigNumber.framework"
-               BlueprintName = "BigNumber-iOS"
+               BlueprintName = "BigNumber-macOS"
                ReferencedContainer = "container:Swift-BigNumber.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -30,9 +30,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "AE8388A5203F1CAF00FAC88F"
+            BlueprintIdentifier = "F64629531FF017E90074A180"
             BuildableName = "BigNumber.framework"
-            BlueprintName = "BigNumber-iOS"
+            BlueprintName = "BigNumber-macOS"
             ReferencedContainer = "container:Swift-BigNumber.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -41,9 +41,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "AE8388AD203F1CB000FAC88F"
-               BuildableName = "BigNumber-iOSTests.xctest"
-               BlueprintName = "BigNumber-iOSTests"
+               BlueprintIdentifier = "F646295B1FF017EA0074A180"
+               BuildableName = "BigNumber-macOSTests.xctest"
+               BlueprintName = "BigNumber-macOSTests"
                ReferencedContainer = "container:Swift-BigNumber.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -62,9 +62,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "AE8388A5203F1CAF00FAC88F"
+            BlueprintIdentifier = "F64629531FF017E90074A180"
             BuildableName = "BigNumber.framework"
-            BlueprintName = "BigNumber-iOS"
+            BlueprintName = "BigNumber-macOS"
             ReferencedContainer = "container:Swift-BigNumber.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -78,9 +78,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "AE8388A5203F1CAF00FAC88F"
+            BlueprintIdentifier = "F64629531FF017E90074A180"
             BuildableName = "BigNumber.framework"
-            BlueprintName = "BigNumber-iOS"
+            BlueprintName = "BigNumber-macOS"
             ReferencedContainer = "container:Swift-BigNumber.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

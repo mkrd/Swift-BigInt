@@ -1,0 +1,29 @@
+name: Build & Tests
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+jobs:
+  macos:
+    runs-on: macOS-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_14.0.app
+      - name: Build and Test SPM
+        run: swift test -v
+      - name: Update Cocoa Pods repo
+        run: pod repo update
+      - name: Build and Test CocoaPods
+        run: pod lib lint --allow-warnings --fail-fast
+  linux:
+    runs-on: ubuntu-latest
+    container:
+      image: swift:5.8.1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Build and Test
+        run: swift test -v

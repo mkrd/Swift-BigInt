@@ -68,10 +68,10 @@ A lightweight, high performance bignum library for Swift for both intergers and 
   # s.platform     = :ios, "5.0"
 
   #  When using multiple platforms
-   s.ios.deployment_target = "8.0"
-  s.osx.deployment_target = "10.9"
+  s.ios.deployment_target = "11.0"
+  s.osx.deployment_target = "10.11"
   s.watchos.deployment_target = "2.0"
-  s.tvos.deployment_target = "9.0"
+  s.tvos.deployment_target = "11.0"
 
 
   # ――― Source Location ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -90,7 +90,7 @@ A lightweight, high performance bignum library for Swift for both intergers and 
   #  For header files it will include any header in the folder.
   #  Not including the public_header_files will make all headers public.
   #
- s.source_files = "Sources/*.swift"
+  s.source_files = "Sources/BigNumber/*.swift"
 
   #s.source_files  = "Classes", "Classes/**/*.{h,m}"
   #s.exclude_files = "Classes/Exclude"

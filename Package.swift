@@ -12,11 +12,18 @@ let package = Package(
     targets: [
         .target(
             name: "BigNumber",
-            dependencies: [],
-            path: "Sources"),
+            dependencies: []),
+        .target(
+            name: "MGTools",
+            dependencies: ["BigNumber"]),
+        .testTarget(
+            name: "MGToolsTests",
+            dependencies: ["MGTools"]),
         .testTarget(
             name: "BigNumberTests",
-            dependencies: ["BigNumber"],
-            path: "Tests"),
+            dependencies: ["BigNumber", "MGTools"]),
+        .target(
+            name: "Benchmarks",
+            dependencies: ["BigNumber", "MGTools"])
     ]
 )
