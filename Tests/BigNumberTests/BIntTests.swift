@@ -31,7 +31,6 @@ class BIntTests: XCTestCase {
 			"P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"
 		]
         
-        #if !SWIFT_PACKAGE
 		// Randomly choose two bases and a number length, as well as a sign (+ or -)
 		for _ in 0..<100
 		{
@@ -60,7 +59,6 @@ class BIntTests: XCTestCase {
 			XCTAssert(b1 == b2)
 			XCTAssert(s2 == num)
 		}
-        #endif
 
 		let bigHex = "abcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdefabcdef00"
 		let x = BInt(bigHex, radix: 16)!
@@ -97,6 +95,47 @@ class BIntTests: XCTestCase {
 		XCTAssert(BInt("4",radix:5)! >= 1.0)
 		XCTAssert(BInt("923492349",radix:32)! == 9967689075849)
 	}
+    
+    func testIntInit() {
+        XCTAssert(BInt(UInt64.max) == UInt64.max)
+        XCTAssert(BInt(Int64.max) == Int64.max)
+        XCTAssert(BInt(Int64.min) == Int64.min)
+        XCTAssert(BInt(UInt32.max) == UInt32.max)
+        XCTAssert(BInt(Int32.max) == Int32.max)
+        XCTAssert(BInt(Int32.min) == Int32.min)
+        XCTAssert(BInt(UInt16.max) == UInt16.max)
+        XCTAssert(BInt(Int16.max) == Int16.max)
+        XCTAssert(BInt(Int16.min) == Int16.min)
+        XCTAssert(BInt(UInt64.max) == UInt64.max)
+        XCTAssert(BInt(Int8.max) == Int8.max)
+        XCTAssert(BInt(Int8.min) == Int8.min)
+        XCTAssert(BInt(UInt.max) == UInt.max)
+        XCTAssert(BInt(Int.max) == Int.max)
+        XCTAssert(BInt(Int.min) == Int.min)
+    }
+    
+    func testNotEqual() {
+        XCTAssert(BInt(Int64.max) != Int64.min)
+        XCTAssert(BInt(Int64.max) != 0)
+        XCTAssert(BInt(Int64.min) != Int64.max)
+        XCTAssert(BInt(Int64.min) != 0)
+        XCTAssert(BInt(Int32.max) != Int32.min)
+        XCTAssert(BInt(Int32.max) != 0)
+        XCTAssert(BInt(Int32.min) != Int32.max)
+        XCTAssert(BInt(Int32.min) != 0)
+        XCTAssert(BInt(Int16.max) != Int16.min)
+        XCTAssert(BInt(Int16.max) != 0)
+        XCTAssert(BInt(Int16.min) != Int16.max)
+        XCTAssert(BInt(Int16.min) != 0)
+        XCTAssert(BInt(Int8.max) != Int8.min)
+        XCTAssert(BInt(Int8.max) != 0)
+        XCTAssert(BInt(Int8.min) != Int8.max)
+        XCTAssert(BInt(Int8.min) != 0)
+        XCTAssert(BInt(Int.max) != Int.min)
+        XCTAssert(BInt(Int.max) != 0)
+        XCTAssert(BInt(Int.min) != Int.max)
+        XCTAssert(BInt(Int.min) != 0)
+    }
 	
 	func testPerformanceStringInit() {
 		self.measure {

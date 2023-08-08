@@ -427,7 +427,17 @@ public struct BInt:
 	// Required by protocol Numeric
 	public init?<T>(exactly source: T) where T : BinaryInteger
 	{
-		self.init(Int(source))
+        if T.isSigned {
+            guard let int = Int(exactly: source) else {
+                return nil
+            }
+            self.init(int)
+        } else {
+            guard let int = UInt(exactly: source) else {
+                return nil
+            }
+            self.init(int)
+        }
 	}
 
 	///	Creates an integer from the given floating-point value, rounding toward zero.
@@ -439,13 +449,17 @@ public struct BInt:
 	///	Creates a new instance from the given integer.
 	public init<T>(_ source: T) where T : BinaryInteger
 	{
-		self.init(Int(source))
+        if T.isSigned {
+            self.init(Int(source))
+        } else {
+            self.init(UInt(source))
+        }
 	}
 
 	///	Creates a new instance with the representable value that’s closest to the given integer.
 	public init<T>(clamping source: T) where T : BinaryInteger
 	{
-		self.init(Int(source))
+		self.init(source)
 	}
 
 	///	Creates an integer from the given floating-point value, if it can be represented
@@ -993,7 +1007,8 @@ public struct BInt:
 	static func ==<T: BinaryInteger>(lhs: BInt, rhs: T) -> Bool
 	{
 		if lhs.limbs.count != 1 { return false }
-		return lhs.limbs[0] == rhs
+        if lhs.sign && rhs > 0 { return false }
+        return lhs.limbs[0] == rhs.magnitude
 	}
 
 	static func ==<T: BinaryInteger>(lhs:  T, rhs: BInt) -> Bool { return rhs == lhs }
@@ -1007,7 +1022,8 @@ public struct BInt:
 	static func !=<T: BinaryInteger>(lhs: BInt, rhs: T) -> Bool
 	{
 		if lhs.limbs.count != 1 { return true }
-		return lhs.limbs[0] != rhs
+        if lhs.sign && rhs > 0 { return true }
+        return lhs.limbs[0] != rhs.magnitude
 	}
 
 	static func !=<T: BinaryInteger>(lhs: T, rhs: BInt) -> Bool { return rhs != lhs }
