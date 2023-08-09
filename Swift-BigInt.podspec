@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
   #  summary should be tweet-length, and the description more in depth.
   #
 
-  s.name         = "BigNumber"
+  s.name         = "Swift-BigInt"
   s.version      = "2.2.0"
   s.summary      = "A lightweight, high performance bignum library for Swift!"
 
@@ -28,7 +28,7 @@ Pod::Spec.new do |s|
 A lightweight, high performance bignum library for Swift for both intergers and doubles!
                    DESC
 
-  s.homepage     = "https://github.com/mkrd/Swift-Big-Integer"
+  s.homepage     = "https://github.com/mkrd/Swift-BigInt"
   # s.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
 
   # ―――  Spec License  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -78,7 +78,7 @@ A lightweight, high performance bignum library for Swift for both intergers and 
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "https://github.com/mkrd/Swift-Big-Integer.git", :tag => "v#{s.version}" }
+  s.source       = { :git => "https://github.com/mkrd/Swift-BigInt.git", :tag => "v#{s.version}" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -90,6 +90,7 @@ A lightweight, high performance bignum library for Swift for both intergers and 
   #
   s.source_files = "Sources/BigNumber/*.swift"
   
+  s.module_name = 'BigNumber'
   s.swift_version = '4.2'
 
   #s.source_files  = "Classes", "Classes/**/*.{h,m}"
