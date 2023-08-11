@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "Swift-BigInt"
-  s.version      = "2.2.0"
+  s.version      = "999.99.9"
   s.summary      = "A lightweight, high performance bignum library for Swift!"
 
   # This description is used to generate tags and improve search results.
