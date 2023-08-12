@@ -28,7 +28,7 @@ Yes, it's that easy :)
 
 You can use the [Swift Package Manager](https://swift.org/package-manager/) and specify the  package dependency in your `Package.swift` file by adding this:
 ```
-.Package(url: "https://github.com/mkrd/Swift-BigInt.git", branch: "master")
+.package(url: "https://github.com/mkrd/Swift-BigInt.git", from: "2.0.0")
 ```
 
 ```
@@ -40,7 +40,11 @@ import BigNumber
 
 Put the following in your Podfile:
 ```
-pod 'BigNumber', '~> 2.0', :git => 'https://github.com/mkrd/Swift-Big-Integer.git'
+pod 'Swift-BigInt', '~> 2.0'
+```
+
+```
+import BigNumber
 ```
 
 

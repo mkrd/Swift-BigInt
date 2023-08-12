@@ -11,9 +11,9 @@ fi
 set -e # don't print
 
 module="BigNumber"
-github="mkrd/Swift-Big-Integer"
+github="mkrd/Swift-BigInt"
 project="Swift-BigNumber.xcodeproj"
-scheme="BigNumber"
+scheme="BigNumber-macOS"
 
 # get version number from podspec
 version="$(egrep "^\s*s.version\s*" BigNumber.podspec | awk '{ gsub("\"", "", $3);  print $3 }')"

@@ -3,50 +3,71 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		92001BCA2A827A4B000F525F /* MGTools.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92001BC22A827A4A000F525F /* MGTools.framework */; };
+		92001BD72A827AE7000F525F /* MG Math Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2BCD1831FA13F1E002F6986 /* MG Math Tests.swift */; };
+		92001BD82A827AE7000F525F /* MG Matrix Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2BCD1851FA14252002F6986 /* MG Matrix Tests.swift */; };
+		92001BDD2A827AF3000F525F /* MG SuperSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24E721A1E58D69F008AD14D /* MG SuperSwift.swift */; };
+		92001BDE2A827AF3000F525F /* MG Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F92B4C1D0F7468003CDF7D /* MG Matrix.swift */; };
+		92001BDF2A827AF3000F525F /* MG QueueDispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F92B4F1D0F7468003CDF7D /* MG QueueDispatch.swift */; };
+		92001BE02A827AF3000F525F /* MG Benchmark Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F92B491D0F7468003CDF7D /* MG Benchmark Tools.swift */; };
+		92001BE12A827AF3000F525F /* MG Complex.swift in Sources */ = {isa = PBXBuildFile; fileRef = C224D2D41DCFBAFE006CD7C5 /* MG Complex.swift */; };
+		92001BE22A827AF3000F525F /* MG Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A53BF21DAA8A7300AD08E4 /* MG Storage.swift */; };
+		92001BE32A827AF3000F525F /* MG IO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F92B441D0F7452003CDF7D /* MG IO.swift */; };
+		92001BE42A827AF3000F525F /* MG Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F92B481D0F7468003CDF7D /* MG Math.swift */; };
+		92001BE52A827B09000F525F /* MGTools.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92001BC22A827A4A000F525F /* MGTools.framework */; platformFilter = ios; };
+		92001BE62A827B0A000F525F /* MGTools.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92001BC22A827A4A000F525F /* MGTools.framework */; };
+		92001BE72A827B0B000F525F /* MGTools.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92001BC22A827A4A000F525F /* MGTools.framework */; };
+		92001BE82A827C39000F525F /* Test_String_Conversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28A8F5C231026F800C1C7D9 /* Test_String_Conversions.swift */; };
+		92001BE92A827C39000F525F /* BDoubleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64629241FF016070074A180 /* BDoubleTests.swift */; };
+		92001BEA2A827C39000F525F /* Test_Basic_Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28A8F542310160700C1C7D9 /* Test_Basic_Math.swift */; };
+		92001BEB2A827C39000F525F /* BIntTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6632C4C20499FE300B73607 /* BIntTests.swift */; };
+		92001BEC2A827C39000F525F /* Test_Initialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28A8F56231016BC00C1C7D9 /* Test_Initialization.swift */; };
+		92001BED2A827C39000F525F /* Test_BIntMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28A8F582310184700C1C7D9 /* Test_BIntMath.swift */; };
+		92001BEE2A827C39000F525F /* Test_Advanced_Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28A8F5E2310282100C1C7D9 /* Test_Advanced_Math.swift */; };
 		AE8388AF203F1CB000FAC88F /* BigNumber.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE8388A6203F1CAF00FAC88F /* BigNumber.framework */; };
 		AE8388BD203F1CC800FAC88F /* Swift-Big-Number-Core.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F92B421D0F7452003CDF7D /* Swift-Big-Number-Core.swift */; };
-		B7C37FE624EEE47E005B1987 /* MG Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F92B4C1D0F7468003CDF7D /* MG Matrix.swift */; };
 		C26B2726207E5C13008FA649 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F92B3B1D0F7421003CDF7D /* main.swift */; };
 		C26B2727207E5C17008FA649 /* Benchmarks.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28710FC1F5ECFC400566A00 /* Benchmarks.swift */; };
-		C26B2728207E5C29008FA649 /* MG Benchmark Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F92B491D0F7468003CDF7D /* MG Benchmark Tools.swift */; };
-		C26B2729207E5C29008FA649 /* MG Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F92B481D0F7468003CDF7D /* MG Math.swift */; };
-		C26B272A207E5C29008FA649 /* MG SuperSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24E721A1E58D69F008AD14D /* MG SuperSwift.swift */; };
-		C26B272B207E5C29008FA649 /* MG Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F92B4C1D0F7468003CDF7D /* MG Matrix.swift */; };
-		C26B272C207E5C29008FA649 /* MG QueueDispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F92B4F1D0F7468003CDF7D /* MG QueueDispatch.swift */; };
-		C26B272D207E5C29008FA649 /* MG IO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F92B441D0F7452003CDF7D /* MG IO.swift */; };
-		C26B272E207E5C29008FA649 /* MG Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A53BF21DAA8A7300AD08E4 /* MG Storage.swift */; };
-		C26B272F207E5C29008FA649 /* MG Complex.swift in Sources */ = {isa = PBXBuildFile; fileRef = C224D2D41DCFBAFE006CD7C5 /* MG Complex.swift */; };
-		C26B2730207E5C29008FA649 /* Swift-Big-Number-Core.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F92B421D0F7452003CDF7D /* Swift-Big-Number-Core.swift */; };
-		C26B2737207E5DF3008FA649 /* MG Math Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2BCD1831FA13F1E002F6986 /* MG Math Tests.swift */; };
-		C26B2738207E5DF3008FA649 /* MG Matrix Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2BCD1851FA14252002F6986 /* MG Matrix Tests.swift */; };
-		C26B2739207E5E35008FA649 /* MG Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F92B481D0F7468003CDF7D /* MG Math.swift */; };
-		C26B273A207E5E4F008FA649 /* MG Matrix.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F92B4C1D0F7468003CDF7D /* MG Matrix.swift */; };
-		C26B274F207E701B008FA649 /* BigNumber_iOS.h in Headers */ = {isa = PBXBuildFile; fileRef = C26B274E207E701B008FA649 /* BigNumber_iOS.h */; };
-		C26B2750207E701B008FA649 /* BigNumber_iOS.h in Headers */ = {isa = PBXBuildFile; fileRef = C26B274E207E701B008FA649 /* BigNumber_iOS.h */; };
-		C26B2786207E836A008FA649 /* Resources in Resources */ = {isa = PBXBuildFile; fileRef = C26B2785207E8369008FA649 /* Resources */; };
-		C26B2788207E836A008FA649 /* Resources in Resources */ = {isa = PBXBuildFile; fileRef = C26B2785207E8369008FA649 /* Resources */; };
 		C26B2789207E836A008FA649 /* Resources in Resources */ = {isa = PBXBuildFile; fileRef = C26B2785207E8369008FA649 /* Resources */; };
 		C26B278A207E8382008FA649 /* Resources in CopyFiles */ = {isa = PBXBuildFile; fileRef = C26B2785207E8369008FA649 /* Resources */; };
-		C26B278B207E85D3008FA649 /* MG Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2A53BF21DAA8A7300AD08E4 /* MG Storage.swift */; };
 		C28A8F552310160700C1C7D9 /* Test_Basic_Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28A8F542310160700C1C7D9 /* Test_Basic_Math.swift */; };
 		C28A8F57231016BC00C1C7D9 /* Test_Initialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28A8F56231016BC00C1C7D9 /* Test_Initialization.swift */; };
 		C28A8F592310184700C1C7D9 /* Test_BIntMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28A8F582310184700C1C7D9 /* Test_BIntMath.swift */; };
 		C28A8F5B23101C4800C1C7D9 /* Resources in Resources */ = {isa = PBXBuildFile; fileRef = C26B2785207E8369008FA649 /* Resources */; };
 		C28A8F5D231026F800C1C7D9 /* Test_String_Conversions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28A8F5C231026F800C1C7D9 /* Test_String_Conversions.swift */; };
 		C28A8F5F2310282100C1C7D9 /* Test_Advanced_Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28A8F5E2310282100C1C7D9 /* Test_Advanced_Math.swift */; };
-		C2D93A85209272CD00438D2A /* MG SuperSwift.swift in Sources */ = {isa = PBXBuildFile; fileRef = C24E721A1E58D69F008AD14D /* MG SuperSwift.swift */; };
 		F646295D1FF017EA0074A180 /* BigNumber.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F64629541FF017E90074A180 /* BigNumber.framework */; };
 		F646296C1FF018540074A180 /* BDoubleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64629241FF016070074A180 /* BDoubleTests.swift */; };
 		F646296D1FF019F40074A180 /* Swift-Big-Number-Core.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F92B421D0F7452003CDF7D /* Swift-Big-Number-Core.swift */; };
-		F6632C4A204918BF00B73607 /* Swift-Big-Number-Core.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2F92B421D0F7452003CDF7D /* Swift-Big-Number-Core.swift */; };
 		F6632C4D20499FE300B73607 /* BIntTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6632C4C20499FE300B73607 /* BIntTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		92001BCB2A827A4B000F525F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C2F92B301D0F7421003CDF7D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 92001BC12A827A4A000F525F;
+			remoteInfo = MGTools;
+		};
+		92001BEF2A827E58000F525F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C2F92B301D0F7421003CDF7D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AE8388A5203F1CAF00FAC88F;
+			remoteInfo = "BigNumber-iOS";
+		};
+		92001BF12A827E58000F525F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C2F92B301D0F7421003CDF7D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F64629531FF017E90074A180;
+			remoteInfo = "BigNumber-macOS";
+		};
 		AE8388B0203F1CB000FAC88F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C2F92B301D0F7421003CDF7D /* Project object */;
@@ -77,20 +98,20 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		92001BC22A827A4A000F525F /* MGTools.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MGTools.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		92001BC92A827A4B000F525F /* MGToolsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MGToolsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE8388A6203F1CAF00FAC88F /* BigNumber.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BigNumber.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE8388AE203F1CB000FAC88F /* BigNumber-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "BigNumber-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C224D2D41DCFBAFE006CD7C5 /* MG Complex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MG Complex.swift"; sourceTree = "<group>"; };
 		C24E721A1E58D69F008AD14D /* MG SuperSwift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MG SuperSwift.swift"; sourceTree = "<group>"; };
-		C26B274E207E701B008FA649 /* BigNumber_iOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BigNumber_iOS.h; sourceTree = "<group>"; };
-		C26B2751207E701F008FA649 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C26B2785207E8369008FA649 /* Resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Resources; sourceTree = SOURCE_ROOT; };
+		C26B2785207E8369008FA649 /* Resources */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Resources; path = Tests/BigNumberTests/Resources; sourceTree = SOURCE_ROOT; };
 		C28710FC1F5ECFC400566A00 /* Benchmarks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Benchmarks.swift; sourceTree = "<group>"; usesTabs = 1; };
 		C28A8F542310160700C1C7D9 /* Test_Basic_Math.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test_Basic_Math.swift; sourceTree = "<group>"; };
 		C28A8F56231016BC00C1C7D9 /* Test_Initialization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test_Initialization.swift; sourceTree = "<group>"; };
 		C28A8F582310184700C1C7D9 /* Test_BIntMath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test_BIntMath.swift; sourceTree = "<group>"; };
 		C28A8F5C231026F800C1C7D9 /* Test_String_Conversions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test_String_Conversions.swift; sourceTree = "<group>"; };
 		C28A8F5E2310282100C1C7D9 /* Test_Advanced_Math.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test_Advanced_Math.swift; sourceTree = "<group>"; };
-		C28F71EE1DF0557800CE18C6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = Testing/Info.plist; sourceTree = "<group>"; };
+		C28F71EE1DF0557800CE18C6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C2A53BF21DAA8A7300AD08E4 /* MG Storage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MG Storage.swift"; sourceTree = "<group>"; };
 		C2BCD1831FA13F1E002F6986 /* MG Math Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MG Math Tests.swift"; sourceTree = "<group>"; };
 		C2BCD1851FA14252002F6986 /* MG Matrix Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MG Matrix Tests.swift"; sourceTree = "<group>"; };
@@ -101,17 +122,31 @@
 		C2F92B491D0F7468003CDF7D /* MG Benchmark Tools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MG Benchmark Tools.swift"; sourceTree = "<group>"; usesTabs = 1; };
 		C2F92B4C1D0F7468003CDF7D /* MG Matrix.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MG Matrix.swift"; sourceTree = "<group>"; };
 		C2F92B4F1D0F7468003CDF7D /* MG QueueDispatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MG QueueDispatch.swift"; sourceTree = "<group>"; };
-		F64629231FF015E40074A180 /* MathGround */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MathGround; sourceTree = BUILT_PRODUCTS_DIR; };
+		F64629231FF015E40074A180 /* Benchmarks */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Benchmarks; sourceTree = BUILT_PRODUCTS_DIR; };
 		F64629241FF016070074A180 /* BDoubleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BDoubleTests.swift; sourceTree = "<group>"; usesTabs = 1; };
-		F64629271FF016620074A180 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		F64629541FF017E90074A180 /* BigNumber.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BigNumber.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F64629571FF017EA0074A180 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		F646295C1FF017EA0074A180 /* BigNumberTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BigNumberTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F646295C1FF017EA0074A180 /* BigNumber-macOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "BigNumber-macOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F64629631FF017EA0074A180 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F6632C4C20499FE300B73607 /* BIntTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BIntTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		92001BBF2A827A4A000F525F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		92001BC62A827A4B000F525F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				92001BCA2A827A4B000F525F /* MGTools.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		AE8388A2203F1CAF00FAC88F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -123,6 +158,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				92001BE52A827B09000F525F /* MGTools.framework in Frameworks */,
 				AE8388AF203F1CB000FAC88F /* BigNumber.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -131,6 +167,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				92001BE72A827B0B000F525F /* MGTools.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -145,6 +182,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				92001BE62A827B0A000F525F /* MGTools.framework in Frameworks */,
 				F646295D1FF017EA0074A180 /* BigNumber.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -152,44 +190,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		C26B274D207E7004008FA649 /* BigNumber-iOS */ = {
+		92001BB82A82785E000F525F /* Benchmarks */ = {
 			isa = PBXGroup;
 			children = (
-				C26B274E207E701B008FA649 /* BigNumber_iOS.h */,
-				C26B2751207E701F008FA649 /* Info.plist */,
+				C2F92B3B1D0F7421003CDF7D /* main.swift */,
+				C28710FC1F5ECFC400566A00 /* Benchmarks.swift */,
 			);
-			path = "BigNumber-iOS";
+			path = Benchmarks;
 			sourceTree = "<group>";
 		};
-		C29F6AE41FEB1BD200AD0478 /* Tests */ = {
-			isa = PBXGroup;
-			children = (
-				F64629241FF016070074A180 /* BDoubleTests.swift */,
-				F6632C4C20499FE300B73607 /* BIntTests.swift */,
-				C2BCD1831FA13F1E002F6986 /* MG Math Tests.swift */,
-				C2BCD1851FA14252002F6986 /* MG Matrix Tests.swift */,
-				F64629631FF017EA0074A180 /* Info.plist */,
-				C28A8F542310160700C1C7D9 /* Test_Basic_Math.swift */,
-				C28A8F56231016BC00C1C7D9 /* Test_Initialization.swift */,
-				C28A8F582310184700C1C7D9 /* Test_BIntMath.swift */,
-				C28A8F5C231026F800C1C7D9 /* Test_String_Conversions.swift */,
-				C28A8F5E2310282100C1C7D9 /* Test_Advanced_Math.swift */,
-			);
-			path = Tests;
-			sourceTree = "<group>";
-		};
-		C29F6AE51FEB1BE900AD0478 /* Sources */ = {
+		92001BB92A827868000F525F /* BigNumber */ = {
 			isa = PBXGroup;
 			children = (
 				C2F92B421D0F7452003CDF7D /* Swift-Big-Number-Core.swift */,
 				F64629571FF017EA0074A180 /* Info.plist */,
 			);
-			path = Sources;
+			path = BigNumber;
 			sourceTree = "<group>";
 		};
-		C29F6AE61FEB1C2B00AD0478 /* Tools */ = {
+		92001BBA2A82787E000F525F /* MGTools */ = {
 			isa = PBXGroup;
 			children = (
+				C28F71EE1DF0557800CE18C6 /* Info.plist */,
 				C2F92B491D0F7468003CDF7D /* MG Benchmark Tools.swift */,
 				C2F92B481D0F7468003CDF7D /* MG Math.swift */,
 				C24E721A1E58D69F008AD14D /* MG SuperSwift.swift */,
@@ -199,61 +221,82 @@
 				C2A53BF21DAA8A7300AD08E4 /* MG Storage.swift */,
 				C224D2D41DCFBAFE006CD7C5 /* MG Complex.swift */,
 			);
-			path = Tools;
+			path = MGTools;
 			sourceTree = "<group>";
 		};
-		C29F6AE71FEB1C5100AD0478 /* Benchmarks */ = {
+		92001BBB2A82788D000F525F /* MGToolsTests */ = {
 			isa = PBXGroup;
 			children = (
-				C28710FC1F5ECFC400566A00 /* Benchmarks.swift */,
+				C2BCD1831FA13F1E002F6986 /* MG Math Tests.swift */,
+				C2BCD1851FA14252002F6986 /* MG Matrix Tests.swift */,
 			);
-			path = Benchmarks;
+			path = MGToolsTests;
 			sourceTree = "<group>";
 		};
-		C2A4928A1DF05294001992B1 /* Products */ = {
+		92001BBC2A827897000F525F /* BigNumberTests */ = {
 			isa = PBXGroup;
 			children = (
+				C26B2785207E8369008FA649 /* Resources */,
+				F64629241FF016070074A180 /* BDoubleTests.swift */,
+				F6632C4C20499FE300B73607 /* BIntTests.swift */,
+				F64629631FF017EA0074A180 /* Info.plist */,
+				C28A8F542310160700C1C7D9 /* Test_Basic_Math.swift */,
+				C28A8F56231016BC00C1C7D9 /* Test_Initialization.swift */,
+				C28A8F582310184700C1C7D9 /* Test_BIntMath.swift */,
+				C28A8F5C231026F800C1C7D9 /* Test_String_Conversions.swift */,
+				C28A8F5E2310282100C1C7D9 /* Test_Advanced_Math.swift */,
 			);
-			name = Products;
+			path = BigNumberTests;
+			sourceTree = "<group>";
+		};
+		C29F6AE41FEB1BD200AD0478 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				92001BBC2A827897000F525F /* BigNumberTests */,
+				92001BBB2A82788D000F525F /* MGToolsTests */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		C29F6AE51FEB1BE900AD0478 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				92001BBA2A82787E000F525F /* MGTools */,
+				92001BB92A827868000F525F /* BigNumber */,
+				92001BB82A82785E000F525F /* Benchmarks */,
+			);
+			path = Sources;
 			sourceTree = "<group>";
 		};
 		C2F92B2F1D0F7421003CDF7D = {
 			isa = PBXGroup;
 			children = (
-				C2F92B3B1D0F7421003CDF7D /* main.swift */,
-				C29F6AE71FEB1C5100AD0478 /* Benchmarks */,
-				C29F6AE61FEB1C2B00AD0478 /* Tools */,
 				C29F6AE51FEB1BE900AD0478 /* Sources */,
 				C29F6AE41FEB1BD200AD0478 /* Tests */,
-				C28F71EE1DF0557800CE18C6 /* Info.plist */,
-				C26B274D207E7004008FA649 /* BigNumber-iOS */,
-				C2A4928A1DF05294001992B1 /* Products */,
-				C26B2785207E8369008FA649 /* Resources */,
-				F64629231FF015E40074A180 /* MathGround */,
-				F64629261FF016610074A180 /* Frameworks */,
+				F64629231FF015E40074A180 /* Benchmarks */,
 				F64629541FF017E90074A180 /* BigNumber.framework */,
-				F646295C1FF017EA0074A180 /* BigNumberTests.xctest */,
+				F646295C1FF017EA0074A180 /* BigNumber-macOSTests.xctest */,
 				AE8388A6203F1CAF00FAC88F /* BigNumber.framework */,
 				AE8388AE203F1CB000FAC88F /* BigNumber-iOSTests.xctest */,
+				92001BC22A827A4A000F525F /* MGTools.framework */,
+				92001BC92A827A4B000F525F /* MGToolsTests.xctest */,
 			);
-			sourceTree = "<group>";
-		};
-		F64629261FF016610074A180 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				F64629271FF016620074A180 /* XCTest.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		92001BBD2A827A4A000F525F /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		AE8388A3203F1CAF00FAC88F /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C26B2750207E701B008FA649 /* BigNumber_iOS.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -261,13 +304,50 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C26B274F207E701B008FA649 /* BigNumber_iOS.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		92001BC12A827A4A000F525F /* MGTools */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 92001BD12A827A4B000F525F /* Build configuration list for PBXNativeTarget "MGTools" */;
+			buildPhases = (
+				92001BBD2A827A4A000F525F /* Headers */,
+				92001BBE2A827A4A000F525F /* Sources */,
+				92001BBF2A827A4A000F525F /* Frameworks */,
+				92001BC02A827A4A000F525F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				92001BF02A827E58000F525F /* PBXTargetDependency */,
+				92001BF22A827E58000F525F /* PBXTargetDependency */,
+			);
+			name = MGTools;
+			productName = MGTools;
+			productReference = 92001BC22A827A4A000F525F /* MGTools.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		92001BC82A827A4B000F525F /* MGToolsTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 92001BD42A827A4B000F525F /* Build configuration list for PBXNativeTarget "MGToolsTests" */;
+			buildPhases = (
+				92001BC52A827A4B000F525F /* Sources */,
+				92001BC62A827A4B000F525F /* Frameworks */,
+				92001BC72A827A4B000F525F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				92001BCC2A827A4B000F525F /* PBXTargetDependency */,
+			);
+			name = MGToolsTests;
+			productName = MGToolsTests;
+			productReference = 92001BC92A827A4B000F525F /* MGToolsTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		AE8388A5203F1CAF00FAC88F /* BigNumber-iOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = AE8388B7203F1CB000FAC88F /* Build configuration list for PBXNativeTarget "BigNumber-iOS" */;
@@ -304,9 +384,9 @@
 			productReference = AE8388AE203F1CB000FAC88F /* BigNumber-iOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		C2F92B371D0F7421003CDF7D /* MathGround */ = {
+		C2F92B371D0F7421003CDF7D /* Benchmarks */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C2F92B3F1D0F7421003CDF7D /* Build configuration list for PBXNativeTarget "MathGround" */;
+			buildConfigurationList = C2F92B3F1D0F7421003CDF7D /* Build configuration list for PBXNativeTarget "Benchmarks" */;
 			buildPhases = (
 				C2F92B341D0F7421003CDF7D /* Sources */,
 				C2F92B351D0F7421003CDF7D /* Frameworks */,
@@ -316,14 +396,14 @@
 			);
 			dependencies = (
 			);
-			name = MathGround;
+			name = Benchmarks;
 			productName = MathGround;
-			productReference = F64629231FF015E40074A180 /* MathGround */;
+			productReference = F64629231FF015E40074A180 /* Benchmarks */;
 			productType = "com.apple.product-type.tool";
 		};
-		F64629531FF017E90074A180 /* BigNumber */ = {
+		F64629531FF017E90074A180 /* BigNumber-macOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F64629651FF017EA0074A180 /* Build configuration list for PBXNativeTarget "BigNumber" */;
+			buildConfigurationList = F64629651FF017EA0074A180 /* Build configuration list for PBXNativeTarget "BigNumber-macOS" */;
 			buildPhases = (
 				F646294F1FF017E90074A180 /* Sources */,
 				F64629501FF017E90074A180 /* Frameworks */,
@@ -334,14 +414,14 @@
 			);
 			dependencies = (
 			);
-			name = BigNumber;
+			name = "BigNumber-macOS";
 			productName = BigNumber;
 			productReference = F64629541FF017E90074A180 /* BigNumber.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		F646295B1FF017EA0074A180 /* BigNumberTests */ = {
+		F646295B1FF017EA0074A180 /* BigNumber-macOSTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F64629681FF017EA0074A180 /* Build configuration list for PBXNativeTarget "BigNumberTests" */;
+			buildConfigurationList = F64629681FF017EA0074A180 /* Build configuration list for PBXNativeTarget "BigNumber-macOSTests" */;
 			buildPhases = (
 				F64629581FF017EA0074A180 /* Sources */,
 				F64629591FF017EA0074A180 /* Frameworks */,
@@ -352,9 +432,9 @@
 			dependencies = (
 				F646295F1FF017EA0074A180 /* PBXTargetDependency */,
 			);
-			name = BigNumberTests;
+			name = "BigNumber-macOSTests";
 			productName = BigNumberTests;
-			productReference = F646295C1FF017EA0074A180 /* BigNumberTests.xctest */;
+			productReference = F646295C1FF017EA0074A180 /* BigNumber-macOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -363,10 +443,16 @@
 		C2F92B301D0F7421003CDF7D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0920;
-				LastUpgradeCheck = 1250;
+				LastSwiftUpdateCheck = 1420;
+				LastUpgradeCheck = 1420;
 				ORGANIZATIONNAME = "Marcel Kröker";
 				TargetAttributes = {
+					92001BC12A827A4A000F525F = {
+						CreatedOnToolsVersion = 14.2;
+					};
+					92001BC82A827A4B000F525F = {
+						CreatedOnToolsVersion = 14.2;
+					};
 					AE8388A5203F1CAF00FAC88F = {
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Automatic;
@@ -405,21 +491,36 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				C2F92B371D0F7421003CDF7D /* MathGround */,
-				F64629531FF017E90074A180 /* BigNumber */,
-				F646295B1FF017EA0074A180 /* BigNumberTests */,
+				C2F92B371D0F7421003CDF7D /* Benchmarks */,
+				F64629531FF017E90074A180 /* BigNumber-macOS */,
+				F646295B1FF017EA0074A180 /* BigNumber-macOSTests */,
 				AE8388A5203F1CAF00FAC88F /* BigNumber-iOS */,
 				AE8388AD203F1CB000FAC88F /* BigNumber-iOSTests */,
+				92001BC12A827A4A000F525F /* MGTools */,
+				92001BC82A827A4B000F525F /* MGToolsTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		92001BC02A827A4A000F525F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		92001BC72A827A4B000F525F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		AE8388A4203F1CAF00FAC88F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C26B2788207E836A008FA649 /* Resources in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -435,7 +536,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C26B2786207E836A008FA649 /* Resources in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -450,6 +550,30 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		92001BBE2A827A4A000F525F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				92001BE22A827AF3000F525F /* MG Storage.swift in Sources */,
+				92001BDD2A827AF3000F525F /* MG SuperSwift.swift in Sources */,
+				92001BE32A827AF3000F525F /* MG IO.swift in Sources */,
+				92001BDF2A827AF3000F525F /* MG QueueDispatch.swift in Sources */,
+				92001BDE2A827AF3000F525F /* MG Matrix.swift in Sources */,
+				92001BE12A827AF3000F525F /* MG Complex.swift in Sources */,
+				92001BE42A827AF3000F525F /* MG Math.swift in Sources */,
+				92001BE02A827AF3000F525F /* MG Benchmark Tools.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		92001BC52A827A4B000F525F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				92001BD82A827AE7000F525F /* MG Matrix Tests.swift in Sources */,
+				92001BD72A827AE7000F525F /* MG Math Tests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		AE8388A1203F1CAF00FAC88F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -462,6 +586,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				92001BED2A827C39000F525F /* Test_BIntMath.swift in Sources */,
+				92001BEC2A827C39000F525F /* Test_Initialization.swift in Sources */,
+				92001BEE2A827C39000F525F /* Test_Advanced_Math.swift in Sources */,
+				92001BEA2A827C39000F525F /* Test_Basic_Math.swift in Sources */,
+				92001BE82A827C39000F525F /* Test_String_Conversions.swift in Sources */,
+				92001BEB2A827C39000F525F /* BIntTests.swift in Sources */,
+				92001BE92A827C39000F525F /* BDoubleTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -469,15 +600,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C26B2728207E5C29008FA649 /* MG Benchmark Tools.swift in Sources */,
-				C26B2729207E5C29008FA649 /* MG Math.swift in Sources */,
-				C26B272A207E5C29008FA649 /* MG SuperSwift.swift in Sources */,
-				C26B272B207E5C29008FA649 /* MG Matrix.swift in Sources */,
-				C26B272C207E5C29008FA649 /* MG QueueDispatch.swift in Sources */,
-				C26B272D207E5C29008FA649 /* MG IO.swift in Sources */,
-				C26B272E207E5C29008FA649 /* MG Storage.swift in Sources */,
-				C26B272F207E5C29008FA649 /* MG Complex.swift in Sources */,
-				C26B2730207E5C29008FA649 /* Swift-Big-Number-Core.swift in Sources */,
 				C26B2727207E5C17008FA649 /* Benchmarks.swift in Sources */,
 				C26B2726207E5C13008FA649 /* main.swift in Sources */,
 			);
@@ -488,7 +610,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F646296D1FF019F40074A180 /* Swift-Big-Number-Core.swift in Sources */,
-				B7C37FE624EEE47E005B1987 /* MG Matrix.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -496,16 +617,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C2D93A85209272CD00438D2A /* MG SuperSwift.swift in Sources */,
 				C28A8F552310160700C1C7D9 /* Test_Basic_Math.swift in Sources */,
-				C26B278B207E85D3008FA649 /* MG Storage.swift in Sources */,
 				C28A8F592310184700C1C7D9 /* Test_BIntMath.swift in Sources */,
-				C26B273A207E5E4F008FA649 /* MG Matrix.swift in Sources */,
-				C26B2739207E5E35008FA649 /* MG Math.swift in Sources */,
 				C28A8F5F2310282100C1C7D9 /* Test_Advanced_Math.swift in Sources */,
-				C26B2737207E5DF3008FA649 /* MG Math Tests.swift in Sources */,
-				C26B2738207E5DF3008FA649 /* MG Matrix Tests.swift in Sources */,
-				F6632C4A204918BF00B73607 /* Swift-Big-Number-Core.swift in Sources */,
 				F6632C4D20499FE300B73607 /* BIntTests.swift in Sources */,
 				F646296C1FF018540074A180 /* BDoubleTests.swift in Sources */,
 				C28A8F5D231026F800C1C7D9 /* Test_String_Conversions.swift in Sources */,
@@ -516,6 +630,21 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		92001BCC2A827A4B000F525F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 92001BC12A827A4A000F525F /* MGTools */;
+			targetProxy = 92001BCB2A827A4B000F525F /* PBXContainerItemProxy */;
+		};
+		92001BF02A827E58000F525F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AE8388A5203F1CAF00FAC88F /* BigNumber-iOS */;
+			targetProxy = 92001BEF2A827E58000F525F /* PBXContainerItemProxy */;
+		};
+		92001BF22A827E58000F525F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F64629531FF017E90074A180 /* BigNumber-macOS */;
+			targetProxy = 92001BF12A827E58000F525F /* PBXContainerItemProxy */;
+		};
 		AE8388B1203F1CB000FAC88F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = AE8388A5203F1CAF00FAC88F /* BigNumber-iOS */;
@@ -523,12 +652,152 @@
 		};
 		F646295F1FF017EA0074A180 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = F64629531FF017E90074A180 /* BigNumber */;
+			target = F64629531FF017E90074A180 /* BigNumber-macOS */;
 			targetProxy = F646295E1FF017EA0074A180 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		92001BD22A827A4B000F525F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = Sources/MGTools/Info.plist;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 Marcel Kröker. All rights reserved.";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = (
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mkrd.MGTools;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = auto;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		92001BD32A827A4B000F525F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = Sources/MGTools/Info.plist;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2023 Marcel Kröker. All rights reserved.";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = (
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mkrd.MGTools;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = auto;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		92001BD52A827A4B000F525F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = Tests/MGToolsTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mkrd.MGToolsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		92001BD62A827A4B000F525F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = Tests/MGToolsTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MARKETING_VERSION = 1.0;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mkrd.MGToolsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		AE8388B8203F1CB000FAC88F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -544,10 +813,14 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = "BigNumber-iOS/Info.plist";
+				INFOPLIST_FILE = Sources/BigNumber/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.yuzushioh.BigNumber-iOS";
 				PRODUCT_NAME = BigNumber;
 				SDKROOT = iphoneos;
@@ -575,10 +848,14 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = "BigNumber-iOS/Info.plist";
+				INFOPLIST_FILE = Sources/BigNumber/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.yuzushioh.BigNumber-iOS";
 				PRODUCT_NAME = BigNumber;
 				SDKROOT = iphoneos;
@@ -603,9 +880,13 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = "BigNumber-iOSTests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				INFOPLIST_FILE = Tests/BigNumberTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.yuzushioh.BigNumber-iOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -627,9 +908,13 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = "BigNumber-iOSTests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				INFOPLIST_FILE = Tests/BigNumberTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.yuzushioh.BigNumber-iOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
@@ -671,6 +956,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -729,6 +1015,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -745,7 +1032,8 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				"OTHER_SWIFT_FLAGS[arch=*]" = "-Xfrontend -debug-time-function-bodies";
 				SDKROOT = macosx;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
 			name = Release;
 		};
@@ -755,9 +1043,14 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
-				INFOPLIST_FILE = "$(SRCROOT)/Testing/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				INFOPLIST_FILE = Sources/Benchmarks/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mkrd.MathGround;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -774,16 +1067,22 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				GCC_OPTIMIZATION_LEVEL = fast;
-				INFOPLIST_FILE = "$(SRCROOT)/Testing/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				INFOPLIST_FILE = Sources/Benchmarks/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mkrd.MathGround;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -798,6 +1097,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -805,12 +1105,16 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = "$(SRCROOT)/Sources/Info.plist";
+				INFOPLIST_FILE = Sources/BigNumber/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mkrd.BigNumber;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = BigNumber;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_VERSION = 5.0;
@@ -829,6 +1133,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -836,12 +1141,16 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = "$(SRCROOT)/Sources/Info.plist";
+				INFOPLIST_FILE = Sources/BigNumber/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mkrd.BigNumber;
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PRODUCT_NAME = BigNumber;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -859,10 +1168,15 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = Tests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				INFOPLIST_FILE = Tests/BigNumberTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mkrd.BigNumberTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -881,10 +1195,15 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				INFOPLIST_FILE = Tests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				INFOPLIST_FILE = Tests/BigNumberTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = com.mkrd.BigNumberTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -895,6 +1214,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		92001BD12A827A4B000F525F /* Build configuration list for PBXNativeTarget "MGTools" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				92001BD22A827A4B000F525F /* Debug */,
+				92001BD32A827A4B000F525F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		92001BD42A827A4B000F525F /* Build configuration list for PBXNativeTarget "MGToolsTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				92001BD52A827A4B000F525F /* Debug */,
+				92001BD62A827A4B000F525F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		AE8388B7203F1CB000FAC88F /* Build configuration list for PBXNativeTarget "BigNumber-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -922,7 +1259,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C2F92B3F1D0F7421003CDF7D /* Build configuration list for PBXNativeTarget "MathGround" */ = {
+		C2F92B3F1D0F7421003CDF7D /* Build configuration list for PBXNativeTarget "Benchmarks" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C2F92B401D0F7421003CDF7D /* Debug */,
@@ -931,7 +1268,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F64629651FF017EA0074A180 /* Build configuration list for PBXNativeTarget "BigNumber" */ = {
+		F64629651FF017EA0074A180 /* Build configuration list for PBXNativeTarget "BigNumber-macOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F64629661FF017EA0074A180 /* Debug */,
@@ -940,7 +1277,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		F64629681FF017EA0074A180 /* Build configuration list for PBXNativeTarget "BigNumberTests" */ = {
+		F64629681FF017EA0074A180 /* Build configuration list for PBXNativeTarget "BigNumber-macOSTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				F64629691FF017EA0074A180 /* Debug */,

@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "AE8388A5203F1CAF00FAC88F"
-               BuildableName = "BigNumber.framework"
-               BlueprintName = "BigNumber-iOS"
+               BlueprintIdentifier = "92001BC12A827A4A000F525F"
+               BuildableName = "MGTools.framework"
+               BlueprintName = "MGTools"
                ReferencedContainer = "container:Swift-BigNumber.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -27,23 +27,15 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "AE8388A5203F1CAF00FAC88F"
-            BuildableName = "BigNumber.framework"
-            BlueprintName = "BigNumber-iOS"
-            ReferencedContainer = "container:Swift-BigNumber.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <Testables>
          <TestableReference
-            skipped = "NO">
+            skipped = "NO"
+            parallelizable = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "AE8388AD203F1CB000FAC88F"
-               BuildableName = "BigNumber-iOSTests.xctest"
-               BlueprintName = "BigNumber-iOSTests"
+               BlueprintIdentifier = "92001BC82A827A4B000F525F"
+               BuildableName = "MGToolsTests.xctest"
+               BlueprintName = "MGToolsTests"
                ReferencedContainer = "container:Swift-BigNumber.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -59,15 +51,6 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "AE8388A5203F1CAF00FAC88F"
-            BuildableName = "BigNumber.framework"
-            BlueprintName = "BigNumber-iOS"
-            ReferencedContainer = "container:Swift-BigNumber.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -78,9 +61,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "AE8388A5203F1CAF00FAC88F"
-            BuildableName = "BigNumber.framework"
-            BlueprintName = "BigNumber-iOS"
+            BlueprintIdentifier = "92001BC12A827A4A000F525F"
+            BuildableName = "MGTools.framework"
+            BlueprintName = "MGTools"
             ReferencedContainer = "container:Swift-BigNumber.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
