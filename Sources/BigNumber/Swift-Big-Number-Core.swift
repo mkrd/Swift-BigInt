@@ -824,7 +824,7 @@ public struct BInt:
 	public static func +(lhs:  Int, rhs: BInt) -> BInt { return BInt(lhs) + rhs }
 	public static func +(lhs: BInt, rhs:  Int) -> BInt { return lhs + BInt(rhs) }
 
-	public static func +=(lhs: inout  Int, rhs: BInt) { lhs += (BInt(lhs) + rhs).asInt()! }
+	public static func +=(lhs: inout  Int, rhs: BInt) { lhs = (BInt(lhs) + rhs).asInt()! }
 	public static func +=(lhs: inout BInt, rhs:  Int) { lhs +=  BInt(rhs)                 }
 
 	//
