@@ -178,4 +178,11 @@ class BIntTests: XCTestCase {
         XCTAssertEqual(y, BInt("0xb", radix: 16))
         XCTAssertEqual(y, BInt("0x0b", radix: 16))
     }
+
+    func testIssue78() {
+        var a = 5
+        a += BInt(10)
+        XCTAssertEqual(a, 15)
+    }
+
 }
