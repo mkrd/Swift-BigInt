@@ -2325,54 +2325,35 @@ public struct BDouble:
 		if let bi = BInt(nStr) {
 			self.init(bi, over: 1)
 		} else {
-            if let exp = nStr.firstIndex(of: "e")?.utf16Offset(in: nStr)
+			if let exp = nStr.firstIndex(of: "e")?.utf16Offset(in: nStr)
 			{
-				let beforeExp = String(Array(nStr)[..<exp].filter{ $0 != "." })
+				let pointIndex = nStr.firstIndex(of: ".")?.utf16Offset(in: nStr) ?? 0
+				let originDen = String(Array(nStr)[pointIndex..<exp]).count - 1
+				var beforeExp = String(Array(nStr)[..<exp].filter{ $0 != "." })
 				var afterExp = String(Array(nStr)[(exp + 1)...])
-				var sign = false
+				var scNotationSign = false // scientific notation sign
 
-				if let neg = afterExp.firstIndex(of: "-")?.utf16Offset(in: afterExp)
-				{
-					afterExp = String(Array(afterExp)[(neg + 1)...])
-					sign = true
+				if let scNotationNeg = afterExp.firstIndex(of: "-")?.utf16Offset(in: afterExp) {
+					afterExp = String(Array(afterExp)[(scNotationNeg + 1)...])
+					scNotationSign = true
 				}
 
-				if sign
+				if scNotationSign
 				{
 					if var safeAfterExp = Int(afterExp) {
-                        if beforeExp.starts(with: "+") || beforeExp.starts(with: "-") {
-                            safeAfterExp = safeAfterExp - beforeExp.count + 2
-                        } else {
-                            safeAfterExp = safeAfterExp + (beforeExp.count - 1)
-                        }
-						// if safeAfterExp is negative this results in a crash
-						// more testing and test cases needed
-						if safeAfterExp < 0 {
-							safeAfterExp = abs(safeAfterExp)
-						}
-						
+						safeAfterExp = safeAfterExp + originDen
 						let den = ["1"] + [Character](repeating: "0", count: safeAfterExp)
 						self.init(beforeExp, over: String(den))
 						return
 					}
 					return nil
 				}
-				else
-				{
-					if var safeAfterExp = Int(afterExp) {
-                        if beforeExp.starts(with: "+") || beforeExp.starts(with: "-") {
-                            safeAfterExp = safeAfterExp - beforeExp.count + 2
-                        } else {
-                            safeAfterExp = safeAfterExp - (beforeExp.count - 1)
-                        }
-						var num: String
-						if safeAfterExp >= 0 {
-							num = beforeExp + String([Character](repeating: "0", count: safeAfterExp))
-							self.init(num, over: "1")
-						} else {
-							num = beforeExp
-							self.init(num, over: "1" + String(repeating: "0", count: abs(safeAfterExp)))
-						}
+				else {
+					if let safeAfterExp = Int(afterExp) {
+						let num = [Character](repeating: "0", count: safeAfterExp)
+						let den = ["1"] + [Character](repeating: "0", count: originDen)
+						beforeExp = beforeExp + String(num)
+						self.init(beforeExp, over: String(den))
 						return
 					}
 					return nil

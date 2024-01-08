@@ -43,6 +43,26 @@ class BDoubleTests : XCTestCase {
 		XCTAssertEqual(BDouble("8.585213060425812e-06"), BDouble("8.585213060425812e-6"))
 		XCTAssertNotEqual(BDouble("8.585213060425812e-06"), BDouble("8.585213060425812e06"))
 		XCTAssertEqual(BDouble("1.2345678901234569e13"), BDouble("12345678901234.569"))
+
+		XCTAssertEqual(BDouble("+2.46e+3"), BDouble(2460))
+		XCTAssertEqual(BDouble("+2.46e-3"), BDouble(0.00246))
+		XCTAssertEqual(BDouble("+2.46e3"), BDouble(2460))
+		XCTAssertEqual(BDouble("+2.46e-3"), BDouble(0.00246))
+		XCTAssertEqual(BDouble("-2.46e-2"), BDouble(-0.0246))
+		XCTAssertEqual(BDouble("-2.46e+1"), BDouble(-24.6))
+		XCTAssertEqual(BDouble("-2.46e1"), BDouble(-24.6))
+		XCTAssertEqual(BDouble("-2.46e-28"), BDouble(-0.000000000000000000000000000246))
+		XCTAssertEqual(BDouble("-2.46e+28"), BDouble("-24600000000000000000000000000"))
+		XCTAssertEqual(BDouble("+2.46e+28"), BDouble("+24600000000000000000000000000"))
+		XCTAssertEqual(BDouble("2.46e+28"), BDouble("+24600000000000000000000000000"))
+		XCTAssertEqual(BDouble("2.46e28"), BDouble("24600000000000000000000000000"))
+
+		XCTAssertEqual(BDouble("+2.46e+3")?.decimalDescription, BDouble(2460).decimalDescription)
+		XCTAssertEqual(BDouble("-2.46e-2")?.decimalDescription, BDouble(-0.0246).decimalDescription)
+		XCTAssertEqual(BDouble("-2.46e+1")?.decimalDescription, BDouble(-24.6).decimalDescription)
+		XCTAssertEqual(BDouble("+2.46e+3")?.decimalDescription, BDouble(2460).decimalDescription)
+		XCTAssertEqual(BDouble("-2.46e-28")?.decimalDescription, BDouble(-0.000000000000000000000000000246).decimalDescription)
+
 		for _ in 0..<100 {
             let rn = Double.random(in: 0..<Double(UInt32.max))
 			XCTAssertNotNil(BDouble(rn))
