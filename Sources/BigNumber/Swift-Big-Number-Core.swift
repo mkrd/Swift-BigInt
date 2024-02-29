@@ -2592,6 +2592,10 @@ public struct BDouble:
 			res = "0." + String(repeating: "0", count: currentPrecision - res.count) + res
 		}
 
+		if currentPrecision == 0 {
+			res += "0"
+		}
+
 		let retVal = self.isNegative() && !limbs.equalTo(0) ? "-" + res : res
 
 		return retVal
