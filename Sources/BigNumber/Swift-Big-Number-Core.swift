@@ -2545,47 +2545,56 @@ public struct BDouble:
 	 */
     public func decimalExpansion(precisionAfterDecimalPoint precision: Int, rounded : Bool = true) -> String
     {
-        var currentPrecision = precision
+		var currentPrecision = precision
 
-        if(rounded && precision > 0) {
-            currentPrecision = currentPrecision + 1
-        }
+		if rounded {
+			currentPrecision += 1
+		}
 
-        let multiplier = [10].exponentiating(currentPrecision)
-        let limbs = self.numerator.multiplyingBy(multiplier).divMod(self.denominator).quotient
-        var res = BInt(limbs: limbs).description
-        
-        if currentPrecision <= res.count
-        {
+		let multiplier = [10].exponentiating(currentPrecision)
+		let limbs = self.numerator.multiplyingBy(multiplier).divMod(self.denominator).quotient
+		var res = BInt(limbs: limbs).description
+
+		if rounded {
+			var digits: [Int] = Array(res).map({ char in Int(char.description)! })
+			let carry: Int = digits.removeLast() >= 5 ? 1 : 0
+			var counter: Int = digits.count - 1
+
+			if carry == 1 {
+				while counter >= 0 {
+					if digits[counter] + 1 == 10 {
+						digits[counter] = 0
+					} else {
+						digits[counter] += 1
+						break
+					}
+					counter -= 1
+				}
+
+				if counter == -1 {
+					digits.insert(1, at: 0)
+				}
+			}
+
+			let digitsArray = digits.map { String($0) }
+			res = digitsArray.joined()
+
+			currentPrecision -= 1
+			if res == "" { res = "0" }
+		}
+
+		if currentPrecision <= res.count {
 			res.insert(".", at: res.index(res.startIndex, offsetBy: res.count - currentPrecision))
-            if res.hasPrefix(".") { res = "0" + res }
-            else if res.hasSuffix(".") { res += "0" }
-        }
-        else
-        {
-            res = "0." + String(repeating: "0", count: currentPrecision - res.count) + res
-        }
-        
-        var retVal = self.isNegative() && !limbs.equalTo(0) ? "-" + res : res
+			if res.hasPrefix(".") {
+				res = "0" + res
+			}
+		} else {
+			res = "0." + String(repeating: "0", count: currentPrecision - res.count) + res
+		}
 
-        if(rounded && precision > 0) {
+		let retVal = self.isNegative() && !limbs.equalTo(0) ? "-" + res : res
 
-            let lastDigit = Int(retVal.suffix(1))! // this should always be a number
-            let secondDigit = retVal.suffix(2).prefix(1) // this could be a decimal
-            
-            retVal = String(retVal.prefix(retVal.count-2))
-            if (secondDigit != ".") {
-                if lastDigit >= 5 {
-                    retVal = retVal + String(Int(secondDigit)! + 1)
-                } else {
-                    retVal = retVal + String(Int(secondDigit)!)
-                }
-            } else {
-                retVal = retVal + "." + String(lastDigit)
-            }
-        }
-
-        return retVal
+		return retVal
     }
 
 	public func hash(into hasher: inout Hasher) {
