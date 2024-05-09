@@ -278,9 +278,9 @@ class BDoubleTests : XCTestCase {
 			if toBDoubleAndBack != doubleString
 			{
 				if toBDoubleAndBack == "0.0" && ["0", "-0"].contains(doubleString) { continue }
-				// For expmple, input: "13" and output "13.0" is okay
+				// For example, input: "13" and output "13.0" is okay
 				if toBDoubleAndBack[0..<(toBDoubleAndBack.count - 2)] == doubleString && toBDoubleAndBack.hasSuffix(".0") { continue }
-				// For expmple, input: "13" and output "13.0" is okay
+				// For example, input: "13" and output "13.0" is okay
 				if doubleString[1..<doubleString.count] == toBDoubleAndBack && doubleString.hasPrefix("-0.") { continue }
 				
 				print("\nError: PreDecCount: \(preDecimalCount) PostDecCount: \(postDecimalCount)")

@@ -144,7 +144,7 @@ BIntOrInt *  BIntOrInt // Returns BInt
 BIntOrInt *= BIntOrInt
 
 // Exponentiation
-BInt ** Int       // Retuns BInt to the power of Int
+BInt ** Int       // Returns BInt to the power of Int
 
 // Modulo
 BIntOrInt  %  BIntOrInt // Returns BInt
@@ -205,7 +205,7 @@ bigD.description // Returns "-308/25"
 => print(bigD) // prints "-308/25"
 
 
-bigD.minimize() // Divides numerator and denominator by their gcd for storage and operation efficiency, usually not neccesary, because of automatic minimization
+bigD.minimize() // Divides numerator and denominator by their gcd for storage and operation efficiency, usually not necessary, because of automatic minimization
 
 bigD.rawData() // Returns internal structure
 ```
