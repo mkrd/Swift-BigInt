@@ -2230,7 +2230,8 @@ public struct BDouble:
 	SignedNumeric,
 	Comparable,
 	Hashable,
-	Codable
+	Codable,
+	Sendable
 {
 	//
 	//
