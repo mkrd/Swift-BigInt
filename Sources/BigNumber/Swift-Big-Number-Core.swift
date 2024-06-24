@@ -174,7 +174,8 @@ public struct BInt:
 	SignedNumeric, // Implies Numeric, Equatable, ExpressibleByIntegerLiteral
 	BinaryInteger, // Implies Hashable, CustomStringConvertible, Strideable, Comparable
 	ExpressibleByFloatLiteral,
-	Codable
+	Codable,
+	Sendable
 {
 	//
 	//
