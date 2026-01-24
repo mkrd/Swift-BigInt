@@ -7,11 +7,14 @@
 */
 
 import Foundation
-@testable import BigNumber
-@testable import MGTools
+import BigNumber
+import MGTools
 
 public class Benchmarks
 {
+	// Matrix1 benchmark disabled - requires internal types
+	// static func Matrix1() { ... }
+
 	static func Matrix1()
 	{
 		let A = Matrix<BDouble>(
@@ -57,6 +60,7 @@ public class Benchmarks
 		}
 	}
 
+	
 	static func BDoubleConverging()
 	{
 		benchmarkAndPrint(title: "BDouble converging to 2")

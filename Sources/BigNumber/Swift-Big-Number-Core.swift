@@ -1776,9 +1776,86 @@ fileprivate extension Array where Element == Limb
 
 	func multiplyingBy(_ multiplicand: Limbs) -> Limbs
 	{
-		var res: Limbs = [0]
-		res.addProductOf(multiplier: self, multiplicand: multiplicand)
-		return res
+		// Use Karatsuba for large numbers, schoolbook for small
+		let karatsubaThreshold = 64  // limbs threshold
+
+		if self.count <= karatsubaThreshold || multiplicand.count <= karatsubaThreshold {
+			// Schoolbook multiplication
+			var res: Limbs = [0]
+			res.addProductOf(multiplier: self, multiplicand: multiplicand)
+			return res
+		}
+
+		return karatsubaMultiply(self, multiplicand)
+	}
+
+	/// Karatsuba multiplication algorithm - O(n^1.585) complexity
+	/// For numbers x and y:
+	///   x = x1 * B^m + x0
+	///   y = y1 * B^m + y0
+	///   xy = z2 * B^(2m) + z1 * B^m + z0
+	/// where:
+	///   z0 = x0 * y0
+	///   z2 = x1 * y1
+	///   z1 = (x0 + x1) * (y0 + y1) - z0 - z2
+	private func karatsubaMultiply(_ x: Limbs, _ y: Limbs) -> Limbs
+	{
+		let karatsubaThreshold = 64
+
+		// Base case: use schoolbook for small numbers
+		let n = Swift.max(x.count, y.count)
+		if n <= karatsubaThreshold {
+			var res: Limbs = [0]
+			res.addProductOf(multiplier: x, multiplicand: y)
+			return res
+		}
+
+		// Split point
+		let m = n / 2
+
+		// Split x into x1 (high) and x0 (low)
+		let x0 = Array(x.prefix(m))
+		let x1 = x.count > m ? Array(x.suffix(from: m)) : [0]
+
+		// Split y into y1 (high) and y0 (low)
+		let y0 = Array(y.prefix(m))
+		let y1 = y.count > m ? Array(y.suffix(from: m)) : [0]
+
+		// z0 = x0 * y0
+		let z0 = karatsubaMultiply(x0.isEmpty ? [0] : x0, y0.isEmpty ? [0] : y0)
+
+		// z2 = x1 * y1
+		let z2 = karatsubaMultiply(x1, y1)
+
+		// z1 = (x0 + x1) * (y0 + y1) - z0 - z2
+		var x0PlusX1 = x0.isEmpty ? [Limb(0)] : x0
+		x0PlusX1.addLimbs(x1)
+		var y0PlusY1 = y0.isEmpty ? [Limb(0)] : y0
+		y0PlusY1.addLimbs(y1)
+
+		var z1 = karatsubaMultiply(x0PlusX1, y0PlusY1)
+		z1.difference(z0)
+		z1.difference(z2)
+
+		// Result = z2 * B^(2m) + z1 * B^m + z0
+		var result = z0
+
+		// Add z1 * B^m (shift left by m limbs)
+		var z1Shifted: Limbs = Array(repeating: 0, count: m)
+		z1Shifted.append(contentsOf: z1)
+		result.addLimbs(z1Shifted)
+
+		// Add z2 * B^(2m) (shift left by 2m limbs)
+		var z2Shifted: Limbs = Array(repeating: 0, count: 2 * m)
+		z2Shifted.append(contentsOf: z2)
+		result.addLimbs(z2Shifted)
+
+		// Remove trailing zeros
+		while result.count > 1 && result.last == 0 {
+			result.removeLast()
+		}
+
+		return result
 	}
 
 	func squared() -> Limbs
@@ -1986,10 +2063,10 @@ fileprivate extension Array where Element == Limb
 //
 //
 //
-internal class BIntMath
+public class BIntMath
 {
 	/// Returns true iff (2 ** exp) - 1 is a mersenne prime.
-	static func isMersenne(_ exp: Int) -> Bool
+	public static func isMersenne(_ exp: Int) -> Bool
 	{
 		var mersenne = Limbs(repeating: Limb.max, count: exp >> 6)
 
@@ -2074,34 +2151,85 @@ internal class BIntMath
 		return a.divMod(steinGcd(a, b)).quotient.multiplyingBy(b)
 	}
 
-	static func lcm(_ a:BInt, _ b:BInt) -> BInt
+	public static func lcm(_ a:BInt, _ b:BInt) -> BInt
 	{
 		return BInt(limbs: lcmPositive(a.limbs, b.limbs))
 	}
 
-	static func fib(_ n:Int) -> BInt
+	/// Computes the n-th Fibonacci number using the fast doubling algorithm.
+	/// Time complexity: O(log n) big integer operations.
+	///
+	/// Fast doubling formulas:
+	///   F(2k)   = F(k) * [2*F(k+1) - F(k)]
+	///   F(2k+1) = F(k)^2 + F(k+1)^2
+	public static func fib(_ n:Int) -> BInt
 	{
-		var a: Limbs = [0], b: Limbs = [1], t: Limbs
+		if n < 0 { fatalError("Fibonacci number not defined for negative indices") }
+		if n == 0 { return BInt(0) }
+		if n == 1 || n == 2 { return BInt(1) }
 
-		for _ in 2...n
-		{
-			t = b
-			b.addLimbs(a)
-			a = t
+		// Iterative fast doubling algorithm
+		// We maintain (F(k), F(k+1)) and double k until we reach n
+		var a: Limbs = [0]  // F(0)
+		var b: Limbs = [1]  // F(1)
+
+		// Find the highest bit position in n
+		var highBit = 0
+		var temp = n
+		while temp > 0 {
+			highBit += 1
+			temp >>= 1
 		}
 
-		return BInt(limbs: b)
+		// Process bits from the highest to the lowest
+		for i in stride(from: highBit - 1, through: 0, by: -1) {
+			// At this point we have (F(k), F(k+1))
+			// We want to compute (F(2k), F(2k+1)) or (F(2k+1), F(2k+2))
+
+			// First compute F(2k) and F(2k+1) from F(k) and F(k+1)
+			// F(2k) = F(k) * [2*F(k+1) - F(k)]
+			// F(2k+1) = F(k)^2 + F(k+1)^2
+
+			// c = 2 * b - a = 2*F(k+1) - F(k)
+			var c = b
+			c.shiftUp(1)  // c = 2 * F(k+1)
+			c.difference(a)  // c = 2*F(k+1) - F(k)
+
+			// f2k = a * c = F(k) * [2*F(k+1) - F(k)] = F(2k)
+			let f2k = a.multiplyingBy(c)
+
+			// f2k1 = a^2 + b^2 = F(k)^2 + F(k+1)^2 = F(2k+1)
+			let aSquared = a.squared()
+			let bSquared = b.squared()
+			var f2k1 = aSquared
+			f2k1.addLimbs(bSquared)
+
+			if (n >> i) & 1 == 0 {
+				// Bit is 0: (F(k), F(k+1)) -> (F(2k), F(2k+1))
+				a = f2k
+				b = f2k1
+			} else {
+				// Bit is 1: (F(k), F(k+1)) -> (F(2k+1), F(2k+2))
+				// F(2k+2) = F(2k) + F(2k+1)
+				var f2k2 = f2k
+				f2k2.addLimbs(f2k1)
+				a = f2k1
+				b = f2k2
+			}
+		}
+
+		return BInt(limbs: a)
 	}
 
 	///	Order matters, repetition not allowed.
-	static func permutations(_ n: Int, _ k: Int) -> BInt
+	public static func permutations(_ n: Int, _ k: Int) -> BInt
 	{
 		// n! / (n-k)!
 		return BInt(n).factorial() / BInt(n - k).factorial()
 	}
 
 	///	Order matters, repetition allowed.
-	static func permutationsWithRepitition(_ n: Int, _ k: Int) -> BInt
+	public static func permutationsWithRepitition(_ n: Int, _ k: Int) -> BInt
 	{
 		// n ** k
 		return BInt(n) ** k
@@ -2109,14 +2237,14 @@ internal class BIntMath
 	}
 
 	///	Order does not matter, repetition not allowed.
-	static func combinations(_ n: Int, _ k: Int) -> BInt
+	public static func combinations(_ n: Int, _ k: Int) -> BInt
 	{
 		// (n + k - 1)! / (k! * (n - 1)!)
 		return BInt(n + k - 1).factorial() / (BInt(k).factorial() * BInt(n - 1).factorial())
 	}
 
 	///	Order does not matter, repetition allowed.
-	static func combinationsWithRepitition(_ n: Int, _ k: Int) -> BInt
+	public static func combinationsWithRepitition(_ n: Int, _ k: Int) -> BInt
 	{
 		// n! / (k! * (n - k)!)
 		return BInt(n).factorial() / (BInt(k).factorial() * BInt(n - k).factorial())
