@@ -5,7 +5,7 @@ Benchmarks.BDoubleConverging()
 Benchmarks.exponentiation()
 Benchmarks.factorial()
 Benchmarks.fibonacci()
-//Benchmarks.Matrix1()  // Disabled - requires internal types
+Benchmarks.Matrix1()  
 Benchmarks.mersennes()
 Benchmarks.BIntToString()
 Benchmarks.StringToBInt()

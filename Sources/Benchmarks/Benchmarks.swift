@@ -7,13 +7,55 @@
 */
 
 import Foundation
-import BigNumber
-import MGTools
+@testable import BigNumber
+@testable import MGTools
 
 public class Benchmarks
 {
-	// Matrix1 benchmark disabled - requires internal types
-	// static func Matrix1() { ... }
+    static func Matrix1()
+        {
+             let A = Matrix<BDouble>(
+                [[2,5,-2],
+                 [3,5,6],
+                 [-55,4,3]]
+            )
+
+            let G12 = Matrix<BDouble>([
+                [0.8,    -0.6,    0.0],
+                [0.6,    0.8,    0.0],
+                [0.0,    0.0,    1.0]
+            ])
+
+
+            let al = Matrix<BDouble>([4, -3, 1])
+
+            print(G12 * al)
+
+            let (L, R, P, D) = LRDecompPivEquil(A)
+
+            print(solveGauss(A, [2.0, -4.0, 15.0]))
+            print(solveLR(A, [2.0, -4.0, 15.0]))
+            print(solveLRPD(A, [2.0, -4.0, 15.0]))
+
+            print("P L R")
+            print(P)
+            print(L)
+            print(R)
+
+            print("LR == PDA")
+            print(L * R)
+            print(P * D * A)
+
+
+            benchmarkAndPrint(title: "Matix ^ 100")
+            {
+                var R = A
+                for _ in 0...100
+                {
+                    R = R * A
+                }
+            }
+        }
 
 	
 	static func BDoubleConverging()
