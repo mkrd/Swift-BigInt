@@ -1100,20 +1100,25 @@ fileprivate extension Array where Element == Limb
 		}
 
 		// Then, convert digits to string
-		var res = String(digits.last!)
+		// Use a more efficient string building approach
+		var parts: [String] = []
+		parts.reserveCapacity(digits.count)
 
-		if digits.count == 1 { return res }
-
-		for i in (0..<(digits.count - 1)).reversed()
+		for i in (0..<digits.count).reversed()
 		{
 			let str = String(digits[i])
 
-			let leadingZeros = String(repeating: "0", count: DigitZeros - str.count)
-
-			res.append(leadingZeros.appending(str))
+			if i == digits.count - 1 {
+				// First (most significant) digit, no leading zeros
+				parts.append(str)
+			} else {
+				// Add leading zeros for other digits
+				let leadingZeros = String(repeating: "0", count: DigitZeros - str.count)
+				parts.append(leadingZeros + str)
+			}
 		}
 
-		return res
+		return parts.joined()
 	}
 }
 fileprivate extension Digit
@@ -1786,7 +1791,63 @@ fileprivate extension Array where Element == Limb
 			return res
 		}
 
+		// Handle unbalanced multiplication more efficiently
+		// If one operand is significantly larger, use a divide-and-conquer approach
+		let ratio = Double(Swift.max(self.count, multiplicand.count)) / Double(Swift.min(self.count, multiplicand.count))
+		if ratio > 4.0 {
+			// Use Toom-Cook or specialized unbalanced multiplication
+			return unbalancedMultiply(self, multiplicand)
+		}
+
 		return karatsubaMultiply(self, multiplicand)
+	}
+
+	/// Unbalanced multiplication - O(n*m) but optimized when n >> m
+	/// Uses a divide-and-conquer approach where the larger number is split
+	/// into blocks that can be multiplied with the smaller number independently
+	private func unbalancedMultiply(_ x: Limbs, _ y: Limbs) -> Limbs
+	{
+		// Ensure x is the larger operand
+		let (larger, smaller) = x.count >= y.count ? (x, y) : (y, x)
+		
+		// If the smaller is small enough, use schoolbook multiplication directly
+		let blockThreshold = 256
+		if smaller.count <= blockThreshold {
+			// Use schoolbook multiplication for the small operand
+			var res: Limbs = [0]
+			res.reserveCapacity(larger.count + smaller.count)
+			res.addProductOf(multiplier: larger, multiplicand: smaller)
+			return res
+		}
+		
+		// Divide the larger operand into blocks
+		// Each block is roughly half the size of the smaller operand to optimize
+		let blockSize = smaller.count / 2 + 1
+		var result: Limbs = [0]
+		result.reserveCapacity(larger.count + smaller.count)
+		
+		// Process each block independently
+		var blockIndex = 0
+		while blockIndex < larger.count {
+			// Extract a block from the larger operand
+			let endIndex = Swift.min(blockIndex + blockSize, larger.count)
+			let block = Array(larger[blockIndex..<endIndex])
+			
+			// Multiply the block with the smaller operand
+			// Use the regular multiplication for better performance
+			let blockResult = block.multiplyingBy(smaller)
+			
+			// Shift and add to result
+			if blockResult.count > 0 {
+				var shifted: Limbs = Array(repeating: 0, count: blockIndex)
+				shifted.append(contentsOf: blockResult)
+				result.addLimbs(shifted)
+			}
+			
+			blockIndex = endIndex
+		}
+		
+		return result
 	}
 
 	/// Karatsuba multiplication algorithm - O(n^1.585) complexity
@@ -1860,6 +1921,12 @@ fileprivate extension Array where Element == Limb
 
 	func squared() -> Limbs
 	{
+		// For large numbers, use Karatsuba which is more efficient
+		let karatsubaThreshold = 128
+		if self.count > karatsubaThreshold {
+			return karatsubaMultiply(self, self)
+		}
+
 		var res: Limbs = [0]
 		res.reserveCapacity(2 * self.count)
 
