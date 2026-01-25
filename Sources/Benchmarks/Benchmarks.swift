@@ -91,28 +91,36 @@ public class Benchmarks
 		}
 	}
 
-	static func fibonacci()
-	{
-		let n = 100_000
+    static func fibonacci()
+    {
+        let n = 100_000
 
-		benchmarkAndPrint(title: "Fib \(n)")
-		{
-			// Fib 35.000 Debug Mode
-			// 27.01.16: 2488ms
-			// 30.01.16: 1458ms
-			// 01.02.16: 357ms
+        benchmarkAndPrint(title: "Fib \(n)")
+        {
+            // Fib 35.000 Debug Mode
+            // 27.01.16: 2488ms
+            // 30.01.16: 1458ms
+            // 01.02.16: 357ms
 
-			// Fib 100.000 Debug Mode
-			// 01.02.16: 2733ms
-			// 04.02.16: 2949ms
-			// 10.02.16: 1919ms
-			// 28.02.16: 1786ms
-			// 07.03.16: 1716ms
-			// 23.08.19: 1124ms
+            // Fib 100.000 Debug Mode
+            // 01.02.16: 2733ms
+            // 04.02.16: 2949ms
+            // 10.02.16: 1919ms
+            // 28.02.16: 1786ms
+            // 07.03.16: 1716ms
+            // 23.08.19: 1124ms
 
-			_ = BIntMath.fib(n)
-		}
-	}
+            _ = BIntMath.fib(n)
+        }
+        
+        let n2 = 1_000_000
+        
+        benchmarkAndPrint(title: "Fib \(n2)")
+        {
+            _ = BIntMath.fib(n)
+        }
+        
+    }
 
 	static func mersennes()
 	{
