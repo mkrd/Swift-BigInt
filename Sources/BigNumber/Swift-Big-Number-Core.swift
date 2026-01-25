@@ -509,32 +509,7 @@ public struct BInt:
 	/// Returns the BInt's value in the given base (radix) as a string.
 	public func asString(radix: Int) -> String
 	{
-		let chars: [Character] = [
-			"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f", "g",
-			"h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x",
-			"y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O",
-			"P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"
-		]
-
-		var (limbs, res) = (self.limbs, "")
-
-		while !limbs.equalTo(0)
-		{
-			let divmod = limbs.divMod([Limb(radix)])
-
-			if let r = divmod.remainder.first, r < radix
-			{
-				res.append(chars[Int(r)])
-				limbs = divmod.quotient
-			}
-			else
-			{
-				fatalError("BInt.asString: Base too big, should be between 2 and 62")
-			}
-		}
-
-		if res == "" { return "0" }
-		return (self.sign ? "-" : "").appending(String(res.reversed()))
+        return (self.sign ? "-" : "").appending(self.limbs.asString(radix: radix))
 	}
 
 	///	Returns BInt's value as an integer. Conversion only works when self has only one limb
@@ -1080,46 +1055,46 @@ fileprivate let DigitZeros           =                        18
 
 fileprivate extension Array where Element == Limb
 {
-	var decimalRepresentation: String
-	{
-		// First, convert limbs to digits
-		var digits: Digits = [0]
-		var power: Digits = [1]
+    var decimalRepresentation: String
+    {
+        return self.asString(radix: 10)
+    }
 
-		for limb in self
-		{
-			let digit = (limb >= DigitBase)
-				? [limb % DigitBase, limb / DigitBase]
-				: [limb]
+    func asString(radix: Int) -> String
+    {
+        if self.equalTo(0) { return "0" }
+        let chars: [Character] = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
 
-			digits.addProductOfDigits(digit, power)
+        var largeRadix: Limb = Limb(radix)
+        var power = 1
+        while true {
+            let (next, overflow) = largeRadix.multipliedReportingOverflow(by: Limb(radix))
+            if overflow { break }
+            largeRadix = next
+            power += 1
+        }
 
-			var nextPower: Digits = [0]
-			nextPower.addProductOfDigits(power, [446_744_073_709_551_616, 18])
-			power = nextPower
-		}
+        var limbs = self
+        var chunks = [Limb]()
+        while !limbs.equalTo(0) {
+            chunks.append(limbs.divModLimb(largeRadix))
+        }
 
-		// Then, convert digits to string
-		// Use a more efficient string building approach
-		var parts: [String] = []
-		parts.reserveCapacity(digits.count)
-
-		for i in (0..<digits.count).reversed()
-		{
-			let str = String(digits[i])
-
-			if i == digits.count - 1 {
-				// First (most significant) digit, no leading zeros
-				parts.append(str)
-			} else {
-				// Add leading zeros for other digits
-				let leadingZeros = String(repeating: "0", count: DigitZeros - str.count)
-				parts.append(leadingZeros + str)
-			}
-		}
-
-		return parts.joined()
-	}
+        var res = ""
+        for (i, var chunk) in chunks.enumerated() {
+            var s = ""
+            for _ in 0..<power {
+                s.append(chars[Int(chunk % Limb(radix))])
+                chunk /= Limb(radix)
+                if i == chunks.count - 1 && chunk == 0 { break }
+            }
+            if i != chunks.count - 1 {
+                while s.count < power { s.append("0") }
+            }
+            res.append(s)
+        }
+        return String(res.reversed())
+    }
 }
 fileprivate extension Digit
 {
@@ -2068,6 +2043,17 @@ fileprivate extension Array where Element == Limb
 	{
 		return self.divMod(divisor).quotient
 	}
+    
+    mutating func divModLimb(_ divisor: Limb) -> Limb
+    {
+        var remainder: Limb = 0
+        for i in (0..<self.count).reversed()
+        {
+            (self[i], remainder) = divisor.dividingFullWidth((remainder, self[i]))
+        }
+        while self.count > 1 && self.last == 0 { self.removeLast() }
+        return remainder
+    }
 
 	/// Modulo with limbs, result is floored to nearest whole number.
 	func modulus(_ divisor: Limbs) -> Limbs
