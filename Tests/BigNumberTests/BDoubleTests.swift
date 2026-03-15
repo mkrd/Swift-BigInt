@@ -493,6 +493,20 @@ class BDoubleTests : XCTestCase {
 		XCTAssert(BDouble.nearlyEqual(BDouble(0.000000001), BDMin));
 		XCTAssert(BDouble.nearlyEqual(BDMin, BDouble(0.000000001)));
 		XCTAssert(BDouble.nearlyEqual(-BDMin, BDouble(0.000000001)));
+
+		// Non-canonical zero (negative sign with zero numerator via raw initializer)
+		let rawNegZero = BDouble(sign: true, numerator: [0], denominator: [2])
+		XCTAssert(rawNegZero.isZero())
+		XCTAssert(BDouble.nearlyEqual(rawNegZero, BDouble(0.0)))
+		XCTAssert(BDouble.nearlyEqual(BDouble(0.0), rawNegZero))
+		XCTAssert(BDouble.nearlyEqual(rawNegZero, rawNegZero))
+		XCTAssert(BDouble.nearlyEqual(rawNegZero, BDouble(0.00000001)))
+
+		// Integer-literal zero (the pattern that triggered the Xcode 26.4 ambiguity)
+		let intZero: BDouble = 0
+		XCTAssert(intZero.isZero())
+		XCTAssert(BDouble.nearlyEqual(intZero, BDouble(0.0)))
+		XCTAssert(BDouble.nearlyEqual(intZero, rawNegZero))
 	}
 	
 	func testRadix() {
