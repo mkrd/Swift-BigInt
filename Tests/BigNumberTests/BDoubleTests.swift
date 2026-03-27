@@ -494,7 +494,7 @@ class BDoubleTests : XCTestCase {
 		XCTAssert(BDouble.nearlyEqual(BDMin, BDouble(0.000000001)));
 		XCTAssert(BDouble.nearlyEqual(-BDMin, BDouble(0.000000001)));
 
-		// Non-canonical zero (negative sign with zero numerator via raw initializer)
+		// Negative-signed zero constructed via raw initializer (canonicalized by minimize())
 		let rawNegZero = BDouble(sign: true, numerator: [0], denominator: [2])
 		XCTAssert(rawNegZero.isZero())
 		XCTAssert(BDouble.nearlyEqual(rawNegZero, BDouble(0.0)))
