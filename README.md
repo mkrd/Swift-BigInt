@@ -241,19 +241,13 @@ a <= b <==> !(a > b)
 ```
 
 
-
 # About performance
 BInt about twice as fast as mini-gmp, as of now (not counting the normal gmp, because it needs to be installed and is not portable). For example, BInt can add numbers about 2 times faster than GMP (272ms vs 530ms for fib(100,000)), and multiplication is more than twice as fast. When given the task of calculating and printing factorials successively, BInt performs significantly better than GMP. In addition, GMP is significantly harder to use, while BInt offers an intuitive interface.
 
 
 
 # Releasing
-To publish a new release:
-1. Go to [Releases -> New Release](https://github.com/mkrd/Swift-BigInt/releases/new)
-2. Create a new tag following the `v*.*.*` format (e.g. `v2.4.0`)
-3. Write release notes and publish
-
-The `deploy.yml` workflow automatically extracts the version from the tag, patches the podspec, and runs `pod trunk push`. SPM users pick up the new version from the git tag automatically.
+See [RELEASING.md](RELEASING.md) for the full release process, CI setup, and how to renew the CocoaPods trunk token.
 
 
 
