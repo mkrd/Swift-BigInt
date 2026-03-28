@@ -947,7 +947,9 @@ public struct BInt:
 	public func quotientAndRemainder(dividingBy rhs: BInt) -> (quotient: BInt, remainder: BInt)
 	{
 		let limbRes = self.limbs.divMod(rhs.limbs)
-		return (BInt(limbs: limbRes.quotient), BInt(limbs: limbRes.remainder))
+		let qSign = (self.sign != rhs.sign) && !limbRes.quotient.equalTo(0)
+		let rSign = self.sign && !limbRes.remainder.equalTo(0)
+		return (BInt(sign: qSign, limbs: limbRes.quotient), BInt(sign: rSign, limbs: limbRes.remainder))
 	}
 
 	public static func /(lhs: BInt, rhs:BInt) -> BInt
