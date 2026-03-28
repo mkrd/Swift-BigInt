@@ -295,4 +295,94 @@ public class Benchmarks
 			_ = b1 * b2
 		}
 	}
+
+	static func divisionBalanced()
+	{
+		let b1 = BIntMath.randomBInt(bits: 200_000)
+		let b2 = BIntMath.randomBInt(bits: 100_000)
+
+		benchmarkAndPrint(title: "Divide 200_000-bit by 100_000-bit BInt")
+		{
+			_ = b1 / b2
+		}
+	}
+
+	static func divisionUnbalanced()
+	{
+		let b1 = BIntMath.randomBInt(bits: 10_000_000)
+		let b2 = BIntMath.randomBInt(bits: 1_000)
+
+		benchmarkAndPrint(title: "Divide 10_000_000-bit by 1_000-bit BInt")
+		{
+			_ = b1 / b2
+		}
+	}
+
+	static func gcdLargeNumbers()
+	{
+		let b1 = BIntMath.randomBInt(bits: 130_000)
+		let b2 = BIntMath.randomBInt(bits: 130_000)
+
+		benchmarkAndPrint(title: "GCD of two 130_000-bit BInts")
+		{
+			_ = BIntMath.gcd(b1, b2)
+		}
+	}
+
+	static func modularExponentiation()
+	{
+		let base = BIntMath.randomBInt(bits: 1800)
+		let exp = BIntMath.randomBInt(bits: 1800)
+		let modulus = BIntMath.randomBInt(bits: 1800)
+
+		benchmarkAndPrint(title: "mod_exp with 1800-bit base, exp, modulus")
+		{
+			_ = BIntMath.mod_exp(base, exp, modulus)
+		}
+	}
+
+	static func BDoubleDivision()
+	{
+		let num = BDouble(BIntMath.randomBInt(bits: 100_000), over: BInt(7))
+		let den = BDouble(BIntMath.randomBInt(bits: 100_000), over: BInt(13))
+
+		benchmarkAndPrint(title: "BDouble division, 100_000-bit numerators")
+		{
+			_ = num / den
+		}
+	}
+
+	static func BDoubleDecimalExpansion()
+	{
+		let val = BDouble(1, over: 7)
+
+		benchmarkAndPrint(title: "BDouble decimal expansion, 70_000 digits")
+		{
+			_ = val.decimalExpansion(precisionAfterDecimalPoint: 70_000, rounded: false)
+		}
+	}
+
+	static func radixConversion()
+	{
+		let big = BInt(1_500).factorial()
+
+		benchmarkAndPrint(title: "1500! to hex string")
+		{
+			_ = big.asString(radix: 16)
+		}
+	}
+
+	static func bitShifting()
+	{
+		let big = BIntMath.randomBInt(bits: 1_000_000)
+
+		benchmarkAndPrint(title: "Shift 1_000_000-bit BInt left by 500_000, 700 times")
+		{
+			var x = big
+			for _ in 0..<100
+			{
+				x = x << 5_000_000
+			}
+		}
+	}
 }
