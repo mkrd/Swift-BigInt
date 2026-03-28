@@ -24,6 +24,9 @@ let package = Package(
             dependencies: ["BigNumber", "MGTools"]),
         .target(
             name: "Benchmarks",
+            dependencies: ["BigNumber", "MGTools"]),
+        .target(
+            name: "Verify",
             dependencies: ["BigNumber", "MGTools"])
     ]
 )
