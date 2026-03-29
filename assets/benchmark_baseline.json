@@ -2,191 +2,191 @@
   "results" : [
     {
       "measurements" : [
-        381,
-        378,
-        379,
+        396,
+        377,
         380,
-        393
+        382,
+        381
       ],
       "name" : "BDouble converging to two for 3000 steps"
     },
     {
       "measurements" : [
-        352,
-        353,
-        350,
-        351,
-        350
+        112,
+        112,
+        119,
+        123,
+        112
       ],
       "name" : "10^300_000"
     },
     {
       "measurements" : [
-        312,
-        313,
-        312,
-        313,
-        317
+        89,
+        89,
+        89,
+        88,
+        89
       ],
       "name" : "Factorial of 40_000"
     },
     {
       "measurements" : [
-        279,
-        279,
-        279,
-        287,
-        279
+        4,
+        4,
+        4,
+        4,
+        4
       ],
       "name" : "Fib 100000"
     },
     {
       "measurements" : [
-        448,
-        449,
-        449,
-        448,
-        449
+        443,
+        446,
+        443,
+        444,
+        443
       ],
       "name" : "Matrix ^ 500"
     },
     {
       "measurements" : [
+        266,
+        267,
         262,
-        265,
         263,
-        262,
         262
       ],
       "name" : "Mersennes to 2^512"
     },
     {
       "measurements" : [
-        214,
-        205,
-        205,
-        205,
-        205
+        66,
+        66,
+        67,
+        68,
+        67
       ],
       "name" : "Get 15000! as String"
     },
     {
       "measurements" : [
         185,
+        186,
         185,
-        185,
-        185,
-        185
+        186,
+        187
       ],
       "name" : "Factorial 30_000 as String"
     },
     {
       "measurements" : [
-        208,
-        207,
-        207,
-        207,
-        208
+        184,
+        186,
+        185,
+        183,
+        185
       ],
       "name" : "Perm and Comb (8000, 4000)"
     },
     {
       "measurements" : [
-        168,
-        177,
-        168,
-        168,
-        168
+        26,
+        26,
+        26,
+        26,
+        25
       ],
       "name" : "Multiply 270k x 270k bit"
     },
     {
       "measurements" : [
-        164,
-        160,
-        161,
+        162,
+        159,
+        165,
         166,
-        160
+        159
       ],
       "name" : "Multiply 70M x 1k bit"
     },
     {
       "measurements" : [
-        418,
-        417,
-        418,
-        421,
-        416
+        423,
+        419,
+        420,
+        423,
+        420
       ],
       "name" : "Divide 200k by 100k bit"
     },
     {
       "measurements" : [
-        459,
-        476,
-        483,
-        513,
-        464
+        452,
+        499,
+        511,
+        516,
+        487
       ],
       "name" : "Divide 10M by 1k bit"
     },
     {
       "measurements" : [
-        517,
-        517,
-        513,
-        520,
-        514
+        522,
+        521,
+        523,
+        518,
+        519
       ],
       "name" : "GCD of two 130k-bit BInts"
     },
     {
       "measurements" : [
-        428,
-        437,
-        451,
-        442,
-        434
+        465,
+        454,
+        457,
+        434,
+        448
       ],
       "name" : "mod_exp 1800-bit"
     },
     {
       "measurements" : [
         307,
-        307,
-        321,
         309,
+        309,
+        307,
         308
       ],
       "name" : "BDouble division 100k-bit"
     },
     {
       "measurements" : [
-        347,
-        347,
-        343,
-        342,
-        341
+        104,
+        104,
+        104,
+        104,
+        104
       ],
       "name" : "BDouble decimal expansion 70k digits"
     },
     {
       "measurements" : [
-        366,
-        375,
-        366,
-        367,
-        366
+        3,
+        3,
+        3,
+        3,
+        3
       ],
       "name" : "1500! to hex string"
     },
     {
       "measurements" : [
-        344,
-        345,
-        343,
-        352,
-        384
+        367,
+        374,
+        369,
+        373,
+        371
       ],
       "name" : "Shift 1M-bit left by 5M, 100 times"
     }
