@@ -1368,9 +1368,37 @@ fileprivate extension Array where Element == Limb
 
 	func shiftingUp(_ shift: Int) -> Limbs
 	{
-		var res = self
-		res.shiftUp(shift)
-		return res
+		if shift == 0 || self.equalTo(0) { return self }
+
+		let limbShifts = shift >> 6
+		let bitShifts = Limb(shift) & 0x3f
+
+		if bitShifts == 0
+		{
+			// Pure limb shift — single allocation, one pass
+			var result = Limbs(repeating: 0, count: self.count + limbShifts)
+			for i in 0..<self.count { result[i + limbShifts] = self[i] }
+			return result
+		}
+
+		// Combined bit + limb shift — single allocation
+		var result = Limbs(repeating: 0, count: self.count + limbShifts + 1)
+		var carry: Limb = 0
+		for i in 0..<self.count
+		{
+			let val = self[i]
+			result[i + limbShifts] = (val << bitShifts) | carry
+			carry = val >> (64 - bitShifts)
+		}
+		if carry != 0
+		{
+			result[self.count + limbShifts] = carry
+		}
+		else
+		{
+			result.removeLast()
+		}
+		return result
 	}
 
 	mutating func shiftDown(_ shift: Int)
@@ -1963,7 +1991,8 @@ fileprivate extension Array where Element == Limb
 		return (quotient, remainder)
 	}
 
-	/// An O(n) division algorithm that returns quotient and remainder.
+	/// Division using Knuth's Algorithm D for multi-limb divisors,
+	/// with a fast path for single-limb divisors.
 	func divMod(_ divisor: Limbs) -> (quotient: Limbs, remainder: Limbs)
 	{
 		precondition(!divisor.equalTo(0), "Division or Modulo by zero not allowed")
@@ -1977,38 +2006,140 @@ fileprivate extension Array where Element == Limb
 			return (q, [r])
 		}
 
-		var (quotient, remainder): (Limbs, Limbs) = ([0], [0])
-		var (previousCarry, carry, ele): (Limb, Limb, Limb) = (0, 0, 0)
-
-		// bits of lhs minus one bit
-		var i = (64 * (self.count - 1)) + Int(log2(Double(self.last!)))
-
-		while i >= 0
+		// If dividend < divisor, quotient is 0
+		if self.count < divisor.count
 		{
-			// shift remainder by 1 to the left
-			for r in 0..<remainder.count
-			{
-				ele = remainder[r]
-				carry = ele >> 63
-				ele <<= 1
-				ele |= previousCarry // carry from last step
-				previousCarry = carry
-				remainder[r] = ele
-			}
-			if previousCarry != 0 { remainder.append(previousCarry) }
-
-			remainder.setBit(at: 0, to: self.getBit(at: i))
-
-			if !remainder.lessThan(divisor)
-			{
-				remainder.difference(divisor)
-				quotient.setBit(at: i, to: true)
-			}
-
-			i -= 1
+			return ([0], self)
+		}
+		if self.count == divisor.count && self.lessThan(divisor)
+		{
+			return ([0], self)
 		}
 
-		return (quotient, remainder)
+		return self.divModKnuth(divisor)
+	}
+
+	/// Knuth's Algorithm D (TAOCP Vol 2, 4.3.1) for multi-limb long division.
+	/// Precondition: divisor.count >= 2, self >= divisor.
+	private func divModKnuth(_ v: Limbs) -> (quotient: Limbs, remainder: Limbs)
+	{
+		let n = v.count
+		let m = self.count - n
+
+		// D1: Normalize — shift so that the MSB of divisor's top limb is set
+		let shift = v[n - 1].leadingZeroBitCount
+
+		var u: Limbs
+		var d: Limbs
+
+		if shift > 0
+		{
+			d = v.shiftingUp(shift)
+			u = self.shiftingUp(shift)
+			// shiftingUp might produce an extra limb; trim divisor to n limbs
+			if d.count > n { d.removeLast() }
+		}
+		else
+		{
+			d = v
+			u = Array(self)
+		}
+
+		// Ensure u has exactly m + n + 1 limbs
+		while u.count <= m + n { u.append(0) }
+
+		var q = Limbs(repeating: 0, count: m + 1)
+
+		let dn1 = d[n - 1]
+		let dn2 = d[n - 2]
+
+		// D2–D7: Main loop — one quotient limb per iteration
+		for j in stride(from: m, through: 0, by: -1)
+		{
+			// D3: Calculate trial quotient qhat
+			let ujn  = u[j + n]
+			let ujn1 = u[j + n - 1]
+
+			var qhat: UInt64
+			var rhat: UInt64
+
+			if ujn >= dn1
+			{
+				// dividingFullWidth would overflow; set qhat = max
+				qhat = UInt64.max
+				let (rr, ovf) = ujn1.addingReportingOverflow(dn1)
+				if !ovf
+				{
+					rhat = rr
+					while true
+					{
+						let (ph, pl) = qhat.multipliedFullWidth(by: dn2)
+						if ph < rhat || (ph == rhat && pl <= u[j + n - 2]) { break }
+						qhat &-= 1
+						let (rr2, ovf2) = rhat.addingReportingOverflow(dn1)
+						if ovf2 { break }
+						rhat = rr2
+					}
+				}
+			}
+			else
+			{
+				(qhat, rhat) = dn1.dividingFullWidth((ujn, ujn1))
+				while true
+				{
+					let (ph, pl) = qhat.multipliedFullWidth(by: dn2)
+					if ph < rhat || (ph == rhat && pl <= u[j + n - 2]) { break }
+					qhat &-= 1
+					let (rr, ovf) = rhat.addingReportingOverflow(dn1)
+					if ovf { break }
+					rhat = rr
+				}
+			}
+
+			// D4: Multiply and subtract — u[j..j+n] -= qhat * d[0..n-1]
+			var carry: UInt64 = 0
+			for i in 0..<n
+			{
+				let (prodHi, prodLo) = qhat.multipliedFullWidth(by: d[i])
+				let sumLo = prodLo &+ carry
+				let sumHi = prodHi &+ (sumLo < prodLo ? 1 : 0)
+
+				let (subResult, underflow) = u[j + i].subtractingReportingOverflow(sumLo)
+				u[j + i] = subResult
+
+				carry = sumHi &+ (underflow ? 1 : 0)
+			}
+
+			let prevUjn = u[j + n]
+			u[j + n] = u[j + n] &- carry
+
+			// D5: Test remainder sign
+			q[j] = qhat
+
+			if u[j + n] > prevUjn // unsigned underflow means we subtracted too much
+			{
+				// D6: Add back (rare, probability ~2/base)
+				q[j] &-= 1
+				var addCarry: UInt64 = 0
+				for i in 0..<n
+				{
+					let (s1, o1) = u[j + i].addingReportingOverflow(d[i])
+					let (s2, o2) = s1.addingReportingOverflow(addCarry)
+					u[j + i] = s2
+					addCarry = (o1 ? 1 : 0) &+ (o2 ? 1 : 0)
+				}
+				u[j + n] = u[j + n] &+ addCarry
+			}
+		}
+
+		// D8: Unnormalize — trim quotient and shift remainder back
+		while q.count > 1 && q.last! == 0 { q.removeLast() }
+
+		var remainder = Array(u[0..<n])
+		if shift > 0 { remainder.shiftDown(shift) }
+		while remainder.count > 1 && remainder.last! == 0 { remainder.removeLast() }
+
+		return (q, remainder)
 	}
 
 	/// Division with limbs, result is floored to nearest whole number.
@@ -2118,14 +2249,20 @@ internal class BIntMath
 
 	public static func steinGcd(_ a: Limbs, _ b: Limbs) -> Limbs
 	{
-		if a == [0] { return b }
-		if b == [0] { return a }
+		if a.equalTo(0) { return b }
+		if b.equalTo(0) { return a }
 
-		// Trailing zeros
-		var (za, zb) = (0, 0)
-
-		while !a.getBit(at: za) { za += 1 }
-		while !b.getBit(at: zb) { zb += 1 }
+		// Count trailing zeros using hardware tzcnt
+		var za = 0
+		for limb in a {
+			if limb != 0 { za += limb.trailingZeroBitCount; break }
+			za += 64
+		}
+		var zb = 0
+		for limb in b {
+			if limb != 0 { zb += limb.trailingZeroBitCount; break }
+			zb += 64
+		}
 
 		let k = min(za, zb)
 
@@ -2136,14 +2273,17 @@ internal class BIntMath
 		repeat
 		{
 			zb = 0
-			while !b.getBit(at: zb) { zb += 1 }
+			for limb in b {
+				if limb != 0 { zb += limb.trailingZeroBitCount; break }
+				zb += 64
+			}
 			b.shiftDown(zb)
 
 			if b.lessThan(a) { (a, b) = (b, a) }
 			// At this point, b >= a
 			b.difference(a)
 		}
-		while b != [0]
+		while !b.equalTo(0)
 
 		return a.shiftingUp(k)
 	}
@@ -3005,7 +3145,17 @@ public struct BDouble:
 			return BDouble(1) / (base ** -exponent)
 		}
 
-		return base * (base ** (exponent - 1))
+		// Exponentiation by squaring: O(log n) multiplications
+		var result = BDouble(1)
+		var base = base
+		var exp = exponent
+		while exp > 1
+		{
+			if exp & 1 == 1 { result = result * base }
+			base = base * base
+			exp >>= 1
+		}
+		return result * base
 	}
 
 	public static func **(_ base: BDouble, _ exponent: BInt) -> BDouble
@@ -3023,7 +3173,17 @@ public struct BDouble:
 			return BDouble(1) / (base ** -exponent)
 		}
 
-		return base * (base ** (exponent - 1))
+		// Exponentiation by squaring: O(log n) multiplications
+		var result = BDouble(1)
+		var base = base
+		var exp = exponent
+		while exp > 1
+		{
+			if exp & 1 != 0 { result = result * base }
+			base = base * base
+			exp >>= 1
+		}
+		return result * base
 	}
 
 	/**
