@@ -185,4 +185,33 @@ class BIntTests: XCTestCase {
         XCTAssertEqual(a, 15)
     }
 
+    /// Bug: comparing an Int variable with a BInt whose value exceeds Int.max
+    /// uses the stdlib cross-type BinaryInteger comparison, which reads `words`.
+    /// If `words` doesn't return proper two's complement, the stdlib misinterprets
+    /// a large positive BInt as negative.
+    func testCrossTypeComparisonWithLetConstant() {
+        let bint = BInt("11173433833219812840")!
+
+        // Literal comparison — Swift can infer 100 as BInt, uses BInt<BInt (correct)
+        XCTAssertTrue(100 < bint, "literal 100 should be less than bint")
+
+        // Variable comparison — uses stdlib's generic BinaryInteger<BinaryInteger (buggy path)
+        let hundred = 100
+        XCTAssertTrue(hundred < bint, "Int variable 100 should be less than bint")
+
+        // Additional edge cases: values around 2^63
+        let edgeBint = BInt(1) << 63  // 2^63, exceeds Int.max
+        let fifty = 50
+        XCTAssertTrue(fifty < edgeBint, "Int variable should be less than 2^63")
+        XCTAssertTrue(0 < edgeBint, "zero should be less than 2^63")
+        let zero = 0
+        XCTAssertTrue(zero < edgeBint, "Int variable 0 should be less than 2^63")
+
+        // Negative BInt should be less than positive Int
+        let negativeBint = BInt("-11173433833219812840")!
+        let ten = 10
+        XCTAssertTrue(negativeBint < ten, "negative bint should be less than Int 10")
+        XCTAssertFalse(ten < negativeBint, "Int 10 should not be less than negative bint")
+    }
+
 }
