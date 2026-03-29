@@ -257,7 +257,7 @@ public struct BInt:
             return String(format: "%.1f GB", bytes / GB)
         }
 	}
-    
+
     /// Common prefixes for different bases
     static public var stringPrefixes = [
         2: "0b",
@@ -323,7 +323,7 @@ public struct BInt:
 	///
     /// The string passed as text may begin with a plus or minus sign character (+ or -), followed by one or more numeric digits (0-9) or letters (a-z or A-Z). Parsing of the string is case insensitive.
     ///
-    /// If text is in an invalid format or contains characters that are out of bounds for the given radix, or if the value it denotes in the given radix is not representable, the result is nil. 
+    /// If text is in an invalid format or contains characters that are out of bounds for the given radix, or if the value it denotes in the given radix is not representable, the result is nil.
     ///
 	/// Note: I merged all the String inits into one which is much simpler to understand.
 	/// Valid input numbers are of the form:
@@ -337,34 +337,34 @@ public struct BInt:
 	public init?(_ number: String, radix: Int = 10)
 	{
 		var (number, radix, sign, limbs) = (number, radix, false, [Limb(0)])
-		
+
         if radix < 2 {
             return nil
         }
-        
+
         // First we figure out if the number is negative
 		if number.hasPrefix("-")
 		{
 			number.removeFirst()
 			sign = number != "0"  // is zero signed?
 		}
-        
+
         // We strip the number if a radix is set and is prefixed
         if let prefix = Self.stringPrefixes[radix] {
             if number.hasPrefix(prefix) {
                 number.removeFirst(prefix.count)
             }
         }
-		
+
 		// Reserve enough space for this number Limb.max
 		let digitsPerLimb = 64 * log(2.0)/log(Double(radix))
 		limbs.reserveCapacity(Int(Double(number.count) / digitsPerLimb))
-		
+
 		// Handle most radices the same way unless a radix > 26 is used
 		if radix <= 26
 		{
 			var maxPowerOfRadix = max(1,min(Int(digitsPerLimb), number.count))
-			
+
 			// generate a multiplier table at the start
 			let multipliersOfRadix:[Digit] = {
 				var multipliers = [Digit]()
@@ -375,7 +375,7 @@ public struct BInt:
 				}
 				return multipliers
 			}()
-			
+
 			maxPowerOfRadix = multipliersOfRadix.count // adjust if we guessed wrong
 			var chunk = ""; chunk.reserveCapacity(maxPowerOfRadix)
 			while !number.isEmpty {
@@ -476,17 +476,17 @@ public struct BInt:
 	{
 		self.init(source)
 	}
-	
+
 	/// Creates a new instance from a `[UInt8]` array
 	public init(bytes: Bytes)
 	{
 		var num = BInt()
-		
+
 		for byte in bytes
 		{
 			num = num << 8 | BInt(byte)
 		}
-		
+
 		self.init(sign: num.sign, limbs: num.limbs)
 	}
 
@@ -608,18 +608,18 @@ public struct BInt:
 			i += 1
 		}
 	}
-	
+
 	/// Bytes of the number
 	public func getBytes() -> Bytes
 	{
 		var bytes = Bytes()
 		var copy = self
-		
+
 		while copy != 0 {
 			bytes.append(Byte(copy & 0xff))
 			copy >>= 8
 		}
-		
+
 		return bytes.reversed()
 	}
 
@@ -672,14 +672,13 @@ public struct BInt:
 	///	Returns the result of performing a bitwise AND operation on the two given values.
 	public static func &(lhs: BInt, rhs: BInt) -> BInt
 	{
-		var res: Limbs = [0]
-
-		for i in 0..<(64 * Swift.max(lhs.limbs.count, rhs.limbs.count))
+		let minCount = Swift.min(lhs.limbs.count, rhs.limbs.count)
+		var res = Limbs(repeating: 0, count: minCount)
+		for i in 0..<minCount
 		{
-			let newBit = lhs.limbs.getBit(at: i) && rhs.limbs.getBit(at: i)
-			res.setBit(at: i, to: newBit)
+			res[i] = lhs.limbs[i] & rhs.limbs[i]
 		}
-
+		while res.count > 1 && res.last! == 0 { res.removeLast() }
 		return BInt(sign: lhs.sign && rhs.sign, limbs: res)
 	}
 
@@ -709,14 +708,19 @@ public struct BInt:
 
 	public static func |(lhs: BInt, rhs: BInt) -> BInt
 	{
-		var res: Limbs = [0]
-
-		for i in 0..<(64 * Swift.max(lhs.limbs.count, rhs.limbs.count))
+		let maxCount = Swift.max(lhs.limbs.count, rhs.limbs.count)
+		let minCount = Swift.min(lhs.limbs.count, rhs.limbs.count)
+		var res = Limbs(repeating: 0, count: maxCount)
+		for i in 0..<minCount
 		{
-			let newBit = lhs.limbs.getBit(at: i) || rhs.limbs.getBit(at: i)
-			res.setBit(at: i, to: newBit)
+			res[i] = lhs.limbs[i] | rhs.limbs[i]
 		}
-
+		if lhs.limbs.count > minCount {
+			for i in minCount..<maxCount { res[i] = lhs.limbs[i] }
+		} else if rhs.limbs.count > minCount {
+			for i in minCount..<maxCount { res[i] = rhs.limbs[i] }
+		}
+		while res.count > 1 && res.last! == 0 { res.removeLast() }
 		return BInt(sign: lhs.sign || rhs.sign, limbs: res)
 	}
 
@@ -743,14 +747,19 @@ public struct BInt:
 
 	public static func ^(lhs: BInt, rhs: BInt) -> BInt
 	{
-		var res: Limbs = [0]
-
-		for i in 0..<(64 * Swift.max(lhs.limbs.count, rhs.limbs.count))
+		let maxCount = Swift.max(lhs.limbs.count, rhs.limbs.count)
+		let minCount = Swift.min(lhs.limbs.count, rhs.limbs.count)
+		var res = Limbs(repeating: 0, count: maxCount)
+		for i in 0..<minCount
 		{
-			let newBit = lhs.limbs.getBit(at: i) != rhs.limbs.getBit(at: i)
-			res.setBit(at: i, to: newBit)
+			res[i] = lhs.limbs[i] ^ rhs.limbs[i]
 		}
-
+		if lhs.limbs.count > minCount {
+			for i in minCount..<maxCount { res[i] = lhs.limbs[i] }
+		} else if rhs.limbs.count > minCount {
+			for i in minCount..<maxCount { res[i] = rhs.limbs[i] }
+		}
+		while res.count > 1 && res.last! == 0 { res.removeLast() }
 		return BInt(sign: lhs.sign != rhs.sign, limbs: res)
 	}
 
@@ -773,13 +782,11 @@ public struct BInt:
 	public prefix static func ~(x: BInt) -> BInt
 	{
 		var res = x.limbs
-		for i in 0..<(res.exactBitWidth)
+		for i in 0..<res.count
 		{
-			res.setBit(at: i, to: !res.getBit(at: i))
+			res[i] = ~res[i]
 		}
-
-		while res.last! == 0 && res.count > 1 { res.removeLast() }
-
+		while res.count > 1 && res.last! == 0 { res.removeLast() }
 		return BInt(sign: !x.sign, limbs: res)
 	}
 
@@ -915,7 +922,7 @@ public struct BInt:
 	{
 		return lhs ** BInt(rhs)
 	}
-	
+
 	public static func **(lhs: BInt, rhs: BInt) -> BInt
 	{
 		precondition(rhs >= 0, "BInts can't be exponentiated with exponents < 0")
@@ -929,7 +936,7 @@ public struct BInt:
 		if(self.isZero()) {
 			return BInt(1)
 		}
-		
+
 		return BInt(limbs: Limbs.recursiveMul(0, Limb(self.asInt()!)))
 	}
 
@@ -1084,35 +1091,30 @@ fileprivate extension Array where Element == Limb
 {
 	var decimalRepresentation: String
 	{
-		// First, convert limbs to digits
-		var digits: Digits = [0]
-		var power: Digits = [1]
+		if self.equalTo(0) { return "0" }
 
-		for limb in self
+		var chunks: [String] = []
+		var remaining = self
+
+		while !remaining.equalTo(0)
 		{
-			let digit = (limb >= DigitBase)
-				? [limb % DigitBase, limb / DigitBase]
-				: [limb]
-
-			digits.addProductOfDigits(digit, power)
-
-			var nextPower: Digits = [0]
-			nextPower.addProductOfDigits(power, [446_744_073_709_551_616, 18])
-			power = nextPower
+			let (quotient, remainder) = remaining.divModSingleLimb(DigitBase)
+			chunks.append(String(remainder))
+			remaining = quotient
 		}
 
-		// Then, convert digits to string
-		var res = String(digits.last!)
+		// Build result: last chunk is most significant (no leading zeros)
+		var res = chunks.last!
 
-		if digits.count == 1 { return res }
-
-		for i in (0..<(digits.count - 1)).reversed()
+		if chunks.count > 1
 		{
-			let str = String(digits[i])
-
-			let leadingZeros = String(repeating: "0", count: DigitZeros - str.count)
-
-			res.append(leadingZeros.appending(str))
+			for i in stride(from: chunks.count - 2, through: 0, by: -1)
+			{
+				let str = chunks[i]
+				let leadingZeros = String(repeating: "0", count: DigitZeros - str.count)
+				res.append(leadingZeros)
+				res.append(str)
+			}
 		}
 
 		return res
@@ -1270,10 +1272,10 @@ fileprivate extension Array where Element == Limb
 	//	————————————————————————————————————————————————————————————————————————————————————————
 	//
 	//
-	
+
 	/// The number of bits in the binary representation of this value, including leading zeros.
 	var bitWidth: Int { self.count * Limb.bitWidth }
-	
+
 	/// Returns the number of bits that contribute to the represented number, ignoring all
 	/// leading zeros.
 	var exactBitWidth: Int
@@ -1778,13 +1780,74 @@ fileprivate extension Array where Element == Limb
 
 	func multiplyingBy(_ multiplicand: Limbs) -> Limbs
 	{
-		var res: Limbs = [0]
-		res.addProductOf(multiplier: self, multiplicand: multiplicand)
-		return res
+		return self.karatsubaMultiply(multiplicand)
+	}
+
+	func karatsubaMultiply(_ rhs: Limbs) -> Limbs
+	{
+		let lhsCount = self.count
+		let rhsCount = rhs.count
+		let minCount = Swift.min(lhsCount, rhsCount)
+
+		// Base case: schoolbook for small or very unbalanced inputs
+		if minCount < 48
+		{
+			var res: Limbs = [0]
+			res.addProductOf(multiplier: self, multiplicand: rhs)
+			return res
+		}
+
+		let m = Swift.max(lhsCount, rhsCount) / 2
+
+		// Split: self = high1 * B^m + low1
+		let low1: Limbs
+		let high1: Limbs
+		if lhsCount <= m {
+			low1 = self
+			high1 = [0]
+		} else {
+			low1 = Array(self[0..<m])
+			high1 = Array(self[m...])
+		}
+
+		// Split: rhs = high2 * B^m + low2
+		let low2: Limbs
+		let high2: Limbs
+		if rhsCount <= m {
+			low2 = rhs
+			high2 = [0]
+		} else {
+			low2 = Array(rhs[0..<m])
+			high2 = Array(rhs[m...])
+		}
+
+		let z0 = low1.karatsubaMultiply(low2)
+		let z2 = high1.karatsubaMultiply(high2)
+
+		let sum1 = low1.adding(high1)
+		let sum2 = low2.adding(high2)
+		var z1 = sum1.karatsubaMultiply(sum2)
+		z1.difference(z0)
+		z1.difference(z2)
+
+		// result = z0 + z1 * B^m + z2 * B^(2*m)
+		var result = z0
+		result.addLimbs(z1, padding: m)
+		result.addLimbs(z2, padding: 2 * m)
+
+		while result.count > 1 && result.last! == 0 { result.removeLast() }
+
+		return result
 	}
 
 	func squared() -> Limbs
 	{
+		// Use Karatsuba for large numbers
+		if self.count >= 48
+		{
+			return self.karatsubaMultiply(self)
+		}
+
 		var res: Limbs = [0]
 		res.reserveCapacity(2 * self.count)
 
@@ -1848,7 +1911,7 @@ fileprivate extension Array where Element == Limb
 
 		return base.multiplyingBy(y)
 	}
-	
+
 	// Alias for Int exponentiation
 	func exponentiating(_ exponent: Int) -> Limbs
 	{
@@ -1880,12 +1943,39 @@ fileprivate extension Array where Element == Limb
 	//
 	//
 
+	/// Fast O(n) division for single-limb divisor using hardware division.
+	func divModSingleLimb(_ divisor: Limb) -> (quotient: Limbs, remainder: Limb)
+	{
+		precondition(divisor != 0, "Division by zero")
+
+		if self.equalTo(0) { return ([0], 0) }
+
+		var quotient = Limbs(repeating: 0, count: self.count)
+		var remainder: Limb = 0
+
+		for i in stride(from: self.count - 1, through: 0, by: -1)
+		{
+			(quotient[i], remainder) = divisor.dividingFullWidth((remainder, self[i]))
+		}
+
+		while quotient.count > 1 && quotient.last! == 0 { quotient.removeLast() }
+
+		return (quotient, remainder)
+	}
+
 	/// An O(n) division algorithm that returns quotient and remainder.
 	func divMod(_ divisor: Limbs) -> (quotient: Limbs, remainder: Limbs)
 	{
 		precondition(!divisor.equalTo(0), "Division or Modulo by zero not allowed")
 
 		if self.equalTo(0) { return ([0], [0]) }
+
+		// Fast path for single-limb divisor
+		if divisor.count == 1
+		{
+			let (q, r) = self.divModSingleLimb(divisor[0])
+			return (q, [r])
+		}
 
 		var (quotient, remainder): (Limbs, Limbs) = ([0], [0])
 		var (previousCarry, carry, ele): (Limb, Limb, Limb) = (0, 0, 0)
@@ -2083,16 +2173,44 @@ internal class BIntMath
 
 	static func fib(_ n:Int) -> BInt
 	{
-		var a: Limbs = [0], b: Limbs = [1], t: Limbs
+		if n <= 0 { return BInt(0) }
+		if n <= 2 { return BInt(1) }
 
-		for _ in 2...n
+		// Fast doubling method: O(log n) multiplications instead of O(n) additions
+		// F(2k)   = F(k) * [2*F(k+1) - F(k)]
+		// F(2k+1) = F(k)^2 + F(k+1)^2
+		var a: Limbs = [0]  // F(k)
+		var b: Limbs = [1]  // F(k+1)
+
+		var highBit = 1
+		while highBit <= n { highBit <<= 1 }
+		highBit >>= 1
+
+		while highBit > 0
 		{
-			t = b
-			b.addLimbs(a)
-			a = t
+			// Double: compute F(2k) and F(2k+1)
+			let twoB = b.shiftingUp(1)      // 2 * F(k+1)
+			var twoBminA = twoB
+			twoBminA.difference(a)           // 2*F(k+1) - F(k), always >= 0 for fib
+
+			let c = a.multiplyingBy(twoBminA)          // F(2k)
+			let d = a.squared().adding(b.squared())    // F(2k+1)
+
+			if n & highBit != 0
+			{
+				a = d              // F(2k+1)
+				b = c.adding(d)   // F(2k+2) = F(2k) + F(2k+1)
+			}
+			else
+			{
+				a = c  // F(2k)
+				b = d  // F(2k+1)
+			}
+
+			highBit >>= 1
 		}
 
-		return BInt(limbs: b)
+		return BInt(limbs: a)
 	}
 
 	///	Order matters, repetition not allowed.
@@ -2267,7 +2385,7 @@ public struct BDouble:
 		let i = BInt(source)
 		self.init(i)
 	}
-	
+
 	 public init(_ src: BInt) {
 		self.init(src, over: BInt(1))
 	}
@@ -2396,31 +2514,31 @@ public struct BDouble:
 			self.init(nStr)
 			return
 		}
-		
+
 		var useString = nStr
 		if radix == 16 {
 			if useString.hasPrefix("0x") {
 				useString = String(nStr.dropFirst(2))
 			}
 		}
-		
+
 		if radix == 8 {
 			if useString.hasPrefix("0o") {
 				useString = String(nStr.dropFirst(2))
 			}
 		}
-		
+
 		if radix == 2 {
 			if useString.hasPrefix("0b") {
 				useString = String(nStr.dropFirst(2))
 			}
 		}
-		
+
 		let bint16 = BDouble(radix)
-		
+
 		var total = BDouble(0)
 		var exp = BDouble(1)
-		
+
 		for c in useString.reversed() {
 			let int = Int(String(c), radix: radix)
 			if int != nil {
@@ -2431,11 +2549,11 @@ public struct BDouble:
 				return nil
 			}
 		}
-		
+
 		self.init(String(describing:total))
-		
+
 	}
-	
+
 	public init(_ z: Int)
 	{
 		self.init(z, over: 1)
@@ -2514,7 +2632,7 @@ public struct BDouble:
 		}
 	}
 	private var _precision : Int = BDouble.precision
-	
+
 	/**
 	 * the precision for the current value
 	 */
@@ -2533,7 +2651,7 @@ public struct BDouble:
 		_precision = nv
 		}
 	}
-    
+
 	/**
 	 * returns the current value in decimal format with the current precision
 	 */
@@ -2701,7 +2819,7 @@ public struct BDouble:
 			lhs = ""
 		}
 		var retVal = BInt(String(lhs))!
-		
+
 		if self.isNegative()
 		{
 			retVal = -retVal
@@ -2727,7 +2845,7 @@ public struct BDouble:
 	{
 		return self ** BDouble(BInt(1), over: BInt(root))
 	}
-	
+
 	/**
 	 * The square root
 	 *
@@ -2768,7 +2886,7 @@ public struct BDouble:
 	public static func +(lhs: Double, rhs: BDouble) -> BDouble { return BDouble(lhs) + rhs }
 	public static func +(lhs: BDouble, rhs: BInt) -> BDouble { return lhs + BDouble(rhs) }
 	public static func +(lhs: BInt, rhs: BDouble) -> BDouble { return BDouble(lhs) + rhs }
-	
+
 	public static func +=(lhs: inout BDouble, rhs: BDouble) {
 		let res = lhs + rhs
 		lhs = res
@@ -2889,7 +3007,7 @@ public struct BDouble:
 
 		return base * (base ** (exponent - 1))
 	}
-	
+
 	public static func **(_ base: BDouble, _ exponent: BInt) -> BDouble
 	{
 		if exponent == 0
@@ -2907,33 +3025,33 @@ public struct BDouble:
 
 		return base * (base ** (exponent - 1))
 	}
-	
+
 	/**
 	 * - reference: http://rosettacode.org/wiki/Nth_root
 	 */
 	public static func **(_ base: BDouble, _ exponent: BDouble) -> BDouble
 	{
 		var count = base.precision
-		
+
 		// something over 1
 		if BInt(limbs: exponent.denominator) == 1 {
 			return base**BInt(sign: exponent.sign, limbs: exponent.numerator)
 		}
-		
+
 		if BInt(limbs: exponent.numerator) != 1 {
 			return (base ** BInt(sign: exponent.sign, limbs: exponent.numerator)) ** BDouble(sign: false, numerator: BDouble(1).numerator, denominator: exponent.denominator)
 		}
-		
+
 		// we have 1/something
-		
+
 		var previous  = BDouble(1)
 		var ans = previous
 		let exp = BInt(sign: exponent.sign, limbs: exponent.denominator)
 		let prec = BDouble(0.1) ** (abs(base.precision) + 1)
-		
+
 		while(true) {
 			previous = ans
-			
+
 			let rlhs = BDouble(BInt(1), over:exp)
 			let rrhs = ((exp-1)*ans + (base / pow(ans, exp-1)))
 			ans = rlhs * rrhs
@@ -2944,7 +3062,7 @@ public struct BDouble:
 
 			count = count + 1
 		}
-		
+
 		return ans
 	}
 
@@ -2972,7 +3090,7 @@ public struct BDouble:
 	public static func /(lhs: BDouble, rhs: Double) -> BDouble { return lhs / BDouble(rhs) }
 	public static func /(lhs: BDouble, rhs: BInt) -> BDouble { return lhs / BDouble(rhs) }
 	public static func /(lhs: Double, rhs: BDouble) -> BDouble { return BDouble(lhs) / rhs }
-	
+
 	public static func %(lhs: BDouble, rhs:BDouble) -> BDouble { return mod(lhs, rhs) }
 	public static func %(lhs: BDouble, rhs:Double) -> BDouble { return mod(lhs, BDouble(rhs)) }
 	public static func %(lhs: Double, rhs:BDouble) -> BDouble { return mod(BDouble(lhs), rhs) }
@@ -2996,7 +3114,7 @@ public struct BDouble:
 		let absLhs = abs(lhs)
 		let absRhs = abs(rhs);
 		let diff = abs(lhs - rhs);
-		
+
 		if (lhs == rhs) { // shortcut, handles infinities
 			return true;
 		} else if diff <= epsilon {
@@ -3009,7 +3127,7 @@ public struct BDouble:
 			return diff / min((absLhs + absRhs), BDouble(Double.greatestFiniteMagnitude)) < epsilon;
 		}
 	}
-	
+
 	public static func ==(lhs: BDouble, rhs: BDouble) -> Bool
 	{
 		if lhs.sign != rhs.sign { return false }
@@ -3088,16 +3206,16 @@ public func floor(_ base: BDouble) -> BInt
 	{
 		return BInt(0)
 	}
-	
+
 	let digits = 3
 	let multiplier = [10].exponentiating(digits)
 
 	let rawRes = abs(base).numerator.multiplyingBy(multiplier).divMod(base.denominator).quotient
 
 	let res = BInt(limbs: rawRes).description
-	
+
 	let offset = res.count - digits
-	
+
 	var lhs: String
 	if offset >= 0 {
 		lhs = res.prefix(offset).description
@@ -3105,7 +3223,7 @@ public func floor(_ base: BDouble) -> BInt
 		lhs = ""
 	}
 	let rhs = Double("0." + res.suffix(res.count - offset))!
-	
+
 	var ans = BInt(String(lhs))!
 	if base.isNegative() {
 		ans = -ans
@@ -3122,7 +3240,7 @@ public func floor(_ base: BDouble) -> BInt
  */
 public func ceil(_ base: BDouble) -> BInt
 {
-	
+
 	if base.isZero()
 	{
 		return BInt(0)
@@ -3142,9 +3260,9 @@ public func ceil(_ base: BDouble) -> BInt
 	} else {
 		lhs = ""
 	}
-	
+
 	var retVal = BInt(String(lhs))!
-	
+
 	if base.isNegative()
 	{
 		retVal = -retVal
@@ -3154,7 +3272,7 @@ public func ceil(_ base: BDouble) -> BInt
 			retVal += 1
 		}
 	}
-	
+
 	return retVal
 }
 
