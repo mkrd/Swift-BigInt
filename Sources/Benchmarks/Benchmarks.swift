@@ -18,28 +18,28 @@ struct BenchmarkResults: Codable {
 }
 
 let allBenchmarks: [BenchmarkEntry] = [
-    BenchmarkEntry(name: "BDouble converging to 2") { {
+    BenchmarkEntry(name: "BDouble converging to two for 3000 steps") { {
         var res: BDouble = 0
         var den: BInt = 1
-        for _ in 0..<1000 {
+        for _ in 0..<3000 {
             res = res + BDouble(BInt(1), over: den)
             den *= 2
         }
     }},
 
-    BenchmarkEntry(name: "10^120_000") { {
-        _ = BInt(10) ** 120_000
+    BenchmarkEntry(name: "10^300_000") { {
+        _ = BInt(10) ** 300_000
     }},
 
-    BenchmarkEntry(name: "Factorial of 25000") { {
-        _ = BInt(25_000).factorial()
+    BenchmarkEntry(name: "Factorial of 40_000") { {
+        _ = BInt(40_000).factorial()
     }},
 
     BenchmarkEntry(name: "Fib 100000") { {
         _ = BIntMath.fib(100_000)
     }},
 
-    BenchmarkEntry(name: "Matrix ^ 100") {
+    BenchmarkEntry(name: "Matrix ^ 500") {
         let A = Matrix<BDouble>(
             [[2, 5, -2],
              [3, 5,  6],
@@ -47,12 +47,12 @@ let allBenchmarks: [BenchmarkEntry] = [
         )
         return {
             var R = A
-            for _ in 0...100 { R = R * A }
+            for _ in 0...500 { R = R * A }
         }
     },
 
-    BenchmarkEntry(name: "Mersennes to 2^256") { {
-        for i in 1...256 {
+    BenchmarkEntry(name: "Mersennes to 2^512") { {
+        for i in 1...512 {
             if math.isPrime(i) && BIntMath.isMersenne(i) { _ = i }
         }
     }},
@@ -62,8 +62,8 @@ let allBenchmarks: [BenchmarkEntry] = [
         return { _ = n.description }
     },
 
-    BenchmarkEntry(name: "BInt from 60320-digit String") {
-        let s = BInt(16_000).factorial().description
+    BenchmarkEntry(name: "Factorial 30_000 as String") {
+        let s = BInt(30_000).factorial().description
         return { _ = BInt(s)! }
     },
 
