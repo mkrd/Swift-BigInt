@@ -170,6 +170,49 @@ class Test_BIntMath_Extended: XCTestCase {
 		}
 	}
 
+	func test_fib_large_recurrence() {
+		// F(n) = F(n-1) + F(n-2) for larger values
+		for n in [100, 500, 1000, 5000] {
+			XCTAssertEqual(
+				BIntMath.fib(n),
+				BIntMath.fib(n - 1) + BIntMath.fib(n - 2),
+				"fib(\(n)) != fib(\(n-1)) + fib(\(n-2))"
+			)
+		}
+	}
+
+	func test_fib_larger_known_values() {
+		XCTAssertEqual(BIntMath.fib(100), BInt("354224848179261915075")!)
+		XCTAssertEqual(BIntMath.fib(300), BInt("222232244629420445529739893461909967206666939096499764990979600")!)
+
+		// fib(1000): verify via recurrence and digit count
+		let f1000 = BIntMath.fib(1000)
+		XCTAssertEqual(f1000.description.count, 209)
+		XCTAssert(f1000.description.hasPrefix("4346655768693745643568852767"))
+		XCTAssertEqual(f1000, BIntMath.fib(999) + BIntMath.fib(998))
+	}
+
+	func test_fib_lucas_identity() {
+		// F(2k) = F(k) * [2*F(k+1) - F(k)]
+		for k in [50, 200, 500, 1000] {
+			let f2k = BIntMath.fib(2 * k)
+			let fk = BIntMath.fib(k)
+			let fk1 = BIntMath.fib(k + 1)
+			XCTAssertEqual(f2k, fk * (BInt(2) * fk1 - fk),
+				"Lucas identity failed for k=\(k)")
+		}
+	}
+
+	func test_fib_100000_spot_check() {
+		let f = BIntMath.fib(100_000)
+		// Known digit count
+		XCTAssertEqual(f.description.count, 20899)
+		// Known prefix
+		XCTAssert(f.description.hasPrefix("2597406934722"))
+		// Recurrence: F(100000) = F(99999) + F(99998)
+		XCTAssertEqual(f, BIntMath.fib(99_999) + BIntMath.fib(99_998))
+	}
+
 	// MARK: - Mersenne
 
 	func test_isMersenne() {

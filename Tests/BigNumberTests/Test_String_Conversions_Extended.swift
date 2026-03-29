@@ -74,6 +74,41 @@ class Test_String_Conversions_Extended: XCTestCase {
 		}
 	}
 
+	// MARK: - Hex string for large numbers
+
+	func test_hex_known_power_of_two() {
+		XCTAssertEqual((BInt(1) << 64).asString(radix: 16), "10000000000000000")
+		XCTAssertEqual(((BInt(1) << 128) - 1).asString(radix: 16),
+			"ffffffffffffffffffffffffffffffff")
+		XCTAssertEqual((BInt(1) << 256).asString(radix: 16),
+			"1" + String(repeating: "0", count: 64))
+	}
+
+	func test_hex_roundtrip_factorial() {
+		// Roundtrip 1500! through hex — matches the benchmark
+		let fac = BInt(1500).factorial()
+		let hex = fac.asString(radix: 16)
+		let back = BInt(hex, radix: 16)!
+		XCTAssertEqual(back, fac, "1500! hex roundtrip failed")
+	}
+
+	func test_hex_vs_decimal_consistency() {
+		// Verify hex and decimal representations refer to the same number
+		let big = BInt(1000).factorial()
+		let fromDec = BInt(big.description)!
+		let fromHex = BInt(big.asString(radix: 16), radix: 16)!
+		XCTAssertEqual(fromDec, fromHex)
+	}
+
+	func test_large_radix_roundtrips() {
+		let big = BInt(500).factorial()
+		for radix in [2, 8, 16, 32, 36] {
+			let str = big.asString(radix: radix)
+			let back = BInt(str, radix: radix)!
+			XCTAssertEqual(back, big, "500! roundtrip failed for base \(radix)")
+		}
+	}
+
 	// MARK: - Bytes roundtrip extended
 
 	func test_bytes_roundtrip_extended() {

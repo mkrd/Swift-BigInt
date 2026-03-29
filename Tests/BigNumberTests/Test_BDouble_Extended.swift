@@ -152,4 +152,27 @@ class Test_BDouble_Extended: XCTestCase {
 		let str = z.decimalExpansion(precisionAfterDecimalPoint: 4, rounded: false)
 		XCTAssertEqual(str, "0.0000")
 	}
+
+	func test_decimal_expansion_repeating_pattern() {
+		// 1/7 = 0.142857142857... (period 6)
+		let val = BDouble(1, over: 7)
+		let expansion = val.decimalExpansion(precisionAfterDecimalPoint: 6000, rounded: false)
+		let digits = String(expansion.dropFirst(2)) // drop "0."
+		XCTAssertEqual(digits.count, 6000)
+
+		let period = "142857"
+		for i in stride(from: 0, to: digits.count - 5, by: 6) {
+			let start = digits.index(digits.startIndex, offsetBy: i)
+			let end = digits.index(start, offsetBy: 6)
+			XCTAssertEqual(String(digits[start..<end]), period,
+				"1/7 period mismatch at position \(i)")
+		}
+	}
+
+	func test_decimal_expansion_1_over_3() {
+		let val = BDouble(1, over: 3)
+		let expansion = val.decimalExpansion(precisionAfterDecimalPoint: 5000, rounded: false)
+		let digits = String(expansion.dropFirst(2))
+		XCTAssert(digits.allSatisfy({ $0 == "3" }), "1/3 should be all 3s")
+	}
 }

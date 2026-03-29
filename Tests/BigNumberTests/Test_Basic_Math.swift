@@ -242,6 +242,60 @@ class Test_Basic_Math: XCTestCase {
 		}
 	}
 
+	func test_Multiplication_large_roundtrip() {
+		// (a*b)/a == b for large operands
+		let a = BIntMath.randomBInt(bits: 10_000)
+		let b = BIntMath.randomBInt(bits: 10_000)
+		let product = a * b
+		XCTAssertEqual(product / a, b)
+		XCTAssertEqual(product / b, a)
+	}
+
+	func test_Multiplication_commutative_large() {
+		let a = BIntMath.randomBInt(bits: 50_000)
+		let b = BIntMath.randomBInt(bits: 50_000)
+		XCTAssertEqual(a * b, b * a)
+	}
+
+	func test_Multiplication_distributive() {
+		let a = BIntMath.randomBInt(bits: 5_000)
+		let b = BIntMath.randomBInt(bits: 5_000)
+		let c = BIntMath.randomBInt(bits: 5_000)
+		XCTAssertEqual(a * (b + c), a * b + a * c)
+	}
+
+	func test_Multiplication_known_square() {
+		let base = BInt(10) ** 1000
+		XCTAssertEqual(base * base, BInt(10) ** 2000)
+	}
+
+	func test_Factorial_consistency() {
+		// n! == n * (n-1)!
+		XCTAssertEqual(BInt(1000).factorial(), BInt(1000) * BInt(999).factorial())
+		XCTAssertEqual(BInt(10000).factorial(), BInt(10000) * BInt(9999).factorial())
+	}
+
+	func test_Factorial_trailing_zeros() {
+		// Trailing zeros in n! = sum of floor(n/5^k)
+		func expectedTrailingZeros(_ n: Int) -> Int {
+			var count = 0; var p = 5
+			while p <= n { count += n / p; p *= 5 }
+			return count
+		}
+		for n in [100, 1000, 5000, 10000] {
+			let str = BInt(n).factorial().description
+			let zeros = str.reversed().prefix(while: { $0 == "0" }).count
+			XCTAssertEqual(zeros, expectedTrailingZeros(n), "\(n)! trailing zeros")
+		}
+	}
+
+	func test_Exponentiation_10_pow_large() {
+		let str = (BInt(10) ** 10_000).description
+		XCTAssertEqual(str.count, 10_001)
+		XCTAssertEqual(str.first, "1")
+		XCTAssert(str.dropFirst().allSatisfy({ $0 == "0" }))
+	}
+
     func test_Power() {
         // Reference issue #41
         let TWO : BInt = 2
