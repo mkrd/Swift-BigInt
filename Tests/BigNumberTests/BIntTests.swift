@@ -13,12 +13,12 @@ import MGTools
 @testable import BigNumber
 
 class BIntTests: XCTestCase {
-    
+
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
-    
+
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
@@ -32,7 +32,7 @@ class BIntTests: XCTestCase {
 			"y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O",
 			"P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"
 		]
-        
+
 		// Randomly choose two bases and a number length, as well as a sign (+ or -)
 		for _ in 0..<100
 		{
@@ -77,7 +77,7 @@ class BIntTests: XCTestCase {
 		XCTAssert(BInt("0",radix:16)! <= 1.0)
 		XCTAssert(BInt("f", radix: 16)! >= 1.0)
 		XCTAssert(BInt("rfff",radix:16) == nil)
-		
+
 		XCTAssert(BInt("ffff",radix:16) == 65535)
 		XCTAssert(BInt("rfff",radix:16) == nil)
 		XCTAssert(BInt("ff",radix:10) == nil)
@@ -97,7 +97,7 @@ class BIntTests: XCTestCase {
 		XCTAssert(BInt("4",radix:5)! >= 1.0)
 		XCTAssert(BInt("923492349",radix:32)! == 9967689075849)
 	}
-    
+
     func testIntInit() {
         XCTAssert(BInt(UInt64.max) == UInt64.max)
         XCTAssert(BInt(Int64.max) == Int64.max)
@@ -115,7 +115,7 @@ class BIntTests: XCTestCase {
         XCTAssert(BInt(Int.max) == Int.max)
         XCTAssert(BInt(Int.min) == Int.min)
     }
-    
+
     func testNotEqual() {
         XCTAssert(BInt(Int64.max) != Int64.min)
         XCTAssert(BInt(Int64.max) != 0)
@@ -138,7 +138,7 @@ class BIntTests: XCTestCase {
         XCTAssert(BInt(Int.min) != Int.max)
         XCTAssert(BInt(Int.min) != 0)
     }
-	
+
 	func testPerformanceStringInit() {
 		self.measure {
 			for _ in (0...15000) {
@@ -146,7 +146,7 @@ class BIntTests: XCTestCase {
 			}
 		}
 	}
-	
+
 	func testPerformanceStringRadixInit() {
 		self.measure {
 			for _ in (0...15000) {
@@ -154,7 +154,7 @@ class BIntTests: XCTestCase {
 			}
 		}
 	}
-    
+
     /** An issue was reported where a hex string was not being converted to a decimal. This test case checks that. */
     func testIssue58() throws {
         // 190000000000000000000
@@ -168,11 +168,11 @@ class BIntTests: XCTestCase {
         XCTAssertGreaterThan(x, BInt(Int32.max))
         XCTAssertEqual(x, BInt("190000000000000000000"))
     }
-    
+
     func testIssue67() throws {
         let x = try XCTUnwrap(BInt("0b1310c5a2c30000", radix: 16))
         XCTAssertEqual(x, BInt("0x0b1310c5a2c30000", radix: 16))
-        
+
         let y = try XCTUnwrap(BInt("0b", radix: 16))
         XCTAssertEqual(y, 11)
         XCTAssertEqual(y, BInt("0xb", radix: 16))
